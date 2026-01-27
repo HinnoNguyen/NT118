@@ -26,7 +26,7 @@
 
 ## GIẢNG VIÊN HƯỚNG DẪN
 <a name="giangvien"></a>
-* ThS. **Trần Hông Nghi** - *nghith@uit.edu.vn*
+* ThS. **Trần Hồng Nghi** - *nghith@uit.edu.vn*
 
 
 ## THÀNH VIÊN NHÓM
