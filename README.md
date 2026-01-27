@@ -34,7 +34,7 @@
 | STT    | MSSV          | Họ và Tên              | Github                                               | Email                   |
 | ------ |:-------------:| ----------------------:|-----------------------------------------------------:|-------------------------:
 | 1      | 23521378      | Thiều Đình Nam Tài     |[Blackdark](https://github.com/Blackdarked)           |23521378@gm.uit.edu.vn   |
-| 2      | 23520588      | Nguyễn Lan Hương       |[Hiinnoo](https://github.com/Hiinnoo)                 |23520588@gm.uit.edu.vn   |
+| 2      | 23520588      | Nguyễn Lan Hương       |[Hinno](https://github.com/HinnoNguyen)               |23520588@gm.uit.edu.vn   |
 | 3      | 23520225      | Đõ Hải Đăng            |[name]( )                 |23520225@gm.uit.edu.vn   |
 
 
