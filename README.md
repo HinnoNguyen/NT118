@@ -35,9 +35,10 @@
 | ------ |:-------------:| ----------------------:|-----------------------------------------------------:|-------------------------:
 | 1      | 23521378      | Thiều Đình Nam Tài     |[Blackdark](https://github.com/Blackdarked)           |23521378@gm.uit.edu.vn   |
 | 2      | 23520588      | Nguyễn Lan Hương       |[Hinno](https://github.com/HinnoNguyen)               |23520588@gm.uit.edu.vn   |
-| 3      | 23520225      | Đõ Hải Đăng            |[name]( )                 |23520225@gm.uit.edu.vn   |
+| 3      | 23520225      | Đỗ Hải Đăng            |[dohaidang-git](https://github.com/dohaidang-git)     |23520225@gm.uit.edu.vn   |
 
 
 ## ĐỒ ÁN MÔN HỌC
 <a name="doan"></a>
-Đồ án Nhóm: 
+Đề tài đồ án:
+Nhóm 15
