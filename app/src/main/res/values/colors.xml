@@ -2,4 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="primary_blue">#1A80A4</color>
+    <color name="light_blue_bg">#DDE8FF</color>
+    <color name="input_bg">#F5F9FF</color>
+    <color name="text_gray">#999999</color>
+    <color name="link_blue">#1A80A4</color>
+    <color name="google_btn_stroke">#1A80A4</color>
 </resources>
