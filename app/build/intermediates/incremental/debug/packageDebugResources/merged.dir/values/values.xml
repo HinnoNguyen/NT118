@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="google_btn_stroke">#1A80A4</color>
+    <color name="input_bg">#F5F9FF</color>
+    <color name="light_blue_bg">#DDE8FF</color>
+    <color name="link_blue">#1A80A4</color>
+    <color name="primary_blue">#1A80A4</color>
+    <color name="text_gray">#999999</color>
+    <color name="white">#FFFFFFFF</color>
+    <string name="app_name">Project</string>
+    <style name="Base.Theme.Project" parent="Theme.Material3.DayNight.NoActionBar">
+        
+        
+    </style>
+    <style name="Theme.Project" parent="Base.Theme.Project"/>
+</resources>

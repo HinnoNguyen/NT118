@@ -8,4 +8,16 @@
     <color name="text_gray">#999999</color>
     <color name="link_blue">#1A80A4</color>
     <color name="google_btn_stroke">#1A80A4</color>
+
+    <!-- Home Screen Colors -->
+    <color name="home_bg">#FFFFFF</color>
+    <color name="card_blue">#1A80A4</color>
+    <color name="progress_bg">#F0F4FF</color>
+    <color name="task_pink">#FFE9EC</color>
+    <color name="task_orange">#FFF0E6</color>
+    <color name="icon_pink">#FF85A2</color>
+    <color name="icon_purple">#8B85FF</color>
+    <color name="icon_orange">#FFA352</color>
+    <color name="icon_green">#52C47D</color>
+    <color name="bottom_nav_bg">#D6F1FF</color>
 </resources>
