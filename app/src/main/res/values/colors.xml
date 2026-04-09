@@ -20,4 +20,13 @@
     <color name="icon_orange">#FFA352</color>
     <color name="icon_green">#52C47D</color>
     <color name="bottom_nav_bg">#D6F1FF</color>
+
+    <!-- Add Task Screen Colors -->
+    <color name="dot_yellow">#E6EBA9</color>
+    <color name="dot_green">#B4E69D</color>
+    <color name="dot_cyan">#A0E6D2</color>
+    <color name="dot_blue">#A9C1EB</color>
+    <color name="dot_sky_blue">#A0D1E6</color>
+    <color name="dot_peach">#EBC1A9</color>
+    <color name="dot_purple">#C9A0E6</color>
 </resources>
