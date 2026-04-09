@@ -6,32 +6,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_dark"
-    tools:context=".MainActivity">
-
-    <TextView
-        android:id="@+id/tvWizard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:text="🧙‍♂️"
-        android:textSize="64sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    tools:context=".LoginActivity">
 
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="48dp"
         android:fontFamily="monospace"
-        android:text="TALEQUEST"
+        android:text="@string/login_title"
         android:textColor="@color/accent_green"
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvWizard" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvSubtitle"
@@ -39,24 +28,38 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:fontFamily="monospace"
-        android:text="~ PRODUCTIVITY RPG ~"
+        android:text="@string/login_subtitle"
         android:textColor="@color/accent_green"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
+    <TextView
+        android:id="@+id/tvPressStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="monospace"
+        android:text="@string/login_press_start"
+        android:textColor="@color/accent_green"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSubtitle" />
+
     <LinearLayout
         android:id="@+id/cardContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/bg_main_card"
         android:orientation="vertical"
+        android:paddingBottom="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvSubtitle">
+        app:layout_constraintTop_toBottomOf="@id/tvPressStart">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -72,7 +75,8 @@
                 android:background="@drawable/bg_button_selected"
                 android:fontFamily="monospace"
                 android:gravity="center"
-                android:text="LOGIN"
+                android:padding="12dp"
+                android:text="@string/btn_login"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
@@ -85,7 +89,8 @@
                 android:background="@drawable/bg_button_unselected"
                 android:fontFamily="monospace"
                 android:gravity="center"
-                android:text="REGISTER"
+                android:padding="12dp"
+                android:text="@string/btn_register"
                 android:textColor="@color/accent_green" />
         </LinearLayout>
 
@@ -94,46 +99,50 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:fontFamily="monospace"
-            android:text="📧 EMAIL"
+            android:text="@string/label_email"
             android:textColor="@color/accent_green"
-            android:textSize="10sp" />
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/etEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:minHeight="48dp"
             android:background="@drawable/bg_button_unselected"
             android:fontFamily="monospace"
-            android:hint="hero@quest.com"
+            android:hint="@string/hint_email"
             android:inputType="textEmailAddress"
             android:padding="12dp"
             android:textColor="@color/white"
             android:textColorHint="#44FFFFFF"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:importantForAutofill="no" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:fontFamily="monospace"
-            android:text="🔑 PASSWORD"
+            android:text="@string/label_password"
             android:textColor="@color/accent_green"
-            android:textSize="10sp" />
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/etPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:minHeight="48dp"
             android:background="@drawable/bg_button_unselected"
             android:fontFamily="monospace"
-            android:hint="••••••••"
+            android:hint="@string/hint_password"
             android:inputType="textPassword"
             android:padding="12dp"
             android:textColor="@color/white"
             android:textColorHint="#44FFFFFF"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:importantForAutofill="no" />
 
         <TextView
             android:id="@+id/tvForgotPassword"
@@ -141,8 +150,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginTop="8dp"
+            android:minHeight="48dp"
+            android:gravity="center_vertical"
             android:fontFamily="monospace"
-            android:text="Forgot password? Click here"
+            android:text="@string/forgot_password"
             android:textColor="@color/accent_green"
             android:textSize="10sp" />
 
@@ -151,49 +162,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:minHeight="48dp"
             android:backgroundTint="@color/accent_green"
             android:fontFamily="monospace"
-            android:text="▶ START GAME"
+            android:text="@string/btn_login"
             android:textColor="@color/black"
             android:textStyle="bold"
             app:cornerRadius="0dp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="16dp"
-            android:background="#44FFFFFF" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnGoogleSignIn"
             style="@style/Widget.MaterialComponents.Button.Icon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="@color/white"
-            android:fontFamily="sans-serif-medium"
-            android:text="Sign in with Google"
-            android:textColor="@color/black"
+            android:layout_marginTop="8dp"
+            android:minHeight="48dp"
+            android:backgroundTint="@color/input_bg"
+            android:fontFamily="monospace"
+            android:text="@string/sign_in_google"
+            android:textColor="@color/accent_green"
             android:textAllCaps="false"
-            app:cornerRadius="4dp"
+            app:cornerRadius="0dp"
             app:icon="@drawable/ic_google_logo"
             app:iconGravity="textStart"
             app:iconTint="@null"
-            app:strokeColor="#4285F4"
+            app:strokeColor="@color/accent_green"
             app:strokeWidth="1dp" />
 
     </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="monospace"
-        android:text="PRESS START TO BEGIN"
-        android:textColor="@color/accent_green"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cardContainer" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

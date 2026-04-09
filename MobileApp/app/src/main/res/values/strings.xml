@@ -1,3 +1,17 @@
 <resources>
-    <string name="app_name">MobileApp</string>
+    <string name="app_name">TaleQuests</string>
+    <string name="forgot_password">Forgot password? Click here</string>
+    <string name="sign_in_google">Sign in with Google</string>
+    <string name="login_title">TALEQUESTS</string>
+    <string name="login_subtitle">- PRODUCTIVITY RPG -</string>
+    <string name="login_press_start">PRESS START TO BEGIN</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Password</string>
+    <string name="label_username">Username</string>
+    <string name="label_confirm_password">Confirmed password</string>
+    <string name="btn_login">LOGIN</string>
+    <string name="btn_register">REGISTER</string>
+    <string name="hint_email">example@gmail.com</string>
+    <string name="hint_password">••••••••••••</string>
+    <string name="hint_username">Name</string>
 </resources>
