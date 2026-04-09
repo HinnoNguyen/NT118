@@ -28,7 +28,7 @@
     <string name="focus_time_value">4h</string>
     <string name="streak_title">Streak</string>
     <string name="streak_value">3</string>
-    <string name="daily_quests_title">DAILY QUESTS</string>
+    <string name="daily_quests_title">▶ DAILY QUESTS</string>
     <string name="quest_task_1">Complete 3 tasks</string>
     <string name="quest_task_1_exp">+10xp</string>
     <string name="quest_task_2">Focus for 30 min</string>
@@ -53,6 +53,24 @@
     <string name="profile_stat_best_streak_val">7</string>
     <string name="profile_achievements_label">▶ ACHIEVEMENTS</string>
     <string name="profile_edit_btn">✎ EDIT PROFILE</string>
+
+    <!-- Settings Screen Strings -->
+    <string name="settings_title">SETTINGS</string>
+    <string name="settings_header_label">⚙ SETTINGS</string>
+    <string name="settings_subtitle">~ settings ~</string>
+    <string name="settings_language_label">▶ LANGUAGE</string>
+    <string name="settings_lang_vn">VN Tiếng Việt</string>
+    <string name="settings_lang_en">GB English</string>
+    <string name="settings_notifications_label">▶ NOTIFICATIONS</string>
+    <string name="settings_notif_quests">Quest Reminders</string>
+    <string name="settings_notif_timer">Timer Complete</string>
+    <string name="settings_notif_login">Daily Login</string>
+    <string name="settings_about_label">▶ ABOUT</string>
+    <string name="settings_version_label">Version</string>
+    <string name="settings_version_val">1.0.0</string>
+    <string name="settings_build_label">Build</string>
+    <string name="settings_build_val">PIXEL-2024</string>
+    <string name="settings_logout_btn">LOGOUT</string>
 
     <!-- Bottom Nav Labels -->
     <string name="nav_home">HOME</string>
