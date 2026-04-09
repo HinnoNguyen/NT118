@@ -1,20 +1,17 @@
 package com.example.mobileapp
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
-class MainActivity : AppCompatActivity() {
-
+class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-        
+        setContentView(R.layout.activity_profile)
         setupEdgeToEdge()
         setupUI()
     }
@@ -28,10 +25,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
-        val userInfoCard = findViewById<LinearLayout>(R.id.userInfoCard)
-        userInfoCard.setOnClickListener {
-            val intent = Intent(this, ProfileActivity::class.java)
-            startActivity(intent)
+        findViewById<TextView>(R.id.btnBack).setOnClickListener {
+            finish()
         }
     }
 }

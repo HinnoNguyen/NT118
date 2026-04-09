@@ -37,6 +37,23 @@
     <string name="quest_task_3_exp">+30xp</string>
     <string name="main_character_message">\"Good morning, User! You have 5 quests to complete today.\"</string>
 
+    <!-- Profile Screen Strings -->
+    <string name="profile_title">▶ PROFILE</string>
+    <string name="profile_subtitle">~ user status ~</string>
+    <string name="profile_user_title">Pixel Knight</string>
+    <string name="profile_bio_label">▶ BIO</string>
+    <string name="profile_bio_text">\"Adventurer of productivity realms\"</string>
+    <string name="profile_stats_label">▶ USER STATS</string>
+    <string name="profile_stat_focus_hours">Focus Hours</string>
+    <string name="profile_stat_focus_hours_val">24h</string>
+    <string name="profile_stat_stories">Stories</string>
+    <string name="profile_stat_stories_val">3</string>
+    <string name="profile_stat_current_streak">Current Streak</string>
+    <string name="profile_stat_best_streak">Best Streak</string>
+    <string name="profile_stat_best_streak_val">7</string>
+    <string name="profile_achievements_label">▶ ACHIEVEMENTS</string>
+    <string name="profile_edit_btn">✎ EDIT PROFILE</string>
+
     <!-- Bottom Nav Labels -->
     <string name="nav_home">HOME</string>
     <string name="nav_quest">QUEST</string>
