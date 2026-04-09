@@ -14,4 +14,34 @@
     <string name="hint_email">example@gmail.com</string>
     <string name="hint_password">••••••••••••</string>
     <string name="hint_username">Name</string>
+
+    <!-- Main Screen Strings -->
+    <string name="label_user">USER</string>
+    <string name="label_level">LV.5</string>
+    <string name="label_exp_value">340/500</string>
+    <string name="label_exp_title">EXP</string>
+    <string name="quests_done_title">Quests Done</string>
+    <string name="quests_done_value">12</string>
+    <string name="notes_written_title">Notes Written</string>
+    <string name="notes_written_value">8</string>
+    <string name="focus_time_title">Focus Time</string>
+    <string name="focus_time_value">4h</string>
+    <string name="streak_title">Streak</string>
+    <string name="streak_value">3</string>
+    <string name="daily_quests_title">DAILY QUESTS</string>
+    <string name="quest_task_1">Complete 3 tasks</string>
+    <string name="quest_task_1_exp">+10xp</string>
+    <string name="quest_task_2">Focus for 30 min</string>
+    <string name="quest_task_2_exp">+20xp</string>
+    <string name="quest_task_3">Write a note</string>
+    <string name="quest_task_3_exp">+30xp</string>
+    <string name="main_character_message">\"Good morning, User! You have 5 quests to complete today.\"</string>
+
+    <!-- Bottom Nav Labels -->
+    <string name="nav_home">HOME</string>
+    <string name="nav_quest">QUEST</string>
+    <string name="nav_notes">NOTES</string>
+    <string name="nav_story">STORY</string>
+    <string name="nav_game">GAME</string>
+    <string name="nav_set">SET</string>
 </resources>

@@ -12,25 +12,29 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:background="@drawable/bg_text_border"
         android:fontFamily="monospace"
         android:text="@string/login_title"
         android:textColor="@color/accent_green"
         android:textSize="28sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/tvSubtitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/tvSubtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_text_border"
         android:fontFamily="monospace"
         android:text="@string/login_subtitle"
         android:textColor="@color/accent_green"
         android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@id/svRegister"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvTitle" />
@@ -39,13 +43,12 @@
         android:id="@+id/svRegister"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         app:layout_constrainedHeight="true"
-        app:layout_constraintBottom_toTopOf="@id/tvFooter"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvSubtitle"
-        app:layout_constraintVertical_bias="0.5">
+        app:layout_constraintTop_toBottomOf="@id/tvSubtitle">
 
         <LinearLayout
             android:id="@+id/cardContainer"
@@ -161,8 +164,7 @@
                 android:padding="8dp"
                 android:textColor="@color/white"
                 android:textColorHint="#44FFFFFF"
-                android:textSize="14sp"
-                android:importantForAutofill="no" />
+                android:textSize="14sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -223,18 +225,5 @@
 
         </LinearLayout>
     </ScrollView>
-
-    <TextView
-        android:id="@+id/tvFooter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="44dp"
-        android:fontFamily="monospace"
-        android:text="@string/login_press_start"
-        android:textColor="@color/accent_green"
-        android:textSize="10sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
