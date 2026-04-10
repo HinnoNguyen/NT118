@@ -264,7 +264,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:fontFamily="monospace"
-                    android:text="\"Each minute of focus = 1 EXP. Stay focused to level up faster!\""
+                    android:text="&quot;Each minute of focus = 1 EXP. Stay focused to level up faster!&quot;"
                     android:textColor="@color/accent_green"
                     android:textSize="12sp" />
             </LinearLayout>
