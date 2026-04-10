@@ -226,8 +226,7 @@
                 android:fontFamily="monospace"
                 android:text="▶ DAILY QUESTS"
                 android:textColor="#FFD700"
-                android:textSize="11sp"
-                android:textStyle="bold" />
+                android:textSize="11sp" android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -312,32 +311,32 @@
 
         <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🏠" android:textSize="16sp" />
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="@string/nav_home" android:textColor="@color/accent_green" android:textSize="8sp" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="HOME" android:textColor="@color/accent_green" android:textSize="8sp" android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚔️" android:textSize="16sp" />
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="@string/nav_quest" android:textColor="#AAAAAA" android:textSize="8sp" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="QUEST" android:textColor="#AAAAAA" android:textSize="8sp" android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⏰" android:textSize="16sp" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="TIME" android:textColor="#AAAAAA" android:textSize="8sp" android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📜" android:textSize="16sp" />
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="@string/nav_notes" android:textColor="#AAAAAA" android:textSize="8sp" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="NOTES" android:textColor="#AAAAAA" android:textSize="8sp" android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📖" android:textSize="16sp" />
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="@string/nav_story" android:textColor="#AAAAAA" android:textSize="8sp" />
-        </LinearLayout>
-
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🎮" android:textSize="16sp" />
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="@string/nav_game" android:textColor="#AAAAAA" android:textSize="8sp" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="STORY" android:textColor="#AAAAAA" android:textSize="8sp" android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚙️" android:textSize="16sp" />
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="@string/nav_set" android:textColor="#AAAAAA" android:textSize="8sp" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="SET" android:textColor="#AAAAAA" android:textSize="8sp" android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
 
