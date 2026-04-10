@@ -12,4 +12,7 @@
     <color name="rank_a">#FFD700</color>
     <color name="rank_b">#00FF00</color>
     <color name="rank_c">#448AFF</color>
+
+    <!-- Note Colors -->
+    <color name="note_purple">#8A2BE2</color>
 </resources>

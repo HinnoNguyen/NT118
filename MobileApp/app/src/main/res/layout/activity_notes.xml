@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
-            android:text="TIME MAGIC"
+            android:text="SCROLL KEEPER - NOTE"
             android:textColor="#FFD700"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -83,30 +83,75 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Header Section -->
-            <RelativeLayout
+            <!-- Tool Bar Row (Filters + New Button) -->
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="16dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <!-- Filters -->
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:fontFamily="monospace"
-                    android:text="📜 SCROLL KEEPER"
-                    android:textColor="#FFD700"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:background="#FFD700"
+                        android:fontFamily="monospace"
+                        android:paddingHorizontal="16dp"
+                        android:text="ALL"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:layout_width="48dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_main_card"
+                        android:gravity="center"
+                        android:padding="0dp"
+                        android:text="📝"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="48dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_main_card"
+                        android:gravity="center"
+                        android:padding="0dp"
+                        android:text="🔔"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="48dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_main_card"
+                        android:gravity="center"
+                        android:padding="0dp"
+                        android:text="🃏"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <!-- New Button (Changes to X when newNoteSection is visible) -->
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnNewNote"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="8dp"
                     android:backgroundTint="@color/accent_green"
                     android:fontFamily="monospace"
                     android:minHeight="0dp"
+                    android:minWidth="40dp"
                     android:paddingHorizontal="12dp"
-                    android:paddingVertical="6dp"
                     android:text="+ NEW"
                     android:textColor="@color/black"
                     android:textSize="12sp"
@@ -114,60 +159,111 @@
                     app:cornerRadius="0dp"
                     app:insetBottom="0dp"
                     app:insetTop="0dp" />
-            </RelativeLayout>
+            </LinearLayout>
 
-            <!-- Filters -->
+            <!-- New Note Section (Visible when +NEW is clicked) -->
             <LinearLayout
+                android:id="@+id/newNoteSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:orientation="horizontal">
+                android:background="@drawable/bg_main_card"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone"
+                tools:visibility="visible">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <!-- Type Selector -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/accent_green"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/note_purple"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp"
+                        android:text="📄 NOTE"
+                        android:textColor="@color/white"
+                        android:fontFamily="monospace"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_button_unselected"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp"
+                        android:text="🔔 REMINDER"
+                        android:textColor="#AAAAAA"
+                        android:fontFamily="monospace"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_button_unselected"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp"
+                        android:text="🃏 FLASHCARD"
+                        android:textColor="#AAAAAA"
+                        android:fontFamily="monospace"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <!-- Input Fields -->
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_button_unselected"
                     android:fontFamily="monospace"
+                    android:hint="Title..."
                     android:paddingHorizontal="12dp"
-                    android:paddingVertical="6dp"
-                    android:text="ALL"
+                    android:textColor="@color/white"
+                    android:textColorHint="#44FFFFFF"
+                    android:textSize="14sp"
+                    android:inputType="text"
+                    android:importantForAutofill="no" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_button_unselected"
+                    android:fontFamily="monospace"
+                    android:hint="Content..."
+                    android:padding="12dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="#44FFFFFF"
+                    android:textSize="14sp"
+                    android:gravity="top"
+                    android:inputType="textMultiLine"
+                    android:importantForAutofill="no" />
+
+                <!-- Save Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="@color/accent_green"
+                    android:text="✦ SAVE SCROLL"
                     android:textColor="@color/black"
-                    android:textSize="10sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/bg_button_unselected"
-                    android:gravity="center"
-                    android:text="📄"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/bg_button_unselected"
-                    android:gravity="center"
-                    android:text="🔔"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/bg_button_unselected"
-                    android:gravity="center"
-                    android:text="📋"
-                    android:textSize="12sp" />
+                    android:textStyle="bold"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    app:cornerRadius="0dp" />
             </LinearLayout>
 
             <!-- Notes List -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:orientation="vertical">
 
                 <!-- Note 1 -->
