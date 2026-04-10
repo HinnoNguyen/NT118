@@ -6,4 +6,10 @@
     <color name="accent_green">#00FF00</color>
     <color name="input_bg">#1A1A24</color>
     <color name="button_bg_disabled">#24242E</color>
+
+    <!-- Rank Colors -->
+    <color name="rank_s">#FF4444</color>
+    <color name="rank_a">#FFD700</color>
+    <color name="rank_b">#00FF00</color>
+    <color name="rank_c">#448AFF</color>
 </resources>

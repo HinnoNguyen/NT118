@@ -77,6 +77,14 @@
     <string name="choose_avatar_label">▶ CHOOSE AVATAR</string>
     <string name="btn_save_profile">✔ SAVE CHANGES</string>
 
+    <!-- Quest Screen Strings -->
+    <string name="quest_header_label">⚔ QUEST LOG</string>
+    <string name="quest_subtitle">Complete quests to earn EXP!</string>
+    <string name="new_quest_label">NEW QUEST</string>
+    <string name="hint_enter_quest">Enter new quest...</string>
+    <string name="label_rank">RANK</string>
+    <string name="btn_add_quest">ADD</string>
+
     <!-- Bottom Nav Labels -->
     <string name="nav_home">HOME</string>
     <string name="nav_quest">QUEST</string>
