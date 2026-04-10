@@ -72,6 +72,11 @@
     <string name="settings_build_val">PIXEL-2024</string>
     <string name="settings_logout_btn">LOGOUT</string>
 
+    <!-- Edit Profile Screen Strings -->
+    <string name="edit_profile_title">▶ EDIT PROFILE</string>
+    <string name="choose_avatar_label">▶ CHOOSE AVATAR</string>
+    <string name="btn_save_profile">✔ SAVE CHANGES</string>
+
     <!-- Bottom Nav Labels -->
     <string name="nav_home">HOME</string>
     <string name="nav_quest">QUEST</string>

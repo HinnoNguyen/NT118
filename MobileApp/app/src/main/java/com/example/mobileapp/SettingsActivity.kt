@@ -1,7 +1,8 @@
 package com.example.mobileapp
 
+import android.content.Intent
 import android.os.Bundle
-import android.widget.TextView
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -25,6 +26,9 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
-        // Handle logout or navigation if needed
+        findViewById<Button>(R.id.btnEditProfile).setOnClickListener {
+            val intent = Intent(this, EditProfileActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
