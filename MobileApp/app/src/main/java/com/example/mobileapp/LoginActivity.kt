@@ -7,29 +7,32 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.mobileapp.data.repository.UserRepositoryImpl
-import com.example.mobileapp.domain.usecase.LoginUseCase
-import com.example.mobileapp.presentation.LoginViewModel
+import com.example.mobileapp.presentation.auth.LoginViewModel
+import com.example.mobileapp.utils.Resource
 import kotlinx.coroutines.launch
 
+/**
+ * Auth screen — login.
+ * Communicates only with [LoginViewModel]; never imports repositories or use cases.
+ */
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: LoginViewModel
+    private val viewModel: LoginViewModel by viewModels { LoginViewModel.factory() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
-        
         setupEdgeToEdge()
-        setupViewModel()
         setupUI()
+        observeViewModel()
     }
 
     private fun setupEdgeToEdge() {
@@ -38,12 +41,6 @@ class LoginActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-    }
-
-    private fun setupViewModel() {
-        val repository = UserRepositoryImpl()
-        val loginUseCase = LoginUseCase(repository)
-        viewModel = LoginViewModel(loginUseCase)
     }
 
     private fun setupUI() {
@@ -55,14 +52,14 @@ class LoginActivity : AppCompatActivity() {
         val btnGoogleSignIn = findViewById<Button>(R.id.btnGoogleSignIn)
 
         btnLogin.setOnClickListener {
-            val email = etEmail.text.toString()
-            val pass = etPassword.text.toString()
-            viewModel.login(email, pass)
+            viewModel.login(
+                etEmail.text.toString().trim(),
+                etPassword.text.toString()
+            )
         }
 
         btnRegisterTab.setOnClickListener {
-            val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, RegisterActivity::class.java))
         }
 
         tvForgotPassword.setOnClickListener {
@@ -72,33 +69,34 @@ class LoginActivity : AppCompatActivity() {
         btnGoogleSignIn.setOnClickListener {
             Toast.makeText(this, "Google Login coming soon!", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun observeViewModel() {
+        val btnLogin = findViewById<Button>(R.id.btnStartGame)
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.loginState.collect { state ->
-                    handleLoginState(state, btnLogin)
+                viewModel.loginState.collect { resource ->
+                    when (resource) {
+                        is Resource.Loading -> {
+                            btnLogin.isEnabled = false
+                            btnLogin.text = "LOADING..."
+                        }
+                        is Resource.Success -> {
+                            btnLogin.isEnabled = true
+                            btnLogin.text = "LOGIN"
+                            Toast.makeText(this@LoginActivity, "Welcome Hero!", Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                        }
+                        is Resource.Error -> {
+                            btnLogin.isEnabled = true
+                            btnLogin.text = "LOGIN"
+                            Toast.makeText(this@LoginActivity, resource.message, Toast.LENGTH_SHORT).show()
+                        }
+                        null -> { /* idle — do nothing */ }
+                    }
                 }
             }
-        }
-    }
-
-    private fun handleLoginState(state: LoginViewModel.LoginState, btnLogin: Button) {
-        when (state) {
-            is LoginViewModel.LoginState.Loading -> {
-                btnLogin.isEnabled = false
-                btnLogin.text = "LOADING..."
-            }
-            is LoginViewModel.LoginState.Success -> {
-                btnLogin.isEnabled = true
-                btnLogin.text = "LOGIN"
-                Toast.makeText(this, "Welcome Hero!", Toast.LENGTH_SHORT).show()
-            }
-            is LoginViewModel.LoginState.Error -> {
-                btnLogin.isEnabled = true
-                btnLogin.text = "LOGIN"
-                Toast.makeText(this, state.message, Toast.LENGTH_SHORT).show()
-            }
-            else -> {}
         }
     }
 }
