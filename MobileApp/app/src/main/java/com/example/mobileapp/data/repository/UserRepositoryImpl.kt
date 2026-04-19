@@ -5,7 +5,7 @@ import com.example.mobileapp.domain.repository.UserRepository
 import kotlinx.coroutines.delay
 
 class UserRepositoryImpl : UserRepository {
-    override fun login(email: String, password: String): Result<User> {
+    override suspend fun login(email: String, password: String): Result<User> {
         // Mocking a network call
         return if (email.isNotEmpty() && password.length >= 6) {
             Result.success(User(email, "mock_token_123"))
