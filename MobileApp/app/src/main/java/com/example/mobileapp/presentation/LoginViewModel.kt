@@ -2,6 +2,7 @@ package com.example.mobileapp.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mobileapp.domain.model.User
 import com.example.mobileapp.domain.usecase.LoginUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,8 +17,8 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
         viewModelScope.launch {
             _loginState.value = LoginState.Loading
             val result = loginUseCase.execute(email, pass)
-            result.onSuccess {
-                _loginState.value = LoginState.Success
+            result.onSuccess { user ->
+                _loginState.value = LoginState.Success(user)
             }.onFailure {
                 _loginState.value = LoginState.Error(it.message ?: "Unknown error")
             }
@@ -27,7 +28,7 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
     sealed class LoginState {
         object Idle : LoginState()
         object Loading : LoginState()
-        object Success : LoginState()
+        data class Success(val user: User) : LoginState()
         data class Error(val message: String) : LoginState()
     }
 }
