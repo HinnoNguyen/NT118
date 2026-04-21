@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
         
         setupEdgeToEdge()
         setupUI()
+        setupNavigation()
     }
 
     private fun setupEdgeToEdge() {
@@ -32,6 +33,27 @@ class MainActivity : AppCompatActivity() {
         userInfoCard.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    private fun setupNavigation() {
+        findViewById<LinearLayout>(R.id.navHome).setOnClickListener {
+            // Đã ở Home rồi
+        }
+        findViewById<LinearLayout>(R.id.navQuest).setOnClickListener {
+            startActivity(Intent(this, QuestActivity::class.java))
+        }
+        findViewById<LinearLayout>(R.id.navTime).setOnClickListener {
+            startActivity(Intent(this, TimerActivity::class.java))
+        }
+        findViewById<LinearLayout>(R.id.navNotes).setOnClickListener {
+            startActivity(Intent(this, NotesActivity::class.java))
+        }
+        findViewById<LinearLayout>(R.id.navStory).setOnClickListener {
+            startActivity(Intent(this, StoryActivity::class.java))
+        }
+        findViewById<LinearLayout>(R.id.navSettings).setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
         }
     }
 }
