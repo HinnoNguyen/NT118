@@ -1,8 +1,8 @@
 package com.example.mobileapp
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -27,8 +27,7 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun setupUI() {
         findViewById<Button>(R.id.btnEditProfile).setOnClickListener {
-            val intent = Intent(this, EditProfileActivity::class.java)
-            startActivity(intent)
+            Toast.makeText(this, "Edit profile coming soon", Toast.LENGTH_SHORT).show()
         }
     }
 }

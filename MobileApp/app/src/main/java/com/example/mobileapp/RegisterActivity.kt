@@ -10,8 +10,17 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.example.mobileapp.data.repository.UserRepositoryImpl
+import com.example.mobileapp.domain.usecase.RegisterUseCase
+import com.example.mobileapp.presentation.RegisterViewModel
+import kotlinx.coroutines.launch
 
 class RegisterActivity : AppCompatActivity() {
+
+    private lateinit var viewModel: RegisterViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,6 +28,7 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_register)
 
         setupEdgeToEdge()
+        setupViewModel()
         setupUI()
     }
 
@@ -30,6 +40,12 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupViewModel() {
+        val repository = UserRepositoryImpl()
+        val registerUseCase = RegisterUseCase(repository)
+        viewModel = RegisterViewModel(registerUseCase)
+    }
+
     private fun setupUI() {
         val etUsername = findViewById<EditText>(R.id.etUsername)
         val etEmail = findViewById<EditText>(R.id.etEmail)
@@ -37,7 +53,6 @@ class RegisterActivity : AppCompatActivity() {
         val etConfirmPassword = findViewById<EditText>(R.id.etConfirmPassword)
         val btnRegister = findViewById<Button>(R.id.btnRegister)
         val btnLoginTab = findViewById<TextView>(R.id.btnLoginTab)
-        val tvSignInLink = findViewById<TextView>(R.id.tvSignInLink)
         val btnGoogleSignUp = findViewById<Button>(R.id.btnGoogleSignUp)
 
         btnRegister.setOnClickListener {
@@ -46,18 +61,7 @@ class RegisterActivity : AppCompatActivity() {
             val pass = etPassword.text.toString()
             val confirmPass = etConfirmPassword.text.toString()
 
-            if (username.isEmpty() || email.isEmpty() || pass.isEmpty()) {
-                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            if (pass != confirmPass) {
-                Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            Toast.makeText(this, "Registration Successful! Welcome, $username", Toast.LENGTH_SHORT).show()
-            finish()
+            viewModel.register(username, email, pass, confirmPass)
         }
 
         val navigateToLogin = {
@@ -67,10 +71,39 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         btnLoginTab.setOnClickListener { navigateToLogin() }
-        tvSignInLink.setOnClickListener { navigateToLogin() }
         
         btnGoogleSignUp.setOnClickListener {
             Toast.makeText(this, "Google Sign Up coming soon!", Toast.LENGTH_SHORT).show()
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.registerState.collect { state ->
+                    handleRegisterState(state, btnRegister)
+                }
+            }
+        }
+    }
+
+    private fun handleRegisterState(state: RegisterViewModel.RegisterState, btnRegister: Button) {
+        when (state) {
+            is RegisterViewModel.RegisterState.Loading -> {
+                btnRegister.isEnabled = false
+                btnRegister.text = "LOADING..."
+            }
+            is RegisterViewModel.RegisterState.Success -> {
+                btnRegister.isEnabled = true
+                btnRegister.text = "REGISTER"
+                Toast.makeText(this, "Registration Successful! Welcome, ${state.user.name}", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            }
+            is RegisterViewModel.RegisterState.Error -> {
+                btnRegister.isEnabled = true
+                btnRegister.text = "REGISTER"
+                Toast.makeText(this, state.message, Toast.LENGTH_SHORT).show()
+            }
+            else -> {}
         }
     }
 }

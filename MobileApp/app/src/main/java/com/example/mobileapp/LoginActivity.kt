@@ -92,6 +92,8 @@ class LoginActivity : AppCompatActivity() {
                 btnLogin.isEnabled = true
                 btnLogin.text = "LOGIN"
                 Toast.makeText(this, "Welcome Hero!", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
             }
             is LoginViewModel.LoginState.Error -> {
                 btnLogin.isEnabled = true
