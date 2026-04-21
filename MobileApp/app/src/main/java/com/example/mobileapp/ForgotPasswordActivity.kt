@@ -8,17 +8,29 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
+import com.example.mobileapp.data.repository.UserRepositoryImpl
+import com.example.mobileapp.domain.usecase.SendPasswordResetEmailUseCase
 import com.google.android.material.button.MaterialButton
+import kotlinx.coroutines.launch
 
 class ForgotPasswordActivity : AppCompatActivity() {
+
+    private lateinit var sendPasswordResetEmailUseCase: SendPasswordResetEmailUseCase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_forgot_password)
         
+        setupDependencies()
         setupEdgeToEdge()
         setupUI()
+    }
+
+    private fun setupDependencies() {
+        val repository = UserRepositoryImpl()
+        sendPasswordResetEmailUseCase = SendPasswordResetEmailUseCase(repository)
     }
 
     private fun setupEdgeToEdge() {
@@ -36,11 +48,32 @@ class ForgotPasswordActivity : AppCompatActivity() {
 
         btnSendReset.setOnClickListener {
             val email = etEmail.text.toString()
-            if (email.isNotEmpty()) {
-                // TODO: Triển khai logic gửi email khôi phục mật khẩu (ví dụ qua Firebase)
-                Toast.makeText(this, "Reset link sent to $email", Toast.LENGTH_SHORT).show()
-            } else {
+            if (email.isBlank()) {
                 Toast.makeText(this, "Please enter your email", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            btnSendReset.isEnabled = false
+            btnSendReset.text = "SENDING..."
+
+            lifecycleScope.launch {
+                val result = sendPasswordResetEmailUseCase.execute(email)
+                btnSendReset.isEnabled = true
+                btnSendReset.text = "SEND NEW PASSWORD"
+
+                result.onSuccess {
+                    Toast.makeText(
+                        this@ForgotPasswordActivity,
+                        "If this email is registered, a password reset email has been sent.",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }.onFailure {
+                    Toast.makeText(
+                        this@ForgotPasswordActivity,
+                        it.message ?: "Failed to send reset email",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             }
         }
 

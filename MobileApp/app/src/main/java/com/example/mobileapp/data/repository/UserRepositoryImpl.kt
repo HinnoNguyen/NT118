@@ -4,6 +4,7 @@ import com.example.mobileapp.data.dto.UserDto
 import com.example.mobileapp.data.mapper.toDomain
 import com.example.mobileapp.domain.model.User
 import com.example.mobileapp.domain.repository.UserRepository
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
@@ -82,6 +83,48 @@ class UserRepositoryImpl : UserRepository {
             Result.success(userDto.toDomain())
         } catch (e: Exception) {
             Result.failure(Exception(e.message ?: "Failed to fetch user profile", e))
+        }
+    }
+
+    override suspend fun sendEmailVerification(): Result<Unit> {
+        val user = auth.currentUser ?: return Result.failure(Exception("No logged in user"))
+        return try {
+            user.sendEmailVerification().await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(Exception(e.message ?: "Failed to send verification email", e))
+        }
+    }
+
+    override suspend fun reloadCurrentUser(): Result<Unit> {
+        val user = auth.currentUser ?: return Result.failure(Exception("No logged in user"))
+        return try {
+            user.reload().await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(Exception(e.message ?: "Failed to reload current user", e))
+        }
+    }
+
+    override fun isCurrentUserEmailVerified(): Boolean {
+        return auth.currentUser?.isEmailVerified == true
+    }
+
+    override suspend fun sendPasswordResetEmail(email: String): Result<Unit> {
+        return try {
+            if (email.isBlank()) {
+                return Result.failure(Exception("Email cannot be empty"))
+            }
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                return Result.failure(Exception("Invalid email address"))
+            }
+
+            auth.sendPasswordResetEmail(email).await()
+            Result.success(Unit)
+        } catch (e: FirebaseAuthInvalidUserException) {
+            Result.failure(Exception("Email does not exist", e))
+        } catch (e: Exception) {
+            Result.failure(Exception(e.message ?: "Failed to send password reset email", e))
         }
     }
 
