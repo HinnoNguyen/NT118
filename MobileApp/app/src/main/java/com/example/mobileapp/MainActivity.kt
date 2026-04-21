@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
         
         setupEdgeToEdge()
         setupUI()
+        setupNavigation()
     }
 
     private fun setupEdgeToEdge() {
@@ -33,5 +34,19 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun setupNavigation() {
+        findViewById<LinearLayout>(R.id.navNotes).setOnClickListener {
+            startActivity(Intent(this, NotesActivity::class.java))
+        }
+        findViewById<LinearLayout>(R.id.navStory).setOnClickListener {
+            startActivity(Intent(this, StoryActivity::class.java))
+        }
+        findViewById<LinearLayout>(R.id.navSettings).setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
+        }
+        // Các màn hình chưa có file code:
+        // navQuest, navTime
     }
 }
