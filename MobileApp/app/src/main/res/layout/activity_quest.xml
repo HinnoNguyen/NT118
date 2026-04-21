@@ -90,7 +90,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="monospace"
-                    android:text="@string/new_quest_label"
+                    android:text="NEW QUEST"
                     android:textColor="@color/accent_green"
                     android:textSize="10sp" />
 
@@ -108,7 +108,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/bg_button_unselected"
                         android:fontFamily="monospace"
-                        android:hint="@string/hint_enter_quest"
+                        android:hint="Enter quest name..."
                         android:padding="10dp"
                         android:textColor="@color/white"
                         android:textColorHint="#44FFFFFF"
@@ -126,7 +126,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="monospace"
-                            android:text="@string/label_rank"
+                            android:text="RANK"
                             android:textColor="@color/accent_green"
                             android:textSize="8sp" />
                         <TextView
@@ -141,193 +141,37 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- Row 2: Start Date and Time -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="● START"
-                            android:textColor="@color/rank_b"
-                            android:textSize="8sp"
-                            android:fontFamily="monospace"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="4dp"
-                            android:background="@drawable/bg_button_unselected"
-                            android:gravity="center_vertical"
-                            android:paddingHorizontal="10dp"
-                            android:text="dd/mm/yyyy"
-                            android:textColor="@color/accent_green"
-                            android:textSize="12sp"
-                            android:fontFamily="monospace"
-                            app:drawableEndCompat="@android:drawable/ic_menu_my_calendar"
-                            app:drawableTint="@color/white"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="8dp"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="TIME"
-                            android:textColor="@color/accent_green"
-                            android:textSize="8sp"
-                            android:fontFamily="monospace"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="4dp"
-                            android:background="@drawable/bg_button_unselected"
-                            android:gravity="center_vertical"
-                            android:paddingHorizontal="10dp"
-                            android:text="--:-- --"
-                            android:textColor="#44FFFFFF"
-                            android:textSize="12sp"
-                            android:fontFamily="monospace"
-                            app:drawableEndCompat="@android:drawable/ic_menu_recent_history"
-                            app:drawableTint="@color/white"/>
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!-- Row 3: End Date and Time -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="● END"
-                            android:textColor="@color/rank_s"
-                            android:textSize="8sp"
-                            android:fontFamily="monospace"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="4dp"
-                            android:background="@drawable/bg_button_unselected"
-                            android:gravity="center_vertical"
-                            android:paddingHorizontal="10dp"
-                            android:text="dd/mm/yyyy"
-                            android:textColor="@color/accent_green"
-                            android:textSize="12sp"
-                            android:fontFamily="monospace"
-                            app:drawableEndCompat="@android:drawable/ic_menu_my_calendar"
-                            app:drawableTint="@color/white"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="8dp"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="TIME"
-                            android:textColor="@color/accent_green"
-                            android:textSize="8sp"
-                            android:fontFamily="monospace"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="4dp"
-                            android:background="@drawable/bg_button_unselected"
-                            android:gravity="center_vertical"
-                            android:paddingHorizontal="10dp"
-                            android:text="--:-- --"
-                            android:textColor="#44FFFFFF"
-                            android:textSize="12sp"
-                            android:fontFamily="monospace"
-                            app:drawableEndCompat="@android:drawable/ic_menu_recent_history"
-                            app:drawableTint="@color/white"/>
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!-- Row 4: ADD Button -->
+                <!-- Action Buttons -->
                 <com.google.android.material.button.MaterialButton
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_marginTop="12dp"
                     android:backgroundTint="@color/accent_green"
-                    android:text="@string/btn_add_quest"
+                    android:text="ADD QUEST"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
-                    android:padding="0dp"
                     app:cornerRadius="0dp" />
-
-            </LinearLayout>
-
-            <!-- Subtitle below the New Quest box -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="monospace"
-                    android:text="1/4"
-                    android:textColor="@color/accent_green"
-                    android:textSize="12sp" />
-
-                <ProgressBar
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="0dp"
-                    android:layout_height="8dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_weight="1"
-                    android:progress="25"
-                    android:progressDrawable="@android:drawable/progress_horizontal"
-                    android:progressTint="@color/accent_green" />
 
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:fontFamily="monospace"
-                android:text="@string/quest_subtitle"
+                android:text="ACTIVE QUESTS"
                 android:textColor="@color/accent_green"
                 android:textSize="12sp" />
 
-            <!-- Quest List -->
+            <!-- Sample Quest List -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:orientation="vertical">
 
-                <!-- Item 1 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -336,47 +180,15 @@
                     android:gravity="center_vertical"
                     android:padding="12dp">
                     <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:buttonTint="@color/accent_green"/>
-
-                    <LinearLayout
+                    <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginStart="8dp"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="monospace"
-                                android:text="[S]"
-                                android:textColor="@color/rank_s"
-                                android:textStyle="bold"
-                                android:textSize="14sp"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:fontFamily="monospace"
-                                android:text="Study Chapter 5"
-                                android:textColor="@color/white"
-                                android:textSize="14sp" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:fontFamily="monospace"
-                            android:text="● Today 08:00 → ● Tomorrow 09:00"
-                            android:textColor="#AAAAAA"
-                            android:textSize="10sp" />
-                    </LinearLayout>
-
+                        android:fontFamily="monospace"
+                        android:text="Study Chapter 5"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -384,218 +196,7 @@
                         android:text="+30xp"
                         android:textColor="#FFD700"
                         android:textSize="12sp" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:text="❌"
-                        android:textColor="#FF4444"
-                        android:textSize="14sp"
-                        android:padding="4dp"
-                        android:clickable="true"
-                        android:focusable="true"/>
                 </LinearLayout>
-
-                <!-- Item 2 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/bg_main_card"
-                    android:gravity="center_vertical"
-                    android:padding="12dp">
-                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:buttonTint="@color/accent_green"/>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="8dp"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="monospace"
-                                android:text="[A]"
-                                android:textColor="@color/rank_a"
-                                android:textStyle="bold"
-                                android:textSize="14sp"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:fontFamily="monospace"
-                                android:text="Group Assignment"
-                                android:textColor="@color/white"
-                                android:textSize="14sp" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:fontFamily="monospace"
-                            android:text="● Today 14:00 → ● 04-12 23:59"
-                            android:textColor="#AAAAAA"
-                            android:textSize="10sp" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="monospace"
-                        android:text="+50xp"
-                        android:textColor="#FFD700"
-                        android:textSize="12sp" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:text="❌"
-                        android:textColor="#FF4444"
-                        android:textSize="14sp"
-                        android:padding="4dp"
-                        android:clickable="true"
-                        android:focusable="true"/>
-                </LinearLayout>
-
-                <!-- Item 3 (Done) -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/bg_main_card"
-                    android:gravity="center_vertical"
-                    android:padding="12dp"
-                    android:alpha="0.6">
-                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:checked="true" android:buttonTint="@color/accent_green"/>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="8dp"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="monospace"
-                                android:text="[B]"
-                                android:textColor="@color/rank_b"
-                                android:textStyle="bold"
-                                android:textSize="14sp"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:fontFamily="monospace"
-                                android:text="Review Code Project"
-                                android:textColor="@color/white"
-                                android:textSize="14sp"
-                                android:alpha="0.7" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="monospace"
-                        android:text="+20xp"
-                        android:textColor="#FFD700"
-                        android:textSize="12sp" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:text="❌"
-                        android:textColor="#FF4444"
-                        android:textSize="14sp"
-                        android:padding="4dp"
-                        android:clickable="true"
-                        android:focusable="true"/>
-                </LinearLayout>
-
-                <!-- Item 4 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/bg_main_card"
-                    android:gravity="center_vertical"
-                    android:padding="12dp">
-                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:buttonTint="@color/accent_green"/>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="8dp"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="monospace"
-                                android:text="[C]"
-                                android:textColor="@color/rank_c"
-                                android:textStyle="bold"
-                                android:textSize="14sp"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:fontFamily="monospace"
-                                android:text="Read book 30 mins"
-                                android:textColor="@color/white"
-                                android:textSize="14sp" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:fontFamily="monospace"
-                            android:text="● Today 20:00 → ● Today 20:30"
-                            android:textColor="#AAAAAA"
-                            android:textSize="10sp" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="monospace"
-                        android:text="+15xp"
-                        android:textColor="#FFD700"
-                        android:textSize="12sp" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:text="❌"
-                        android:textColor="#FF4444"
-                        android:textSize="14sp"
-                        android:padding="4dp"
-                        android:clickable="true"
-                        android:focusable="true"/>
-                </LinearLayout>
-
             </LinearLayout>
 
         </LinearLayout>
@@ -609,34 +210,35 @@
         android:background="#1A1A1A"
         android:orientation="horizontal"
         android:paddingVertical="8dp"
+        android:elevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+        <LinearLayout android:id="@+id/navHome" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical" android:clickable="true" android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🏠" android:textSize="16sp" />
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="HOME" android:textColor="#AAAAAA" android:textSize="8sp" android:textStyle="bold" />
         </LinearLayout>
 
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+        <LinearLayout android:id="@+id/navQuest" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical" android:clickable="true" android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚔️" android:textSize="16sp" />
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="QUEST" android:textColor="@color/accent_green" android:textSize="8sp" android:textStyle="bold" />
         </LinearLayout>
 
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+        <LinearLayout android:id="@+id/navTime" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical" android:clickable="true" android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⏰" android:textSize="16sp" />
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="TIME" android:textColor="#AAAAAA" android:textSize="8sp" android:textStyle="bold" />
         </LinearLayout>
 
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+        <LinearLayout android:id="@+id/navNotes" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical" android:clickable="true" android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📜" android:textSize="16sp" />
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="NOTES" android:textColor="#AAAAAA" android:textSize="8sp" android:textStyle="bold" />
         </LinearLayout>
 
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+        <LinearLayout android:id="@+id/navStory" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical" android:clickable="true" android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📖" android:textSize="16sp" />
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="STORY" android:textColor="#AAAAAA" android:textSize="8sp" android:textStyle="bold" />
         </LinearLayout>
 
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+        <LinearLayout android:id="@+id/navSettings" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical" android:clickable="true" android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚙️" android:textSize="16sp" />
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="SET" android:textColor="#AAAAAA" android:textSize="8sp" android:textStyle="bold" />
         </LinearLayout>

@@ -37,6 +37,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupNavigation() {
+        findViewById<LinearLayout>(R.id.navHome).setOnClickListener {
+            // Đã ở Home rồi
+        }
+        findViewById<LinearLayout>(R.id.navQuest).setOnClickListener {
+            startActivity(Intent(this, QuestActivity::class.java))
+        }
+        findViewById<LinearLayout>(R.id.navTime).setOnClickListener {
+            startActivity(Intent(this, TimerActivity::class.java))
+        }
         findViewById<LinearLayout>(R.id.navNotes).setOnClickListener {
             startActivity(Intent(this, NotesActivity::class.java))
         }
@@ -46,7 +55,5 @@ class MainActivity : AppCompatActivity() {
         findViewById<LinearLayout>(R.id.navSettings).setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
-        // Các màn hình chưa có file code:
-        // navQuest, navTime
     }
 }
