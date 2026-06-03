@@ -14,7 +14,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.mobileapp.data.repository.UserRepositoryImpl
+import com.example.mobileapp.domain.usecase.IsCurrentUserEmailVerifiedUseCase
 import com.example.mobileapp.domain.usecase.LoginUseCase
+import com.example.mobileapp.domain.usecase.ReloadCurrentUserUseCase
+import com.example.mobileapp.domain.usecase.SignOutUseCase
 import com.example.mobileapp.presentation.LoginViewModel
 import kotlinx.coroutines.launch
 
@@ -43,7 +46,15 @@ class LoginActivity : AppCompatActivity() {
     private fun setupViewModel() {
         val repository = UserRepositoryImpl()
         val loginUseCase = LoginUseCase(repository)
-        viewModel = LoginViewModel(loginUseCase)
+        val reloadCurrentUserUseCase = ReloadCurrentUserUseCase(repository)
+        val isCurrentUserEmailVerifiedUseCase = IsCurrentUserEmailVerifiedUseCase(repository)
+        val signOutUseCase = SignOutUseCase(repository)
+        viewModel = LoginViewModel(
+            loginUseCase,
+            reloadCurrentUserUseCase,
+            isCurrentUserEmailVerifiedUseCase,
+            signOutUseCase
+        )
     }
 
     private fun setupUI() {
@@ -53,6 +64,10 @@ class LoginActivity : AppCompatActivity() {
         val btnRegisterTab = findViewById<TextView>(R.id.btnRegisterTab)
         val tvForgotPassword = findViewById<TextView>(R.id.tvForgotPassword)
         val btnGoogleSignIn = findViewById<Button>(R.id.btnGoogleSignIn)
+
+        intent.getStringExtra("prefill_email")?.let { email ->
+            etEmail.setText(email)
+        }
 
         btnLogin.setOnClickListener {
             val email = etEmail.text.toString()
@@ -95,6 +110,11 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Welcome Hero!", Toast.LENGTH_SHORT).show()
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
+            }
+            is LoginViewModel.LoginState.UnverifiedEmail -> {
+                btnLogin.isEnabled = true
+                btnLogin.text = "LOGIN"
+                Toast.makeText(this, state.message, Toast.LENGTH_LONG).show()
             }
             is LoginViewModel.LoginState.Error -> {
                 btnLogin.isEnabled = true

@@ -3,12 +3,20 @@ package com.example.mobileapp.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mobileapp.domain.model.User
+import com.example.mobileapp.domain.usecase.IsCurrentUserEmailVerifiedUseCase
 import com.example.mobileapp.domain.usecase.LoginUseCase
+import com.example.mobileapp.domain.usecase.ReloadCurrentUserUseCase
+import com.example.mobileapp.domain.usecase.SignOutUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
+class LoginViewModel(
+    private val loginUseCase: LoginUseCase,
+    private val reloadCurrentUserUseCase: ReloadCurrentUserUseCase,
+    private val isCurrentUserEmailVerifiedUseCase: IsCurrentUserEmailVerifiedUseCase,
+    private val signOutUseCase: SignOutUseCase
+) : ViewModel() {
 
     private val _loginState = MutableStateFlow<LoginState>(LoginState.Idle)
     val loginState: StateFlow<LoginState> = _loginState
@@ -18,7 +26,21 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
             _loginState.value = LoginState.Loading
             val result = loginUseCase.execute(email, pass)
             result.onSuccess { user ->
-                _loginState.value = LoginState.Success(user)
+                reloadCurrentUserUseCase.execute()
+                    .onFailure {
+                        _loginState.value = LoginState.Error(it.message ?: "Failed to refresh user state")
+                    }
+                    .onSuccess {
+                        if (isCurrentUserEmailVerifiedUseCase.execute()) {
+                            _loginState.value = LoginState.Success(user)
+                        } else {
+                            signOutUseCase.execute()
+                            _loginState.value = LoginState.UnverifiedEmail(
+                                email = user.email,
+                                message = "Email not verified. Please check your inbox and verify your account before logging in."
+                            )
+                        }
+                    }
             }.onFailure {
                 _loginState.value = LoginState.Error(it.message ?: "Unknown error")
             }
@@ -29,6 +51,7 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
         object Idle : LoginState()
         object Loading : LoginState()
         data class Success(val user: User) : LoginState()
+        data class UnverifiedEmail(val email: String, val message: String) : LoginState()
         data class Error(val message: String) : LoginState()
     }
 }

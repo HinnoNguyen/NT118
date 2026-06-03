@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.mobileapp.data.repository.UserRepositoryImpl
 import com.example.mobileapp.domain.usecase.RegisterUseCase
+import com.example.mobileapp.domain.usecase.SendEmailVerificationUseCase
 import com.example.mobileapp.presentation.RegisterViewModel
 import kotlinx.coroutines.launch
 
@@ -43,7 +44,8 @@ class RegisterActivity : AppCompatActivity() {
     private fun setupViewModel() {
         val repository = UserRepositoryImpl()
         val registerUseCase = RegisterUseCase(repository)
-        viewModel = RegisterViewModel(registerUseCase)
+        val sendEmailVerificationUseCase = SendEmailVerificationUseCase(repository)
+        viewModel = RegisterViewModel(registerUseCase, sendEmailVerificationUseCase)
     }
 
     private fun setupUI() {
@@ -94,8 +96,11 @@ class RegisterActivity : AppCompatActivity() {
             is RegisterViewModel.RegisterState.Success -> {
                 btnRegister.isEnabled = true
                 btnRegister.text = "REGISTER"
-                Toast.makeText(this, "Registration Successful! Welcome, ${state.user.name}", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this, MainActivity::class.java))
+                Toast.makeText(this, state.message, Toast.LENGTH_LONG).show()
+                val intent = Intent(this, LoginActivity::class.java).apply {
+                    putExtra("prefill_email", state.user.email)
+                }
+                startActivity(intent)
                 finish()
             }
             is RegisterViewModel.RegisterState.Error -> {
