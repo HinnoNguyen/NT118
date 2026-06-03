@@ -90,6 +90,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/tabTimer"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -102,6 +103,7 @@
                     android:gravity="center" />
 
                 <TextView
+                    android:id="@+id/tabCalendar"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -262,62 +264,132 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Event List -->
             <LinearLayout
+                android:id="@+id/eventForm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:orientation="vertical">
+                android:background="@drawable/bg_main_card"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <EditText
+                    android:id="@+id/etEventTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/bg_button_unselected"
+                    android:fontFamily="monospace"
+                    android:hint="Event title..."
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:paddingHorizontal="12dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="#44FFFFFF"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/etEventDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_button_unselected"
+                    android:fontFamily="monospace"
+                    android:gravity="top"
+                    android:hint="Description..."
+                    android:importantForAutofill="no"
+                    android:inputType="textMultiLine"
+                    android:padding="12dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="#44FFFFFF"
+                    android:textSize="14sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/bg_main_card"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="12dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚔️" android:textSize="20sp" />
-                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:orientation="vertical">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="Submit Assignment" android:textColor="@color/accent_green" android:textSize="13sp" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="Day 10" android:textColor="#AAAAAA" android:textSize="10sp" />
-                    </LinearLayout>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="QUEST" android:textColor="#FFD700" android:textSize="10sp" android:textStyle="bold" />
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/etEventDate"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_button_unselected"
+                        android:fontFamily="monospace"
+                        android:hint="Date ms"
+                        android:importantForAutofill="no"
+                        android:inputType="number"
+                        android:paddingHorizontal="12dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="#44FFFFFF"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/etEventTime"
+                        android:layout_width="120dp"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_button_unselected"
+                        android:fontFamily="monospace"
+                        android:hint="HH:mm"
+                        android:importantForAutofill="no"
+                        android:inputType="text"
+                        android:paddingHorizontal="12dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="#44FFFFFF"
+                        android:textSize="14sp" />
                 </LinearLayout>
 
-                <LinearLayout
+                <EditText
+                    android:id="@+id/etEventLocation"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/bg_main_card"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="12dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📌" android:textSize="20sp" />
-                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:orientation="vertical">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="Group Meeting" android:textColor="@color/accent_green" android:textSize="13sp" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="Day 15" android:textColor="#AAAAAA" android:textSize="10sp" />
-                    </LinearLayout>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="EVENT" android:textColor="#FFD700" android:textSize="10sp" android:textStyle="bold" />
-                </LinearLayout>
+                    android:layout_height="48dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_button_unselected"
+                    android:fontFamily="monospace"
+                    android:hint="Location..."
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:paddingHorizontal="12dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="#44FFFFFF"
+                    android:textSize="14sp" />
 
-                <LinearLayout
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSaveEvent"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/bg_main_card"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="12dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="👹" android:textSize="20sp" />
-                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:orientation="vertical">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="Midterm Exam" android:textColor="@color/accent_green" android:textSize="13sp" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="Day 22" android:textColor="#AAAAAA" android:textSize="10sp" />
-                    </LinearLayout>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="BOSS!" android:textColor="#FFD700" android:textSize="10sp" android:textStyle="bold" />
-                </LinearLayout>
-
+                    android:layout_height="48dp"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="@color/accent_green"
+                    android:insetBottom="0dp"
+                    android:insetTop="0dp"
+                    android:text="SAVE EVENT"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:cornerRadius="0dp" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvEventsStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="monospace"
+                android:gravity="center"
+                android:paddingVertical="16dp"
+                android:text="No events yet."
+                android:textColor="#AAAAAA"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <!-- Event List -->
+            <LinearLayout
+                android:id="@+id/eventsListContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical" />
 
         </LinearLayout>
     </ScrollView>
@@ -332,32 +404,32 @@
         android:paddingVertical="8dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+        <LinearLayout android:id="@+id/navHome" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical" android:clickable="true" android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🏠" android:textSize="16sp" />
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="HOME" android:textColor="#AAAAAA" android:textSize="8sp" android:textStyle="bold" />
         </LinearLayout>
 
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+        <LinearLayout android:id="@+id/navQuest" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical" android:clickable="true" android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚔️" android:textSize="16sp" />
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="QUEST" android:textColor="#AAAAAA" android:textSize="8sp" android:textStyle="bold" />
         </LinearLayout>
 
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+        <LinearLayout android:id="@+id/navTime" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical" android:clickable="true" android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⏰" android:textSize="16sp" />
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="TIME" android:textColor="@color/accent_green" android:textSize="8sp" android:textStyle="bold" />
         </LinearLayout>
 
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+        <LinearLayout android:id="@+id/navNotes" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical" android:clickable="true" android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📜" android:textSize="16sp" />
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="NOTES" android:textColor="#AAAAAA" android:textSize="8sp" android:textStyle="bold" />
         </LinearLayout>
 
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+        <LinearLayout android:id="@+id/navStory" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical" android:clickable="true" android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📖" android:textSize="16sp" />
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="STORY" android:textColor="#AAAAAA" android:textSize="8sp" android:textStyle="bold" />
         </LinearLayout>
 
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+        <LinearLayout android:id="@+id/navSettings" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical" android:clickable="true" android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚙️" android:textSize="16sp" />
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="SET" android:textColor="#AAAAAA" android:textSize="8sp" android:textStyle="bold" />
         </LinearLayout>

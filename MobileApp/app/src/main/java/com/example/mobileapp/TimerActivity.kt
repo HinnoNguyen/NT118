@@ -2,6 +2,7 @@ package com.example.mobileapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.TextView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 
@@ -9,7 +10,15 @@ class TimerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timer)
+        setupTabs()
         setupNavigation()
+    }
+
+    private fun setupTabs() {
+        findViewById<TextView>(R.id.tabCalendar).setOnClickListener {
+            startActivity(Intent(this, CalendarActivity::class.java))
+            finish()
+        }
     }
 
     private fun setupNavigation() {

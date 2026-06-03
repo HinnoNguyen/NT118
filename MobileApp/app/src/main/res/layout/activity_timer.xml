@@ -88,8 +88,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@color/accent_green" android:fontFamily="monospace" android:paddingVertical="8dp" android:text="TIMER" android:textColor="@color/black" android:textSize="12sp" android:textStyle="bold" android:gravity="center" />
-                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="8dp" android:background="@drawable/bg_button_unselected" android:fontFamily="monospace" android:paddingVertical="8dp" android:text="CALENDAR" android:textColor="#AAAAAA" android:textSize="12sp" android:gravity="center" />
+                <TextView android:id="@+id/tabTimer" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@color/accent_green" android:fontFamily="monospace" android:paddingVertical="8dp" android:text="TIMER" android:textColor="@color/black" android:textSize="12sp" android:textStyle="bold" android:gravity="center" />
+                <TextView android:id="@+id/tabCalendar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="8dp" android:background="@drawable/bg_button_unselected" android:clickable="true" android:focusable="true" android:fontFamily="monospace" android:paddingVertical="8dp" android:text="CALENDAR" android:textColor="#AAAAAA" android:textSize="12sp" android:gravity="center" />
             </LinearLayout>
 
             <!-- Main Timer Card -->
