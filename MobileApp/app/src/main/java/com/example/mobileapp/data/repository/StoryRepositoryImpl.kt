@@ -5,49 +5,110 @@ import com.example.mobileapp.data.mapper.toDomain
 import com.example.mobileapp.data.mapper.toDto
 import com.example.mobileapp.domain.model.Story
 import com.example.mobileapp.domain.repository.StoryRepository
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
+import java.util.UUID
 
 class StoryRepositoryImpl : StoryRepository {
-    private val firestore = FirebaseFirestore.getInstance()
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private val storiesCollection = firestore.collection("stories")
 
-    override fun getStories(userId: String): Flow<List<Story>> = callbackFlow {
-        val subscription = storiesCollection
-            .whereEqualTo("userId", userId)
-            .addSnapshotListener { snapshot, error ->
-                if (error != null) {
-                    close(error)
-                    return@addSnapshotListener
-                }
-                if (snapshot != null) {
-                    val stories = snapshot.toObjects(StoryDto::class.java)
-                        .map { it.toDomain() }
-                        .sortedByDescending { it.createdAt }
-                    trySend(stories)
-                }
-            }
-        awaitClose { subscription.remove() }
+    override suspend fun createStory(
+        title: String,
+        genre: String,
+        content: String,
+        relatedNoteIds: List<String>
+    ): Result<Story> {
+        val userId = auth.currentUser?.uid ?: return Result.failure(Exception("No logged in user"))
+        if (title.isBlank()) {
+            return Result.failure(Exception("Story title cannot be empty"))
+        }
+        if (content.isBlank()) {
+            return Result.failure(Exception("Story content cannot be empty"))
+        }
+
+        return try {
+            val now = System.currentTimeMillis()
+            val story = Story(
+                id = UUID.randomUUID().toString(),
+                userId = userId,
+                title = title.trim(),
+                genre = genre.trim(),
+                content = content.trim(),
+                relatedNoteIds = relatedNoteIds,
+                isPublic = false,
+                sharedAt = 0L,
+                coverImageUrl = "",
+                createdAt = now,
+                updatedAt = now
+            )
+
+            storiesCollection.document(story.id).set(story.toDto()).await()
+            Result.success(story)
+        } catch (e: Exception) {
+            Result.failure(Exception(e.message ?: "Failed to create story", e))
+        }
     }
 
-    override suspend fun saveStory(story: Story): Result<Unit> {
+    override suspend fun getStories(): Result<List<Story>> {
+        val userId = auth.currentUser?.uid ?: return Result.failure(Exception("No logged in user"))
+
         return try {
-            storiesCollection.document(story.id).set(story.toDto()).await()
-            Result.success(Unit)
+            val snapshot = storiesCollection
+                .whereEqualTo("userId", userId)
+                .get()
+                .await()
+            val stories = snapshot.documents
+                .mapNotNull { it.toObject(StoryDto::class.java)?.toDomain() }
+                .sortedByDescending { it.updatedAt }
+            Result.success(stories)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(Exception(e.message ?: "Failed to fetch stories", e))
+        }
+    }
+
+    override suspend fun getStory(storyId: String): Result<Story> {
+        if (storyId.isBlank()) {
+            return Result.failure(Exception("Story id cannot be empty"))
+        }
+
+        return try {
+            val snapshot = storiesCollection.document(storyId).get().await()
+            val story = snapshot.toObject(StoryDto::class.java)?.toDomain()
+                ?: return Result.failure(Exception("Story not found"))
+            Result.success(story)
+        } catch (e: Exception) {
+            Result.failure(Exception(e.message ?: "Failed to fetch story", e))
+        }
+    }
+
+    override suspend fun updateStory(story: Story): Result<Story> {
+        val userId = auth.currentUser?.uid ?: return Result.failure(Exception("No logged in user"))
+        if (story.userId != userId) {
+            return Result.failure(Exception("Cannot update another user's story"))
+        }
+
+        return try {
+            val updatedStory = story.copy(updatedAt = System.currentTimeMillis())
+            storiesCollection.document(updatedStory.id).set(updatedStory.toDto()).await()
+            Result.success(updatedStory)
+        } catch (e: Exception) {
+            Result.failure(Exception(e.message ?: "Failed to update story", e))
         }
     }
 
     override suspend fun deleteStory(storyId: String): Result<Unit> {
+        if (storyId.isBlank()) {
+            return Result.failure(Exception("Story id cannot be empty"))
+        }
+
         return try {
             storiesCollection.document(storyId).delete().await()
             Result.success(Unit)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(Exception(e.message ?: "Failed to delete story", e))
         }
     }
 }
