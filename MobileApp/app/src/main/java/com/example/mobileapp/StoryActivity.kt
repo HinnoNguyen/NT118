@@ -2,14 +2,41 @@ package com.example.mobileapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
+import com.example.mobileapp.data.repository.PublicStoryRepositoryImpl
+import com.example.mobileapp.data.repository.StoryRepositoryImpl
+import com.example.mobileapp.domain.model.PublicStory
+import com.example.mobileapp.domain.model.Story
 import com.google.android.material.button.MaterialButton
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class StoryActivity : AppCompatActivity() {
+    private val storyRepository = StoryRepositoryImpl()
+    private val publicStoryRepository = PublicStoryRepositoryImpl()
+
+    private lateinit var btnCreateStory: MaterialButton
+    private lateinit var newStorySection: LinearLayout
+    private lateinit var genreEpic: LinearLayout
+    private lateinit var genreMystery: LinearLayout
+    private lateinit var genreComedy: LinearLayout
+    private lateinit var genreHorror: LinearLayout
+    private lateinit var etStoryContent: EditText
+    private lateinit var btnStoryfy: MaterialButton
+    private lateinit var tvStoriesStatus: TextView
+    private lateinit var storiesListContainer: LinearLayout
+
+    private var selectedGenre = "epic"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,33 +47,27 @@ class StoryActivity : AppCompatActivity() {
     }
 
     private fun setupStoryForge() {
-        val btnCreateStory = findViewById<MaterialButton>(R.id.btnCreateStory)
-        val newStorySection = findViewById<LinearLayout>(R.id.newStorySection)
-        
-        val genreEpic = findViewById<LinearLayout>(R.id.genreEpic)
-        val genreMystery = findViewById<LinearLayout>(R.id.genreMystery)
-        val genreComedy = findViewById<LinearLayout>(R.id.genreComedy)
-        val genreHorror = findViewById<LinearLayout>(R.id.genreHorror)
+        btnCreateStory = findViewById(R.id.btnCreateStory)
+        newStorySection = findViewById(R.id.newStorySection)
+        genreEpic = findViewById(R.id.genreEpic)
+        genreMystery = findViewById(R.id.genreMystery)
+        genreComedy = findViewById(R.id.genreComedy)
+        genreHorror = findViewById(R.id.genreHorror)
+        etStoryContent = findViewById(R.id.etStoryContent)
+        btnStoryfy = findViewById(R.id.btnStoryfy)
+        tvStoriesStatus = findViewById(R.id.tvStoriesStatus)
+        storiesListContainer = findViewById(R.id.storiesListContainer)
 
         val genres = listOf(genreEpic, genreMystery, genreComedy, genreHorror)
 
-        // Toggle Forge Section
         btnCreateStory.setOnClickListener {
-            if (newStorySection.visibility == View.GONE) {
-                newStorySection.visibility = View.VISIBLE
-                btnCreateStory.text = "✕"
-            } else {
-                newStorySection.visibility = View.GONE
-                btnCreateStory.text = "+ CREATE"
-            }
+            toggleForge(newStorySection.visibility == View.GONE)
         }
 
-        // Genre Selection Logic
         fun selectGenre(selected: LinearLayout) {
             genres.forEach { layout ->
-                val icon = layout.getChildAt(0) as TextView
                 val text = layout.getChildAt(1) as TextView
-                
+
                 if (layout == selected) {
                     layout.setBackgroundColor(0xFFFFD700.toInt()) // Gold
                     text.setTextColor(ContextCompat.getColor(this, R.color.black))
@@ -55,12 +76,187 @@ class StoryActivity : AppCompatActivity() {
                     text.setTextColor(0xFFAAAAAA.toInt())
                 }
             }
+
+            selectedGenre = when (selected.id) {
+                R.id.genreMystery -> "mystery"
+                R.id.genreComedy -> "comedy"
+                R.id.genreHorror -> "horror"
+                else -> "epic"
+            }
         }
 
         genreEpic.setOnClickListener { selectGenre(genreEpic) }
         genreMystery.setOnClickListener { selectGenre(genreMystery) }
         genreComedy.setOnClickListener { selectGenre(genreComedy) }
         genreHorror.setOnClickListener { selectGenre(genreHorror) }
+        btnStoryfy.setOnClickListener { createStory() }
+        selectGenre(genreEpic)
+        loadStories()
+    }
+
+    private fun toggleForge(show: Boolean) {
+        newStorySection.visibility = if (show) View.VISIBLE else View.GONE
+        btnCreateStory.text = if (show) "✕" else "+ CREATE"
+        if (!show) {
+            etStoryContent.text?.clear()
+        }
+    }
+
+    private fun createStory() {
+        val content = etStoryContent.text.toString()
+        lifecycleScope.launch {
+            storyRepository.createStory(
+                title = storyTitleFromGenre(selectedGenre),
+                content = content
+            ).onSuccess {
+                Toast.makeText(this@StoryActivity, "Story forged", Toast.LENGTH_SHORT).show()
+                toggleForge(false)
+                loadStories()
+            }.onFailure {
+                Toast.makeText(this@StoryActivity, it.message ?: "Failed to create story", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun loadStories() {
+        tvStoriesStatus.visibility = View.VISIBLE
+        tvStoriesStatus.text = "Loading stories..."
+        storiesListContainer.removeAllViews()
+
+        lifecycleScope.launch {
+            val storiesResult = storyRepository.getStories()
+            val publicStoriesResult = publicStoryRepository.getPublicStories(limit = 100)
+
+            storiesResult.onFailure {
+                tvStoriesStatus.text = it.message ?: "Failed to load stories"
+                return@launch
+            }
+
+            val publicStoryIds = publicStoriesResult.getOrDefault(emptyList()).map { it.storyId }.toSet()
+            renderStories(storiesResult.getOrThrow(), publicStoryIds)
+        }
+    }
+
+    private fun renderStories(stories: List<Story>, publishedStoryIds: Set<String>) {
+        storiesListContainer.removeAllViews()
+        if (stories.isEmpty()) {
+            tvStoriesStatus.visibility = View.VISIBLE
+            tvStoriesStatus.text = "No stories yet. Create your first tale."
+            return
+        }
+
+        tvStoriesStatus.visibility = View.GONE
+        val inflater = LayoutInflater.from(this)
+        val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+        stories.forEach { story ->
+            val itemView = inflater.inflate(R.layout.item_story, storiesListContainer, false)
+            val published = publishedStoryIds.contains(story.id)
+            itemView.findViewById<TextView>(R.id.tvStoryIcon).text = storyIcon(selectedGenreFromTitle(story.title))
+            itemView.findViewById<TextView>(R.id.tvStoryGenre).text = genreLabel(selectedGenreFromTitle(story.title))
+            itemView.findViewById<TextView>(R.id.tvStoryTitle).text = story.title
+            itemView.findViewById<TextView>(R.id.tvStoryContent).text =
+                "${story.content}\n${formatter.format(Date(story.updatedAt))}"
+            itemView.findViewById<TextView>(R.id.tvPublishBadge).visibility =
+                if (published) View.VISIBLE else View.GONE
+
+            val btnPublish = itemView.findViewById<TextView>(R.id.btnPublishStory)
+            btnPublish.text = if (published) "UNPUBLISH" else "PUBLISH"
+            btnPublish.setOnClickListener {
+                if (published) {
+                    unpublishStory(story.id)
+                } else {
+                    publishStory(story)
+                }
+            }
+
+            itemView.findViewById<TextView>(R.id.btnDeleteStory).setOnClickListener {
+                deleteStory(story.id, published)
+            }
+
+            storiesListContainer.addView(itemView)
+        }
+    }
+
+    private fun publishStory(story: Story) {
+        lifecycleScope.launch {
+            publicStoryRepository.publishStory(
+                story = story,
+                authorName = "Hero",
+                authorAvatarUrl = "",
+                coverImageUrl = ""
+            ).onSuccess {
+                Toast.makeText(this@StoryActivity, "Story published", Toast.LENGTH_SHORT).show()
+                loadStories()
+            }.onFailure {
+                Toast.makeText(this@StoryActivity, it.message ?: "Failed to publish story", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun unpublishStory(storyId: String) {
+        lifecycleScope.launch {
+            publicStoryRepository.unpublishStory(storyId)
+                .onSuccess {
+                    Toast.makeText(this@StoryActivity, "Story unpublished", Toast.LENGTH_SHORT).show()
+                    loadStories()
+                }
+                .onFailure {
+                    Toast.makeText(this@StoryActivity, it.message ?: "Failed to unpublish story", Toast.LENGTH_SHORT).show()
+                }
+        }
+    }
+
+    private fun deleteStory(storyId: String, published: Boolean) {
+        lifecycleScope.launch {
+            if (published) {
+                publicStoryRepository.unpublishStory(storyId)
+            }
+            storyRepository.deleteStory(storyId)
+                .onSuccess {
+                    Toast.makeText(this@StoryActivity, "Story deleted", Toast.LENGTH_SHORT).show()
+                    loadStories()
+                }
+                .onFailure {
+                    Toast.makeText(this@StoryActivity, it.message ?: "Failed to delete story", Toast.LENGTH_SHORT).show()
+                }
+        }
+    }
+
+    private fun storyTitleFromGenre(genre: String): String {
+        return when (genre) {
+            "mystery" -> "Mystery Log"
+            "comedy" -> "Comedy Chronicle"
+            "horror" -> "Horror Report"
+            else -> "Epic Tale"
+        }
+    }
+
+    private fun selectedGenreFromTitle(title: String): String {
+        return when {
+            title.contains("Mystery", ignoreCase = true) -> "mystery"
+            title.contains("Comedy", ignoreCase = true) -> "comedy"
+            title.contains("Horror", ignoreCase = true) -> "horror"
+            else -> "epic"
+        }
+    }
+
+    private fun storyIcon(genre: String): String {
+        return when (genre) {
+            "mystery" -> "🕵️‍♂️"
+            "comedy" -> "🤡"
+            "horror" -> "👻"
+            else -> "🧙‍♂️"
+        }
+    }
+
+    private fun genreLabel(genre: String): String {
+        return when (genre) {
+            "mystery" -> "🕵️ MYSTERY"
+            "comedy" -> "😂 COMEDY"
+            "horror" -> "👻 HORROR"
+            else -> "⚔️ EPIC"
+        }
     }
 
     private fun setupNavigation() {
