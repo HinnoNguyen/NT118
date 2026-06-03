@@ -1,33 +1,107 @@
 rules_version = '2';
+
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    // Allow authenticated users to read and write their own data
-    // During development, we use a simpler rule to ensure everything works
-    match /{document=**} {
-      allow read, write: if request.auth != null;
+    function isSignedIn() {
+      return request.auth != null;
     }
 
-    // Specific rules for future reference/refinement
-    /*
+    function isUser(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function canCreateOwnedDocument() {
+      return isSignedIn() && request.resource.data.userId == request.auth.uid;
+    }
+
+    function canReadOrDeleteOwnedDocument() {
+      return isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    function canUpdateOwnedDocument() {
+      return canReadOrDeleteOwnedDocument()
+        && request.resource.data.userId == resource.data.userId;
+    }
+
+    function canCreatePublicStory(storyId) {
+      return isSignedIn()
+        && request.resource.data.id == storyId
+        && request.resource.data.storyId == storyId
+        && request.resource.data.authorId == request.auth.uid
+        && request.resource.data.visibility == "public";
+    }
+
+    function canReadOrDeleteOwnPublicStory() {
+      return isSignedIn() && resource.data.authorId == request.auth.uid;
+    }
+
+    function canUpdateOwnPublicStory(storyId) {
+      return canReadOrDeleteOwnPublicStory()
+        && request.resource.data.id == storyId
+        && request.resource.data.id == resource.data.id
+        && request.resource.data.storyId == resource.data.storyId
+        && request.resource.data.authorId == resource.data.authorId
+        && request.resource.data.visibility == resource.data.visibility;
+    }
+
     match /users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
-    }
-
-    match /tasks/{taskId} {
-      allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
-      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+      allow create: if isUser(userId)
+        && request.resource.data.uid == userId;
+      allow read, update: if isUser(userId);
+      allow delete: if false;
     }
 
     match /notes/{noteId} {
-      allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
-      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+      allow create: if canCreateOwnedDocument();
+      allow read, delete: if canReadOrDeleteOwnedDocument();
+      allow update: if canUpdateOwnedDocument();
     }
 
-    match /notifications/{notificationId} {
-      allow read, update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
-      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+    match /tasks/{taskId} {
+      allow create: if canCreateOwnedDocument();
+      allow read, delete: if canReadOrDeleteOwnedDocument();
+      allow update: if canUpdateOwnedDocument();
     }
-    */
+
+    match /stories/{storyId} {
+      allow create: if canCreateOwnedDocument();
+      allow read, delete: if canReadOrDeleteOwnedDocument();
+      allow update: if canUpdateOwnedDocument();
+    }
+
+    match /timer_sessions/{sessionId} {
+      allow create: if canCreateOwnedDocument();
+      allow read, delete: if canReadOrDeleteOwnedDocument();
+      allow update: if canUpdateOwnedDocument();
+    }
+
+    match /events/{eventId} {
+      allow create: if canCreateOwnedDocument();
+      allow read, delete: if canReadOrDeleteOwnedDocument();
+      allow update: if canUpdateOwnedDocument();
+    }
+
+    match /flashcards/{flashcardId} {
+      allow create: if canCreateOwnedDocument();
+      allow read, delete: if canReadOrDeleteOwnedDocument();
+      allow update: if canUpdateOwnedDocument();
+    }
+
+    match /categories/{categoryId} {
+      allow create: if canCreateOwnedDocument();
+      allow read, delete: if canReadOrDeleteOwnedDocument();
+      allow update: if canUpdateOwnedDocument();
+    }
+
+    match /public_stories/{storyId} {
+      allow read: if true;
+      allow create: if canCreatePublicStory(storyId);
+      allow delete: if canReadOrDeleteOwnPublicStory();
+      allow update: if canUpdateOwnPublicStory(storyId);
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
   }
 }
