@@ -1,14 +1,28 @@
 # Narrativize
 
-## Firestore Schema
+## Firestore Standard
 
-This document records the Day 3 Firestore structure for the Android app. All timestamps are stored as Unix epoch milliseconds (`Long`) and every user-owned document stores the Firebase Auth UID in `userId`.
+The project now uses one official Firestore architecture:
 
-### Collections
+- `users/{uid}` for user profile documents
+- top-level collections for private feature data
+- `userId` on every private document
+- dedicated public collections for community-facing data
+- legacy nested data under `users/{uid}/...` is treated as old test data only
+
+The detailed architecture reference is:
+
+- `FIRESTORE_STANDARD_ARCHITECTURE.md`
+
+## Official Collections
+
+All timestamps are stored as Unix epoch milliseconds (`Long`).
+
+### Implemented in code today
 
 #### `users/{uid}`
 
-Created after registration and also backfilled on first login if the Firestore document is missing.
+Created after registration and backfilled on first login if the Firestore document is missing.
 
 | Field | Type | Notes |
 | --- | --- | --- |
@@ -20,7 +34,7 @@ Created after registration and also backfilled on first login if the Firestore d
 | `updatedAt` | `Long` | Last profile update time. |
 | `totalFocusMinutes` | `Int` | Total focus minutes across all sessions. |
 | `todayFocusMinutes` | `Int` | Focus minutes for the current day. |
-| `completedTaskCount` | `Int` | Completed task count for gamification/profile stats. |
+| `completedTaskCount` | `Int` | Completed task count for profile stats. |
 | `level` | `Int` | User level, starts at `1`. |
 | `exp` | `Int` | Experience points, starts at `0`. |
 
@@ -39,7 +53,7 @@ Stores user notes for the Notes feature.
 | `userId` | `String` | Firebase Auth UID of owner. |
 | `title` | `String` | Note title. |
 | `content` | `String` | Note body. |
-| `type` | `String` | Defaults to `note`; can later support `reminder` or `flashcard`. |
+| `type` | `String` | `note`, `reminder`, or future `flashcard`. |
 | `pinned` | `Boolean` | Whether the note is pinned. |
 | `createdAt` | `Long` | Creation timestamp. |
 | `updatedAt` | `Long` | Last update timestamp. |
@@ -55,23 +69,19 @@ Related code:
 
 #### `tasks/{taskId}`
 
-Stores checklist/quest/task data.
+Stores checklist and quest-like task data.
 
 | Field | Type | Notes |
 | --- | --- | --- |
 | `id` | `String` | Same as document id. |
 | `userId` | `String` | Firebase Auth UID of owner. |
 | `title` | `String` | Task title. |
-| `description` | `String` | Optional task detail. |
+| `description` | `String` | Optional detail. |
 | `dueAt` | `Long` | Due timestamp; `0` means no due date yet. |
 | `completed` | `Boolean` | Completion status. |
-| `priority` | `String` | Defaults to `normal`; examples: `low`, `normal`, `high`. |
+| `priority` | `String` | `low`, `normal`, or `high`. |
 | `createdAt` | `Long` | Creation timestamp. |
 | `updatedAt` | `Long` | Last update timestamp. |
-
-Suggested queries:
-- `whereEqualTo("userId", uid).whereEqualTo("completed", false).orderBy("dueAt")`
-- `whereEqualTo("userId", uid).whereEqualTo("completed", true).orderBy("updatedAt", DESCENDING)`
 
 Related code:
 - `app/src/main/java/com/example/mobileapp/data/dto/TaskDto.kt`
@@ -80,7 +90,7 @@ Related code:
 
 #### `stories/{storyId}`
 
-Stores reflection stories written by the user.
+Stores private reflection stories written by the user.
 
 | Field | Type | Notes |
 | --- | --- | --- |
@@ -91,9 +101,6 @@ Stores reflection stories written by the user.
 | `relatedNoteIds` | `List<String>` | Notes connected to the story. |
 | `createdAt` | `Long` | Creation timestamp. |
 | `updatedAt` | `Long` | Last update timestamp. |
-
-Suggested queries:
-- `whereEqualTo("userId", uid).orderBy("updatedAt", DESCENDING)`
 
 Related code:
 - `app/src/main/java/com/example/mobileapp/data/dto/StoryDto.kt`
@@ -114,33 +121,56 @@ Stores completed or interrupted focus sessions.
 | `completed` | `Boolean` | Whether the session finished successfully. |
 | `createdAt` | `Long` | Creation timestamp. |
 
-Suggested queries:
-- `whereEqualTo("userId", uid).orderBy("startedAt", DESCENDING)`
-- `whereEqualTo("userId", uid).whereEqualTo("completed", true)`
-
 Related code:
 - `app/src/main/java/com/example/mobileapp/data/dto/TimerSessionDto.kt`
 - `app/src/main/java/com/example/mobileapp/domain/model/TimerSession.kt`
 - `app/src/main/java/com/example/mobileapp/data/mapper/TimerSessionMapper.kt`
 
-### Security Rules
+### Planned standard collections
 
-The current local rules file is `firestore.rules`. It is intentionally in temporary test mode for Phase 3 and should not be used for production.
+These collections are part of the official schema even if full app CRUD is not finished yet:
 
-Before final submission, replace test mode with owner-based rules:
-- users can read/write only `users/{uid}` where `request.auth.uid == uid`
-- users can read/write only documents whose `userId` equals `request.auth.uid`
+- `public_stories/{storyId}` for community feed projection
+- `events/{eventId}` for calendar
+- `flashcards/{flashcardId}` for spaced repetition
+- `categories/{categoryId}` for reusable labels
 
-### Day 3 Completion Checklist
+## Security Rules
 
-- [x] Firebase Gradle setup exists.
-- [x] Firebase Auth flow exists.
-- [x] `users` collection model exists.
-- [x] `notes` collection model exists.
-- [x] `tasks` collection model exists.
-- [x] `stories` collection model exists.
-- [x] `timer_sessions` collection model exists.
-- [x] Firestore schema documented.
-- [x] Temporary Firestore rules file added.
-- [ ] Deploy/check rules in Firebase Console if required by the team.
-- [ ] Implement repository persistence for Notes next.
+The local rules file is `firestore.rules`.
+
+It uses these rules:
+
+- `users/{uid}` is readable and writable only by that same authenticated user
+- private collections are protected by `userId == request.auth.uid`
+- `public_stories` is public-read and owner-write
+- unknown collections are denied by default
+
+Before final submission, publish the same rules text to Firebase Console.
+
+## Legacy Data
+
+The following nested structure may still exist in Firestore as old test data:
+
+- `users/{uid}/categories`
+- `users/{uid}/flashcards`
+- `users/{uid}/notes`
+- `users/{uid}/tasks`
+- `users/{uid}/timer_logs`
+- `users/{uid}/user_stories`
+
+Do not implement new repository code against that legacy structure.
+
+## Current Status
+
+- [x] Firebase Gradle setup exists
+- [x] Firebase Auth flow exists
+- [x] `users` profile document flow exists
+- [x] DTOs and mappers exist for `notes`, `tasks`, `stories`, `timer_sessions`
+- [x] Owner-based Firestore rules file exists locally
+- [x] `NoteRepository` scaffold exists in code
+- [x] `EventRepository` scaffold exists in code
+- [x] `PublicStoryRepository` scaffold exists in code
+- [ ] Publish/update the same rules in Firebase Console
+- [ ] Implement UI integration for notes CRUD
+- [ ] Implement repositories for tasks, timer sessions, and private stories
