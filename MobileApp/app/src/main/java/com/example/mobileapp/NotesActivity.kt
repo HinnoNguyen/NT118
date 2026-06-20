@@ -245,10 +245,12 @@ class NotesActivity : AppCompatActivity() {
             finish()
         }
         findViewById<LinearLayout>(R.id.navQuest).setOnClickListener {
-            // Intent to QuestActivity
+            startActivity(Intent(this, QuestActivity::class.java))
+            finish()
         }
         findViewById<LinearLayout>(R.id.navTime).setOnClickListener {
-            // Intent to TimerActivity
+            startActivity(Intent(this, TimerActivity::class.java))
+            finish()
         }
         // Current is Notes
         findViewById<LinearLayout>(R.id.navStory).setOnClickListener {
