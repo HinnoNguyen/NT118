@@ -103,6 +103,7 @@
                     android:gravity="center_vertical">
 
                     <EditText
+                        android:id="@+id/etQuestTitle"
                         android:layout_width="0dp"
                         android:layout_height="48dp"
                         android:layout_weight="1"
@@ -130,6 +131,7 @@
                             android:textColor="@color/accent_green"
                             android:textSize="8sp" />
                         <TextView
+                            android:id="@+id/tvQuestPriority"
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
                             android:background="@drawable/bg_button_unselected"
@@ -143,6 +145,7 @@
 
                 <!-- Action Buttons -->
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnAddQuest"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_marginTop="12dp"
@@ -165,38 +168,26 @@
                 android:textColor="@color/accent_green"
                 android:textSize="12sp" />
 
-            <!-- Sample Quest List -->
+            <TextView
+                android:id="@+id/tvQuestsStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:fontFamily="monospace"
+                android:gravity="center"
+                android:paddingVertical="16dp"
+                android:text="No quests yet."
+                android:textColor="#AAAAAA"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
             <LinearLayout
+                android:id="@+id/questsListContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/bg_main_card"
-                    android:gravity="center_vertical"
-                    android:padding="12dp">
-                    <CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:buttonTint="@color/accent_green"/>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="8dp"
-                        android:fontFamily="monospace"
-                        android:text="Study Chapter 5"
-                        android:textColor="@color/white"
-                        android:textSize="14sp" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="monospace"
-                        android:text="+30xp"
-                        android:textColor="#FFD700"
-                        android:textSize="12sp" />
-                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>
