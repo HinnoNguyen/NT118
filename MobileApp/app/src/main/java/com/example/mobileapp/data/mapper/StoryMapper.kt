@@ -9,6 +9,9 @@ fun StoryDto.toDomain(): Story = Story(
     title = title,
     content = content,
     relatedNoteIds = relatedNoteIds,
+    isPublic = isPublic,
+    sharedAt = sharedAt,
+    coverImageUrl = coverImageUrl,
     createdAt = createdAt,
     updatedAt = updatedAt
 )
@@ -19,6 +22,9 @@ fun Story.toDto(): StoryDto = StoryDto(
     title = title,
     content = content,
     relatedNoteIds = relatedNoteIds,
+    isPublic = isPublic,
+    sharedAt = sharedAt,
+    coverImageUrl = coverImageUrl,
     createdAt = createdAt,
     updatedAt = updatedAt
 )

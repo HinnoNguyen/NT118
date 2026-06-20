@@ -6,6 +6,9 @@ data class Story(
     val title: String,
     val content: String,
     val relatedNoteIds: List<String>,
+    val isPublic: Boolean,
+    val sharedAt: Long,
+    val coverImageUrl: String,
     val createdAt: Long,
     val updatedAt: Long
 )

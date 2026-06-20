@@ -7,7 +7,6 @@ import com.example.mobileapp.domain.model.Story
 import com.example.mobileapp.domain.repository.StoryRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import kotlinx.coroutines.tasks.await
 import java.util.UUID
 
@@ -37,6 +36,9 @@ class StoryRepositoryImpl : StoryRepository {
                 title = title.trim(),
                 content = content.trim(),
                 relatedNoteIds = relatedNoteIds,
+                isPublic = false,
+                sharedAt = 0L,
+                coverImageUrl = "",
                 createdAt = now,
                 updatedAt = now
             )
@@ -54,10 +56,12 @@ class StoryRepositoryImpl : StoryRepository {
         return try {
             val snapshot = storiesCollection
                 .whereEqualTo("userId", userId)
-                .orderBy("updatedAt", Query.Direction.DESCENDING)
                 .get()
                 .await()
-            Result.success(snapshot.documents.mapNotNull { it.toObject(StoryDto::class.java)?.toDomain() })
+            val stories = snapshot.documents
+                .mapNotNull { it.toObject(StoryDto::class.java)?.toDomain() }
+                .sortedByDescending { it.updatedAt }
+            Result.success(stories)
         } catch (e: Exception) {
             Result.failure(Exception(e.message ?: "Failed to fetch stories", e))
         }
