@@ -29,6 +29,7 @@
         <activity android:name=".SettingsActivity" android:exported="false" />
         <activity android:name=".NotesActivity" android:exported="false" />
         <activity android:name=".StoryActivity" android:exported="false" />
+        <activity android:name=".CommunityActivity" android:exported="false" />
         <activity android:name=".QuestActivity" android:exported="false" />
         <activity android:name=".TimerActivity" android:exported="false" />
         <activity android:name=".CalendarActivity" android:exported="false" />

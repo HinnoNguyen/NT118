@@ -101,6 +101,24 @@
                     android:textSize="13sp" />
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCommunity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="8dp"
+                    android:backgroundTint="#FFD700"
+                    android:fontFamily="monospace"
+                    android:minHeight="0dp"
+                    android:minWidth="40dp"
+                    android:paddingHorizontal="12dp"
+                    android:text="COMMUNITY"
+                    android:textColor="@color/black"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="0dp"
+                    android:insetBottom="0dp"
+                    android:insetTop="0dp" />
+
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnCreateStory"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
