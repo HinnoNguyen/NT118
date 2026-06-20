@@ -7,7 +7,6 @@ import com.example.mobileapp.domain.model.Note
 import com.example.mobileapp.domain.repository.NoteRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import kotlinx.coroutines.tasks.await
 import java.util.UUID
 
@@ -53,13 +52,12 @@ class NoteRepositoryImpl : NoteRepository {
         return try {
             val snapshot = notesCollection
                 .whereEqualTo("userId", userId)
-                .orderBy("updatedAt", Query.Direction.DESCENDING)
                 .get()
                 .await()
 
             val notes = snapshot.documents.mapNotNull { document ->
                 document.toObject(NoteDto::class.java)?.toDomain()
-            }
+            }.sortedByDescending { it.updatedAt }
             Result.success(notes)
         } catch (e: Exception) {
             Result.failure(Exception(e.message ?: "Failed to fetch notes", e))

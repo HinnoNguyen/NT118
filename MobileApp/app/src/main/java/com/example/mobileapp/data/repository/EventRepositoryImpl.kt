@@ -7,7 +7,6 @@ import com.example.mobileapp.domain.model.Event
 import com.example.mobileapp.domain.repository.EventRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import kotlinx.coroutines.tasks.await
 import java.util.Calendar
 import java.util.UUID
@@ -56,11 +55,13 @@ class EventRepositoryImpl : EventRepository {
         return try {
             val snapshot = eventsCollection
                 .whereEqualTo("userId", userId)
-                .orderBy("date", Query.Direction.ASCENDING)
                 .get()
                 .await()
 
-            Result.success(snapshot.documents.mapNotNull { it.toObject(EventDto::class.java)?.toDomain() })
+            val events = snapshot.documents
+                .mapNotNull { it.toObject(EventDto::class.java)?.toDomain() }
+                .sortedBy { it.date }
+            Result.success(events)
         } catch (e: Exception) {
             Result.failure(Exception(e.message ?: "Failed to fetch events", e))
         }
@@ -80,13 +81,14 @@ class EventRepositoryImpl : EventRepository {
         return try {
             val snapshot = eventsCollection
                 .whereEqualTo("userId", userId)
-                .whereGreaterThanOrEqualTo("date", startOfDay)
-                .whereLessThan("date", endOfDay)
-                .orderBy("date", Query.Direction.ASCENDING)
                 .get()
                 .await()
 
-            Result.success(snapshot.documents.mapNotNull { it.toObject(EventDto::class.java)?.toDomain() })
+            val events = snapshot.documents
+                .mapNotNull { it.toObject(EventDto::class.java)?.toDomain() }
+                .filter { it.date in startOfDay until endOfDay }
+                .sortedBy { it.date }
+            Result.success(events)
         } catch (e: Exception) {
             Result.failure(Exception(e.message ?: "Failed to fetch events for date", e))
         }
@@ -96,15 +98,18 @@ class EventRepositoryImpl : EventRepository {
         val userId = auth.currentUser?.uid ?: return Result.failure(Exception("No logged in user"))
 
         return try {
+            val now = System.currentTimeMillis()
             val snapshot = eventsCollection
                 .whereEqualTo("userId", userId)
-                .whereGreaterThanOrEqualTo("date", System.currentTimeMillis())
-                .orderBy("date", Query.Direction.ASCENDING)
-                .limit(limit)
                 .get()
                 .await()
 
-            Result.success(snapshot.documents.mapNotNull { it.toObject(EventDto::class.java)?.toDomain() })
+            val events = snapshot.documents
+                .mapNotNull { it.toObject(EventDto::class.java)?.toDomain() }
+                .filter { it.date >= now }
+                .sortedBy { it.date }
+                .take(limit.toInt())
+            Result.success(events)
         } catch (e: Exception) {
             Result.failure(Exception(e.message ?: "Failed to fetch upcoming events", e))
         }
