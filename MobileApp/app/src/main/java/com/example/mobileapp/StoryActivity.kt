@@ -13,7 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.mobileapp.data.repository.PublicStoryRepositoryImpl
 import com.example.mobileapp.data.repository.StoryRepositoryImpl
-import com.example.mobileapp.domain.model.PublicStory
+import com.example.mobileapp.data.repository.UserRepositoryImpl
 import com.example.mobileapp.domain.model.Story
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
@@ -24,8 +24,10 @@ import java.util.Locale
 class StoryActivity : AppCompatActivity() {
     private val storyRepository = StoryRepositoryImpl()
     private val publicStoryRepository = PublicStoryRepositoryImpl()
+    private val userRepository = UserRepositoryImpl()
 
     private lateinit var btnCreateStory: MaterialButton
+    private lateinit var btnCommunity: MaterialButton
     private lateinit var newStorySection: LinearLayout
     private lateinit var genreEpic: LinearLayout
     private lateinit var genreMystery: LinearLayout
@@ -48,6 +50,7 @@ class StoryActivity : AppCompatActivity() {
 
     private fun setupStoryForge() {
         btnCreateStory = findViewById(R.id.btnCreateStory)
+        btnCommunity = findViewById(R.id.btnCommunity)
         newStorySection = findViewById(R.id.newStorySection)
         genreEpic = findViewById(R.id.genreEpic)
         genreMystery = findViewById(R.id.genreMystery)
@@ -62,6 +65,9 @@ class StoryActivity : AppCompatActivity() {
 
         btnCreateStory.setOnClickListener {
             toggleForge(newStorySection.visibility == View.GONE)
+        }
+        btnCommunity.setOnClickListener {
+            startActivity(Intent(this, CommunityActivity::class.java))
         }
 
         fun selectGenre(selected: LinearLayout) {
@@ -151,7 +157,7 @@ class StoryActivity : AppCompatActivity() {
 
         stories.forEach { story ->
             val itemView = inflater.inflate(R.layout.item_story, storiesListContainer, false)
-            val published = publishedStoryIds.contains(story.id)
+            val published = story.isPublic || publishedStoryIds.contains(story.id)
             itemView.findViewById<TextView>(R.id.tvStoryIcon).text = storyIcon(selectedGenreFromTitle(story.title))
             itemView.findViewById<TextView>(R.id.tvStoryGenre).text = genreLabel(selectedGenreFromTitle(story.title))
             itemView.findViewById<TextView>(R.id.tvStoryTitle).text = story.title
@@ -164,14 +170,14 @@ class StoryActivity : AppCompatActivity() {
             btnPublish.text = if (published) "UNPUBLISH" else "PUBLISH"
             btnPublish.setOnClickListener {
                 if (published) {
-                    unpublishStory(story.id)
+                    unpublishStory(story)
                 } else {
                     publishStory(story)
                 }
             }
 
             itemView.findViewById<TextView>(R.id.btnDeleteStory).setOnClickListener {
-                deleteStory(story.id, published)
+                deleteStory(story, published)
             }
 
             storiesListContainer.addView(itemView)
@@ -180,12 +186,35 @@ class StoryActivity : AppCompatActivity() {
 
     private fun publishStory(story: Story) {
         lifecycleScope.launch {
+            val currentUserId = userRepository.getCurrentUserId()
+            if (currentUserId == null) {
+                Toast.makeText(this@StoryActivity, "No logged in user", Toast.LENGTH_SHORT).show()
+                return@launch
+            }
+            val currentUser = userRepository.getUserProfile(currentUserId).getOrElse {
+                Toast.makeText(this@StoryActivity, it.message ?: "Failed to load user profile", Toast.LENGTH_SHORT).show()
+                return@launch
+            }
+
             publicStoryRepository.publishStory(
                 story = story,
-                authorName = "Hero",
-                authorAvatarUrl = "",
-                coverImageUrl = ""
-            ).onSuccess {
+                authorName = currentUser.name,
+                authorAvatarUrl = currentUser.avatarUrl,
+                coverImageUrl = story.coverImageUrl
+            ).onSuccess { publicStory ->
+                storyRepository.updateStory(
+                    story.copy(
+                        isPublic = true,
+                        sharedAt = publicStory.sharedAt,
+                        coverImageUrl = publicStory.coverImageUrl
+                    )
+                ).onFailure {
+                    Toast.makeText(
+                        this@StoryActivity,
+                        it.message ?: "Story published but metadata sync failed",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
                 Toast.makeText(this@StoryActivity, "Story published", Toast.LENGTH_SHORT).show()
                 loadStories()
             }.onFailure {
@@ -194,10 +223,22 @@ class StoryActivity : AppCompatActivity() {
         }
     }
 
-    private fun unpublishStory(storyId: String) {
+    private fun unpublishStory(story: Story) {
         lifecycleScope.launch {
-            publicStoryRepository.unpublishStory(storyId)
+            publicStoryRepository.unpublishStory(story.id)
                 .onSuccess {
+                    storyRepository.updateStory(
+                        story.copy(
+                            isPublic = false,
+                            sharedAt = 0L
+                        )
+                    ).onFailure {
+                        Toast.makeText(
+                            this@StoryActivity,
+                            it.message ?: "Story unpublished but metadata sync failed",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                     Toast.makeText(this@StoryActivity, "Story unpublished", Toast.LENGTH_SHORT).show()
                     loadStories()
                 }
@@ -207,12 +248,20 @@ class StoryActivity : AppCompatActivity() {
         }
     }
 
-    private fun deleteStory(storyId: String, published: Boolean) {
+    private fun deleteStory(story: Story, published: Boolean) {
         lifecycleScope.launch {
             if (published) {
-                publicStoryRepository.unpublishStory(storyId)
+                publicStoryRepository.unpublishStory(story.id)
+                    .onFailure {
+                        Toast.makeText(
+                            this@StoryActivity,
+                            it.message ?: "Failed to unpublish story before delete",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@launch
+                    }
             }
-            storyRepository.deleteStory(storyId)
+            storyRepository.deleteStory(story.id)
                 .onSuccess {
                     Toast.makeText(this@StoryActivity, "Story deleted", Toast.LENGTH_SHORT).show()
                     loadStories()
@@ -262,15 +311,23 @@ class StoryActivity : AppCompatActivity() {
     private fun setupNavigation() {
         findViewById<LinearLayout>(R.id.navHome).setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
         findViewById<LinearLayout>(R.id.navQuest).setOnClickListener {
-            // Intent to QuestActivity
+            startActivity(Intent(this, QuestActivity::class.java))
+            finish()
+        }
+        findViewById<LinearLayout>(R.id.navTime).setOnClickListener {
+            startActivity(Intent(this, TimerActivity::class.java))
+            finish()
         }
         findViewById<LinearLayout>(R.id.navNotes).setOnClickListener {
             startActivity(Intent(this, NotesActivity::class.java))
+            finish()
         }
         findViewById<LinearLayout>(R.id.navSettings).setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
+            finish()
         }
     }
 }
