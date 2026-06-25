@@ -14,6 +14,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.mobileapp.domain.model.Note
 import com.example.mobileapp.presentation.notes.NotesViewModel
 import com.example.mobileapp.utils.NavHelper
+import com.example.mobileapp.utils.ShareHelper
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
@@ -133,6 +134,14 @@ class NotesActivity : AppCompatActivity() {
                 ).apply { topMargin = (2 * resources.displayMetrics.density).toInt() }
             }
 
+            val shareBtn = TextView(this).apply {
+                text = "↗"
+                setTextColor(0xFF57E389.toInt())
+                textSize = 14f
+                setPadding((8 * resources.displayMetrics.density).toInt(), 0, 0, 0)
+                setOnClickListener { ShareHelper.showShareDialog(this@NotesActivity, note.title, note.content) }
+            }
+
             val deleteBtn = TextView(this).apply {
                 text = "✕"
                 setTextColor(0xFFFF4444.toInt())
@@ -145,6 +154,7 @@ class NotesActivity : AppCompatActivity() {
             textBlock.addView(contentView)
             row.addView(icon)
             row.addView(textBlock)
+            row.addView(shareBtn)
             row.addView(deleteBtn)
             container.addView(row)
         }

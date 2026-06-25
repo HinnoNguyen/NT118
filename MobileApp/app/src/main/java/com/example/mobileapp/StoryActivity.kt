@@ -16,6 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.mobileapp.domain.model.Story
 import com.example.mobileapp.presentation.story.StoryViewModel
 import com.example.mobileapp.utils.NavHelper
+import com.example.mobileapp.utils.ShareHelper
 import com.example.mobileapp.utils.StoryAIHelper
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
@@ -222,6 +223,12 @@ class StoryActivity : AppCompatActivity() {
                 ).apply { topMargin = (4 * dp).toInt() }
             }
 
+            val shareBtn = TextView(this).apply {
+                text = "↗"; setTextColor(0xFF57E389.toInt()); textSize = 12f
+                setPadding((8 * dp).toInt(), 0, 0, 0)
+                setOnClickListener { ShareHelper.showShareDialog(this@StoryActivity, story.title, story.content) }
+            }
+
             val deleteBtn = TextView(this).apply {
                 text = "✕"; setTextColor(0xFFFF4444.toInt()); textSize = 12f
                 setPadding((8 * dp).toInt(), 0, 0, 0)
@@ -231,7 +238,7 @@ class StoryActivity : AppCompatActivity() {
             textBlock.addView(genreLabel)
             textBlock.addView(titleView)
             textBlock.addView(contentView)
-            row.addView(icon); row.addView(textBlock); row.addView(deleteBtn)
+            row.addView(icon); row.addView(textBlock); row.addView(shareBtn); row.addView(deleteBtn)
             container.addView(row)
         }
     }
