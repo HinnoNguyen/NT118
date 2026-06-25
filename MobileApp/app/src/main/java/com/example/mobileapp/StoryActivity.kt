@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -15,6 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.mobileapp.domain.model.Story
 import com.example.mobileapp.presentation.story.StoryViewModel
 import com.example.mobileapp.utils.NavHelper
+import com.example.mobileapp.utils.StoryAIHelper
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
@@ -55,6 +57,55 @@ class StoryActivity : AppCompatActivity() {
             viewModel.saveStory(uid, title, content)
             findViewById<EditText>(R.id.etStoryTitle)?.text?.clear()
             findViewById<EditText>(R.id.etStoryContent)?.text?.clear()
+        }
+
+        val etContent = findViewById<EditText>(R.id.etStoryContent)
+        val btnAiSuggest = findViewById<com.google.android.material.button.MaterialButton>(R.id.btnAiSuggest)
+        val btnAiPrompts = findViewById<com.google.android.material.button.MaterialButton>(R.id.btnAiPrompts)
+        val btnAiNotes   = findViewById<com.google.android.material.button.MaterialButton>(R.id.btnAiNotes)
+
+        btnAiSuggest?.setOnClickListener {
+            val text = etContent?.text?.toString() ?: ""
+            if (text.isBlank()) { Toast.makeText(this, "Write something first!", Toast.LENGTH_SHORT).show(); return@setOnClickListener }
+            btnAiSuggest.isEnabled = false
+            lifecycleScope.launch {
+                val suggestion = StoryAIHelper.suggestContinuation(text)
+                btnAiSuggest.isEnabled = true
+                AlertDialog.Builder(this@StoryActivity)
+                    .setTitle("AI Suggestion")
+                    .setMessage(suggestion)
+                    .setPositiveButton("Add to Story") { _, _ -> etContent?.append("\n\n$suggestion") }
+                    .setNegativeButton("Dismiss", null)
+                    .show()
+            }
+        }
+
+        btnAiPrompts?.setOnClickListener {
+            val text = etContent?.text?.toString() ?: ""
+            btnAiPrompts.isEnabled = false
+            lifecycleScope.launch {
+                val prompts = StoryAIHelper.getWritingPrompts(text)
+                btnAiPrompts.isEnabled = true
+                AlertDialog.Builder(this@StoryActivity)
+                    .setTitle("Reflection Prompts")
+                    .setItems(prompts.toTypedArray()) { _, _ -> }
+                    .show()
+            }
+        }
+
+        btnAiNotes?.setOnClickListener {
+            val text = etContent?.text?.toString() ?: ""
+            val currentNotes = viewModel.getLoadedNotes()
+            val related = StoryAIHelper.findRelatedNotes(text, currentNotes)
+            if (related.isEmpty()) {
+                Toast.makeText(this, "No related notes found", Toast.LENGTH_SHORT).show()
+            } else {
+                val titles = related.map { "• ${it.title}" }.toTypedArray()
+                AlertDialog.Builder(this@StoryActivity)
+                    .setTitle("Related Notes")
+                    .setItems(titles) { _, _ -> }
+                    .show()
+            }
         }
     }
 

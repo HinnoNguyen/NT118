@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.mobileapp.data.repository.FirestoreStoryRepositoryImpl
+import com.example.mobileapp.domain.model.Note
 import com.example.mobileapp.domain.model.Story
 import com.example.mobileapp.domain.repository.StoryRepository
 import com.example.mobileapp.utils.Resource
@@ -56,6 +57,9 @@ class StoryViewModel(private val storyRepository: StoryRepository) : ViewModel()
             }
         }
     }
+
+    // TODO: inject NoteRepository to populate this; returns empty list for now so Related Notes degrades gracefully
+    fun getLoadedNotes(): List<Note> = emptyList()
 
     fun deleteStory(userId: String, storyId: String) {
         viewModelScope.launch {
