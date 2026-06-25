@@ -90,6 +90,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/tabTimer"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -99,7 +100,9 @@
                     android:text="TIMER"
                     android:textColor="#AAAAAA"
                     android:textSize="12sp"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -140,7 +143,9 @@
                         android:gravity="center"
                         android:orientation="horizontal"
                         android:paddingVertical="8dp">
+
                         <TextView
+                            android:id="@+id/btnPrevMonth"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="◀"
@@ -148,18 +153,22 @@
                             android:textSize="14sp"
                             android:padding="12dp"
                             android:clickable="true"
-                            android:focusable="true"/>
+                            android:focusable="true" />
+
                         <TextView
+                            android:id="@+id/tvCalendarMonth"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:fontFamily="monospace"
-                            android:text="APRIL 2026"
+                            android:text="JUNE 2026"
                             android:textColor="#FFD700"
                             android:textSize="14sp"
                             android:textStyle="bold" />
+
                         <TextView
+                            android:id="@+id/btnNextMonth"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="▶"
@@ -167,16 +176,18 @@
                             android:textSize="14sp"
                             android:padding="12dp"
                             android:clickable="true"
-                            android:focusable="true"/>
+                            android:focusable="true" />
                     </LinearLayout>
 
+                    <!-- Calendar Grid — headers are static, days are added dynamically -->
                     <GridLayout
+                        android:id="@+id/calendarGrid"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:columnCount="7"
                         android:useDefaultMargins="false">
 
-                        <!-- Header days -->
+                        <!-- Header days (static) -->
                         <TextView style="@style/CalendarHeader" android:text="SU" android:textColor="#FFD700" />
                         <TextView style="@style/CalendarHeader" android:text="MO" android:textColor="#FFD700" />
                         <TextView style="@style/CalendarHeader" android:text="TU" android:textColor="#FFD700" />
@@ -185,139 +196,31 @@
                         <TextView style="@style/CalendarHeader" android:text="FR" android:textColor="#FFD700" />
                         <TextView style="@style/CalendarHeader" android:text="SA" android:textColor="#FFD700" />
 
-                        <!-- Grid Days (Without margins/lines) -->
-                        <TextView style="@style/CalendarDay" android:text="" android:layout_height="48dp" />
-                        <TextView style="@style/CalendarDay" android:text="" android:layout_height="48dp" />
-                        <TextView style="@style/CalendarDay" android:text="" android:layout_height="48dp" />
-                        <TextView style="@style/CalendarDay" android:text="1" android:layout_height="48dp" />
-                        <TextView style="@style/CalendarDay" android:text="2" android:layout_height="48dp" />
-                        <TextView style="@style/CalendarDay" android:text="3" android:layout_height="48dp" />
-                        <TextView style="@style/CalendarDay" android:text="4" android:layout_height="48dp" />
-
-                        <TextView style="@style/CalendarDay" android:text="5" android:layout_height="48dp" />
-                        <TextView style="@style/CalendarDay" android:text="6" android:layout_height="48dp" />
-                        <TextView style="@style/CalendarDay" android:text="7" android:layout_height="48dp" />
-                        <TextView style="@style/CalendarDay" android:text="8" android:layout_height="48dp" />
-                        <TextView style="@style/CalendarDay" android:text="9" android:layout_height="48dp" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="48dp"
-                            android:layout_columnWeight="1"
-                            android:background="@color/accent_green"
-                            android:gravity="center"
-                            android:orientation="vertical">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="10" android:textColor="@color/black" android:textSize="10sp" />
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚔️" android:textSize="8sp" />
-                        </LinearLayout>
-
-                        <TextView style="@style/CalendarDay" android:text="11" android:layout_height="48dp" />
-
-                        <TextView style="@style/CalendarDay" android:text="12" android:layout_height="48dp" />
-                        <TextView style="@style/CalendarDay" android:text="13" android:layout_height="48dp" />
-                        <TextView style="@style/CalendarDay" android:text="14" android:layout_height="48dp" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="48dp"
-                            android:layout_columnWeight="1"
-                            android:background="#1A1A24"
-                            android:gravity="center"
-                            android:orientation="vertical">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="15" android:textColor="@color/white" android:textSize="10sp" />
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📌" android:textSize="8sp" />
-                        </LinearLayout>
-
-                        <TextView style="@style/CalendarDay" android:text="16" android:layout_height="48dp" />
-                        <TextView style="@style/CalendarDay" android:text="17" android:layout_height="48dp" />
-                        <TextView style="@style/CalendarDay" android:text="18" android:layout_height="48dp" />
-
-                        <TextView style="@style/CalendarDay" android:text="19" android:layout_height="48dp" />
-                        <TextView style="@style/CalendarDay" android:text="20" android:layout_height="48dp" />
-                        <TextView style="@style/CalendarDay" android:text="21" android:layout_height="48dp" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="48dp"
-                            android:layout_columnWeight="1"
-                            android:background="#1A1A24"
-                            android:gravity="center"
-                            android:orientation="vertical">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="22" android:textColor="@color/white" android:textSize="10sp" />
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="👹" android:textSize="8sp" />
-                        </LinearLayout>
-
-                        <TextView style="@style/CalendarDay" android:text="23" android:layout_height="48dp" />
-                        <TextView style="@style/CalendarDay" android:text="24" android:layout_height="48dp" />
-                        <TextView style="@style/CalendarDay" android:text="25" android:layout_height="48dp" />
-
-                        <TextView style="@style/CalendarDay" android:text="26" android:layout_height="48dp" />
-                        <TextView style="@style/CalendarDay" android:text="27" android:layout_height="48dp" />
-                        <TextView style="@style/CalendarDay" android:text="28" android:layout_height="48dp" />
-                        <TextView style="@style/CalendarDay" android:text="29" android:layout_height="48dp" />
-                        <TextView style="@style/CalendarDay" android:text="30" android:layout_height="48dp" />
-                        <TextView style="@style/CalendarDay" android:text="" android:layout_height="48dp" />
-                        <TextView style="@style/CalendarDay" android:text="" android:layout_height="48dp" />
+                        <!-- Day cells are added dynamically by CalendarActivity.rebuildCalendarGrid() -->
                     </GridLayout>
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Event List -->
-            <LinearLayout
+            <!-- Add Event Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddEvent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:orientation="vertical">
+                android:fontFamily="monospace"
+                android:text="+ ADD EVENT"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/accent_green" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/bg_main_card"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="12dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚔️" android:textSize="20sp" />
-                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:orientation="vertical">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="Submit Assignment" android:textColor="@color/accent_green" android:textSize="13sp" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="Day 10" android:textColor="#AAAAAA" android:textSize="10sp" />
-                    </LinearLayout>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="QUEST" android:textColor="#FFD700" android:textSize="10sp" android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/bg_main_card"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="12dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📌" android:textSize="20sp" />
-                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:orientation="vertical">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="Group Meeting" android:textColor="@color/accent_green" android:textSize="13sp" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="Day 15" android:textColor="#AAAAAA" android:textSize="10sp" />
-                    </LinearLayout>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="EVENT" android:textColor="#FFD700" android:textSize="10sp" android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/bg_main_card"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="12dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="👹" android:textSize="20sp" />
-                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:orientation="vertical">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="Midterm Exam" android:textColor="@color/accent_green" android:textSize="13sp" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="Day 22" android:textColor="#AAAAAA" android:textSize="10sp" />
-                    </LinearLayout>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="BOSS!" android:textColor="#FFD700" android:textSize="10sp" android:textStyle="bold" />
-                </LinearLayout>
-
-            </LinearLayout>
+            <!-- Event List -->
+            <LinearLayout
+                android:id="@+id/eventListContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical" />
 
         </LinearLayout>
     </ScrollView>
@@ -332,32 +235,80 @@
         android:paddingVertical="8dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/navHome"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🏠" android:textSize="16sp" />
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="HOME" android:textColor="#AAAAAA" android:textSize="8sp" android:textStyle="bold" />
         </LinearLayout>
 
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/navQuest"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚔️" android:textSize="16sp" />
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="QUEST" android:textColor="#AAAAAA" android:textSize="8sp" android:textStyle="bold" />
         </LinearLayout>
 
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/navTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⏰" android:textSize="16sp" />
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="TIME" android:textColor="@color/accent_green" android:textSize="8sp" android:textStyle="bold" />
         </LinearLayout>
 
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/navNotes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📜" android:textSize="16sp" />
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="NOTES" android:textColor="#AAAAAA" android:textSize="8sp" android:textStyle="bold" />
         </LinearLayout>
 
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/navStory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📖" android:textSize="16sp" />
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="STORY" android:textColor="#AAAAAA" android:textSize="8sp" android:textStyle="bold" />
         </LinearLayout>
 
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/navSettings"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="true">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚙️" android:textSize="16sp" />
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="SET" android:textColor="#AAAAAA" android:textSize="8sp" android:textStyle="bold" />
         </LinearLayout>

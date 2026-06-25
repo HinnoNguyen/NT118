@@ -103,6 +103,7 @@
                     android:gravity="center" />
 
                 <TextView
+                    android:id="@+id/tabCalendar"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -113,7 +114,9 @@
                     android:text="CALENDAR"
                     android:textColor="#AAAAAA"
                     android:textSize="12sp"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true" />
             </LinearLayout>
 
             <!-- Main Timer Card -->

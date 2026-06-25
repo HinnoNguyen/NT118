@@ -3,7 +3,6 @@ package com.example.mobileapp
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -14,6 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.mobileapp.presentation.timer.TimerViewModel
+import com.example.mobileapp.utils.NavHelper
 import com.example.mobileapp.utils.NotificationHelper
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
@@ -38,25 +38,10 @@ class TimerActivity : AppCompatActivity() {
     }
 
     private fun setupNavigation() {
-        findViewById<LinearLayout>(R.id.navHome)?.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-        }
-        findViewById<LinearLayout>(R.id.navQuest)?.setOnClickListener {
-            startActivity(Intent(this, QuestActivity::class.java))
-            finish()
-        }
-        findViewById<LinearLayout>(R.id.navNotes)?.setOnClickListener {
-            startActivity(Intent(this, NotesActivity::class.java))
-            finish()
-        }
-        findViewById<LinearLayout>(R.id.navStory)?.setOnClickListener {
-            startActivity(Intent(this, StoryActivity::class.java))
-            finish()
-        }
-        findViewById<LinearLayout>(R.id.navSettings)?.setOnClickListener {
-            startActivity(Intent(this, SettingsActivity::class.java))
-            finish()
+        NavHelper.setup(this, NavHelper.Screen.TIME)
+        // Tab navigation to Calendar
+        findViewById<TextView>(R.id.tabCalendar)?.setOnClickListener {
+            startActivity(Intent(this, CalendarActivity::class.java))
         }
     }
 
