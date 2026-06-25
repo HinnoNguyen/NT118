@@ -5,6 +5,7 @@ data class StoryDto(
     val userId: String = "",
     val title: String = "",
     val content: String = "",
+    val genre: String = "",
     val relatedNoteIds: List<String> = emptyList(),
     val createdAt: Long = 0L,
     val updatedAt: Long = 0L

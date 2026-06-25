@@ -27,7 +27,7 @@ class FirestoreStoryRepositoryImpl : StoryRepository {
     override suspend fun addStory(userId: String, title: String, content: String, genre: String): Resource<Story> = try {
         val docRef = storiesCollection(userId).document()
         val now = System.currentTimeMillis()
-        val dto = StoryDto(id = docRef.id, userId = userId, title = title, content = content, createdAt = now, updatedAt = now)
+        val dto = StoryDto(id = docRef.id, userId = userId, title = title, content = content, genre = genre, createdAt = now, updatedAt = now)
         docRef.set(dto).await()
         Resource.Success(dto.toDomain())
     } catch (e: Exception) {
