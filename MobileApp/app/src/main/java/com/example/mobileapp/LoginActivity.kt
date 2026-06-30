@@ -87,6 +87,7 @@ class LoginActivity : AppCompatActivity() {
                             btnLogin.text = "LOGIN"
                             Toast.makeText(this@LoginActivity, "Welcome Hero!", Toast.LENGTH_SHORT).show()
                             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                            finish()
                         }
                         is Resource.Error -> {
                             btnLogin.isEnabled = true

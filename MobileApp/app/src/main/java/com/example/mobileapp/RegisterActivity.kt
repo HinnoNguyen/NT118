@@ -91,6 +91,7 @@ class RegisterActivity : AppCompatActivity() {
                                 "Registration Successful! Welcome, ${resource.data.username}",
                                 Toast.LENGTH_SHORT
                             ).show()
+                            startActivity(Intent(this@RegisterActivity, MainActivity::class.java))
                             finish()
                         }
                         is Resource.Error -> {
