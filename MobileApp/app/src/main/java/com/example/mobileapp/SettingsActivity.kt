@@ -12,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.mobileapp.presentation.settings.SettingsViewModel
+import com.example.mobileapp.utils.NavHelper
 import kotlinx.coroutines.launch
 
 /**
@@ -29,6 +30,7 @@ class SettingsActivity : AppCompatActivity() {
         setupEdgeToEdge()
         setupUI()
         observeViewModel()
+        NavHelper.setup(this, NavHelper.Screen.SETTINGS)
     }
 
     private fun setupEdgeToEdge() {
@@ -42,6 +44,9 @@ class SettingsActivity : AppCompatActivity() {
     private fun setupUI() {
         findViewById<Button>(R.id.btnEditProfile).setOnClickListener {
             startActivity(Intent(this, EditProfileActivity::class.java))
+        }
+        findViewById<Button>(R.id.btnSignOut).setOnClickListener {
+            viewModel.signOut()
         }
     }
 
