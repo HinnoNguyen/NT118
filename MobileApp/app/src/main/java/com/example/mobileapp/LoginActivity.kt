@@ -1,13 +1,16 @@
 package com.example.mobileapp
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.CompoundButton
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Lifecycle
@@ -30,6 +33,22 @@ class LoginActivity : AppCompatActivity() {
         setupEdgeToEdge()
         setupViewModel()
         setupUI()
+        setupThemeSwitch()
+    }
+
+    private fun setupThemeSwitch() {
+        val sharedPreferences = getSharedPreferences("theme_prefs", Context.MODE_PRIVATE)
+        val switchTheme = findViewById<CompoundButton>(R.id.switchTheme)
+        val isDarkMode = sharedPreferences.getBoolean("is_dark_mode", true)
+        switchTheme.isChecked = isDarkMode
+
+        switchTheme.setOnCheckedChangeListener { _, isChecked ->
+            val currentMode = if (isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+            if (AppCompatDelegate.getDefaultNightMode() != currentMode) {
+                sharedPreferences.edit().putBoolean("is_dark_mode", isChecked).apply()
+                AppCompatDelegate.setDefaultNightMode(currentMode)
+            }
+        }
     }
 
     private fun setupEdgeToEdge() {
@@ -55,9 +74,16 @@ class LoginActivity : AppCompatActivity() {
         val btnGoogleSignIn = findViewById<Button>(R.id.btnGoogleSignIn)
 
         btnLogin.setOnClickListener {
+            // Bypass login for testing purposes
+            Toast.makeText(this, "Debug Login: Welcome!", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+            
+            /* Commented out real login for testing
             val email = etEmail.text.toString()
             val pass = etPassword.text.toString()
             viewModel.login(email, pass)
+            */
         }
 
         btnRegisterTab.setOnClickListener {

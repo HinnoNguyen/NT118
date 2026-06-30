@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
             android:text="TIME MAGIC"
-            android:textColor="#FFD700"
+            android:textColor="@color/accent_yellow"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -88,8 +88,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@color/accent_green" android:fontFamily="monospace" android:paddingVertical="8dp" android:text="TIMER" android:textColor="@color/black" android:textSize="12sp" android:textStyle="bold" android:gravity="center" />
-                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="8dp" android:background="@drawable/bg_button_unselected" android:fontFamily="monospace" android:paddingVertical="8dp" android:text="CALENDAR" android:textColor="#AAAAAA" android:textSize="12sp" android:gravity="center" />
+                <TextView android:id="@+id/tabTimer" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:background="@color/accent_green" android:fontFamily="monospace" android:paddingVertical="8dp" android:text="TIMER" android:textColor="@color/black" android:textSize="12sp" android:textStyle="bold" android:gravity="center" />
+                <TextView android:id="@+id/tabCalendar" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="8dp" android:background="@drawable/bg_button_unselected" android:fontFamily="monospace" android:paddingVertical="8dp" android:text="CALENDAR" android:textColor="#AAAAAA" android:textSize="12sp" android:clickable="true" android:focusable="true" android:gravity="center" />
             </LinearLayout>
 
             <!-- Main Timer Card -->
@@ -103,19 +103,19 @@
                 android:padding="24dp">
                 <TextView android:id="@+id/tvTimer" android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="25:00" android:textColor="@color/accent_green" android:textSize="64sp" android:textStyle="bold" android:shadowColor="@color/accent_green" android:shadowDx="0" android:shadowDy="0" android:shadowRadius="10"/>
                 <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:orientation="horizontal">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/bg_button_unselected" android:fontFamily="monospace" android:paddingHorizontal="12dp" android:paddingVertical="6dp" android:text="15m" android:textColor="#AAAAAA" android:textSize="12sp" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:background="#FFD700" android:fontFamily="monospace" android:paddingHorizontal="12dp" android:paddingVertical="6dp" android:text="25m" android:textColor="@color/black" android:textSize="12sp" android:textStyle="bold" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:background="@drawable/bg_button_unselected" android:fontFamily="monospace" android:paddingHorizontal="12dp" android:paddingVertical="6dp" android:text="45m" android:textColor="#AAAAAA" android:textSize="12sp" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:background="@drawable/bg_button_unselected" android:fontFamily="monospace" android:paddingHorizontal="12dp" android:paddingVertical="6dp" android:text="60m" android:textColor="#AAAAAA" android:textSize="12sp" />
+                    <TextView android:id="@+id/btnTime15" android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/bg_button_unselected" android:fontFamily="monospace" android:paddingHorizontal="12dp" android:paddingVertical="6dp" android:text="15m" android:textColor="#AAAAAA" android:textSize="12sp" android:clickable="true" android:focusable="true" />
+                    <TextView android:id="@+id/btnTime25" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:background="@color/accent_yellow" android:fontFamily="monospace" android:paddingHorizontal="12dp" android:paddingVertical="6dp" android:text="25m" android:textColor="@color/black" android:textSize="12sp" android:textStyle="bold" android:clickable="true" android:focusable="true" />
+                    <TextView android:id="@+id/btnTime45" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:background="@drawable/bg_button_unselected" android:fontFamily="monospace" android:paddingHorizontal="12dp" android:paddingVertical="6dp" android:text="45m" android:textColor="#AAAAAA" android:textSize="12sp" android:clickable="true" android:focusable="true" />
+                    <TextView android:id="@+id/btnTime60" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:background="@drawable/bg_button_unselected" android:fontFamily="monospace" android:paddingHorizontal="12dp" android:paddingVertical="6dp" android:text="60m" android:textColor="#AAAAAA" android:textSize="12sp" android:clickable="true" android:focusable="true" />
                 </LinearLayout>
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="24dp" android:gravity="center" android:orientation="horizontal">
-                    <com.google.android.material.button.MaterialButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:backgroundTint="@color/accent_green" android:fontFamily="monospace" android:insetTop="0dp" android:insetBottom="0dp" android:text="▶ START" android:textColor="@color/black" android:textStyle="bold" app:cornerRadius="0dp" />
-                    <com.google.android.material.button.MaterialButton android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:backgroundTint="#1A1A1A" android:fontFamily="monospace" android:insetTop="0dp" android:insetBottom="0dp" android:text="↺ RESET" android:textColor="#AAAAAA" app:cornerRadius="0dp" app:strokeColor="#333333" app:strokeWidth="1dp" />
+                    <com.google.android.material.button.MaterialButton android:id="@+id/btnStartTimer" android:layout_width="wrap_content" android:layout_height="wrap_content" android:backgroundTint="@color/accent_green" android:fontFamily="monospace" android:insetTop="0dp" android:insetBottom="0dp" android:text="▶ START" android:textColor="@color/black" android:textStyle="bold" app:cornerRadius="0dp" />
+                    <com.google.android.material.button.MaterialButton android:id="@+id/btnResetTimer" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:backgroundTint="#1A1A1A" android:fontFamily="monospace" android:insetTop="0dp" android:insetBottom="0dp" android:text="↺ RESET" android:textColor="#AAAAAA" app:cornerRadius="0dp" app:strokeColor="#333333" app:strokeWidth="1dp" />
                 </LinearLayout>
             </LinearLayout>
 
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:background="@drawable/bg_main_card" android:orientation="vertical" android:padding="16dp">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="💡 FOCUS TIP" android:textColor="#FFD700" android:textSize="12sp" android:textStyle="bold" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="💡 FOCUS TIP" android:textColor="@color/accent_yellow" android:textSize="12sp" android:textStyle="bold" />
                 <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:fontFamily="monospace" android:text="&quot;Each minute of focus = 1 EXP. Stay focused to level up faster!&quot;" android:textColor="@color/accent_green" android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>

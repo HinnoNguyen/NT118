@@ -34,6 +34,12 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
+
+        val btnPlayGame = findViewById<LinearLayout>(R.id.btnPlayGame)
+        btnPlayGame.setOnClickListener {
+            val intent = Intent(this, SnakeGameActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setupNavigation() {

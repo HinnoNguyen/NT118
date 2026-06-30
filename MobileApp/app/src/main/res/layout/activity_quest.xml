@@ -194,7 +194,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="monospace"
                         android:text="+30xp"
-                        android:textColor="#FFD700"
+                        android:textColor="@color/accent_yellow"
                         android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>

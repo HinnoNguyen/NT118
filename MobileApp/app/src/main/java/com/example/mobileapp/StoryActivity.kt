@@ -66,15 +66,23 @@ class StoryActivity : AppCompatActivity() {
     private fun setupNavigation() {
         findViewById<LinearLayout>(R.id.navHome).setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
         findViewById<LinearLayout>(R.id.navQuest).setOnClickListener {
-            // Intent to QuestActivity
+            startActivity(Intent(this, QuestActivity::class.java))
+            finish()
+        }
+        findViewById<LinearLayout>(R.id.navTime).setOnClickListener {
+            startActivity(Intent(this, TimerActivity::class.java))
+            finish()
         }
         findViewById<LinearLayout>(R.id.navNotes).setOnClickListener {
             startActivity(Intent(this, NotesActivity::class.java))
+            finish()
         }
         findViewById<LinearLayout>(R.id.navSettings).setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
+            finish()
         }
     }
 }

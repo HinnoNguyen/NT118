@@ -1,11 +1,13 @@
 package com.example.mobileapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.button.MaterialButton
 
 class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +29,9 @@ class ProfileActivity : AppCompatActivity() {
     private fun setupUI() {
         findViewById<TextView>(R.id.btnBack).setOnClickListener {
             finish()
+        }
+        findViewById<MaterialButton>(R.id.btnEditProfile).setOnClickListener {
+            startActivity(Intent(this, EditProfileActivity::class.java))
         }
     }
 }

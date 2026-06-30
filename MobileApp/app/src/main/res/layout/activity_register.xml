@@ -18,26 +18,24 @@
         android:textColor="@color/accent_green"
         android:textSize="28sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/tvSubtitle"
+        app:layout_constraintBottom_toTopOf="@id/svRegister"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
 
-    <TextView
-        android:id="@+id/tvSubtitle"
+    <Switch
+        android:id="@+id/switchTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/bg_text_border"
-        android:fontFamily="monospace"
-        android:text="@string/login_subtitle"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:thumbTint="@color/accent_green"
+        android:trackTint="#333333"
+        android:text="🌓"
         android:textColor="@color/accent_green"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@id/svRegister"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:id="@+id/svRegister"
@@ -48,7 +46,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvSubtitle">
+        app:layout_constraintTop_toBottomOf="@id/tvTitle">
 
         <LinearLayout
             android:id="@+id/cardContainer"

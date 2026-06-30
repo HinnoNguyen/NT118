@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
             android:text="STORY MODE"
-            android:textColor="#FFD700"
+            android:textColor="@color/accent_yellow"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -162,7 +162,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="#FFD700"
+                        android:background="@color/accent_yellow"
                         android:gravity="center"
                         android:orientation="vertical"
                         android:padding="8dp">
@@ -286,7 +286,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_marginTop="16dp"
-                    android:backgroundTint="#FFD700"
+                    android:backgroundTint="@color/accent_yellow"
                     android:text="✦ STORY-FY!"
                     android:textColor="@color/black"
                     android:textStyle="bold"
@@ -328,7 +328,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="monospace"
                             android:text="⚔️ EPIC"
-                            android:textColor="#FFD700"
+                            android:textColor="@color/accent_yellow"
                             android:textSize="10sp"
                             android:textStyle="bold" />
                         <TextView

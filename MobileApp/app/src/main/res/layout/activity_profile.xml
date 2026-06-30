@@ -111,7 +111,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="monospace"
                     android:text="@string/label_user"
-                    android:textColor="#FFD700"
+                    android:textColor="@color/accent_yellow"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -142,7 +142,7 @@
                         android:layout_height="10dp"
                         android:progress="68"
                         android:progressDrawable="@android:drawable/progress_horizontal"
-                        android:progressTint="#FFD700" />
+                        android:progressTint="@color/accent_yellow" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -169,7 +169,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="monospace"
                 android:text="@string/profile_bio_label"
-                android:textColor="#FFD700"
+                android:textColor="@color/accent_yellow"
                 android:textSize="11sp"
                 android:textStyle="bold" />
             <TextView
@@ -197,7 +197,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="monospace"
                 android:text="@string/profile_stats_label"
-                android:textColor="#FFD700"
+                android:textColor="@color/accent_yellow"
                 android:textSize="11sp"
                 android:textStyle="bold" />
 
@@ -276,7 +276,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="monospace"
                 android:text="@string/profile_achievements_label"
-                android:textColor="#FFD700"
+                android:textColor="@color/accent_yellow"
                 android:textSize="11sp"
                 android:textStyle="bold" />
 

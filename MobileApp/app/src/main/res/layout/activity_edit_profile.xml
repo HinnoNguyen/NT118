@@ -120,7 +120,7 @@
                             android:background="@drawable/bg_text_border"
                             android:fontFamily="monospace"
                             android:text="USER"
-                            android:textColor="#FFD700"
+                            android:textColor="@color/accent_yellow"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:padding="4dp" />
@@ -156,7 +156,7 @@
                                 android:layout_height="12dp"
                                 android:progress="68"
                                 android:progressDrawable="@android:drawable/progress_horizontal"
-                                android:progressTint="#FFD700" />
+                                android:progressTint="@color/accent_yellow" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -199,7 +199,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="monospace"
                     android:text="@string/choose_avatar_label"
-                    android:textColor="#FFD700"
+                    android:textColor="@color/accent_yellow"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -230,7 +230,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="monospace"
                     android:text="@string/profile_bio_label"
-                    android:textColor="#FFD700"
+                    android:textColor="@color/accent_yellow"
                     android:textSize="12sp"
                     android:textStyle="bold" />
                 <EditText

@@ -1,11 +1,14 @@
 package com.example.mobileapp
 
+import android.content.Context
 import android.os.Bundle
+import android.widget.CompoundButton
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
@@ -26,6 +29,22 @@ class ForgotPasswordActivity : AppCompatActivity() {
         setupDependencies()
         setupEdgeToEdge()
         setupUI()
+        setupThemeSwitch()
+    }
+
+    private fun setupThemeSwitch() {
+        val sharedPreferences = getSharedPreferences("theme_prefs", Context.MODE_PRIVATE)
+        val switchTheme = findViewById<CompoundButton>(R.id.switchTheme)
+        val isDarkMode = sharedPreferences.getBoolean("is_dark_mode", true)
+        switchTheme.isChecked = isDarkMode
+
+        switchTheme.setOnCheckedChangeListener { _, isChecked ->
+            val currentMode = if (isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+            if (AppCompatDelegate.getDefaultNightMode() != currentMode) {
+                sharedPreferences.edit().putBoolean("is_dark_mode", isChecked).apply()
+                AppCompatDelegate.setDefaultNightMode(currentMode)
+            }
+        }
     }
 
     private fun setupDependencies() {

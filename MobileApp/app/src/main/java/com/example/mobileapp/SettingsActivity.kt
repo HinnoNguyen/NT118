@@ -1,10 +1,13 @@
 package com.example.mobileapp
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.CompoundButton
 import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.button.MaterialButton
@@ -17,6 +20,30 @@ class SettingsActivity : AppCompatActivity() {
         setupEdgeToEdge()
         setupNavigation()
         setupLogout()
+        setupDarkModeSwitch()
+        setupEditProfile()
+    }
+
+    private fun setupEditProfile() {
+        findViewById<LinearLayout>(R.id.btnEditProfile).setOnClickListener {
+            startActivity(Intent(this, EditProfileActivity::class.java))
+        }
+    }
+
+    private fun setupDarkModeSwitch() {
+        val sharedPreferences = getSharedPreferences("theme_prefs", Context.MODE_PRIVATE)
+        val switchDarkMode = findViewById<CompoundButton>(R.id.switchDarkMode)
+        val isDarkMode = sharedPreferences.getBoolean("is_dark_mode", true)
+        switchDarkMode.isChecked = isDarkMode
+
+        switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
+            val currentMode = if (isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+            
+            if (AppCompatDelegate.getDefaultNightMode() != currentMode) {
+                sharedPreferences.edit().putBoolean("is_dark_mode", isChecked).apply()
+                AppCompatDelegate.setDefaultNightMode(currentMode)
+            }
+        }
     }
 
     private fun setupEdgeToEdge() {
