@@ -38,10 +38,10 @@
             android:name=".QuestActivity"
             android:exported="false" />
         <activity
-            android:name=".EditProfileActivity"
+            android:name=".NotesActivity"
             android:exported="false" />
         <activity
-            android:name=".NotesActivity"
+            android:name=".EditProfileActivity"
             android:exported="false" />
         <activity
             android:name=".StoryActivity"
