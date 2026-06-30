@@ -1,16 +1,20 @@
 package com.example.mobileapp
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.mobileapp.presentation.timer.TimerViewModel
+import com.example.mobileapp.utils.NotificationHelper
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
 
@@ -18,9 +22,16 @@ class TimerActivity : AppCompatActivity() {
 
     private val viewModel: TimerViewModel by viewModels { TimerViewModel.factory() }
 
+    private val notificationPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { /* no-op either way */ }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timer)
+        NotificationHelper.createChannel(this)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            notificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+        }
         setupNavigation()
         setupUI()
         observeViewModel()
@@ -91,6 +102,16 @@ class TimerActivity : AppCompatActivity() {
                     viewModel.isRunning.collect { running ->
                         findViewById<MaterialButton>(R.id.btnStartPause)?.text =
                             if (running) "⏸ PAUSE" else "▶ START"
+                    }
+                }
+                launch {
+                    viewModel.sessionComplete.collect { completedMode ->
+                        val (title, message) = when (completedMode) {
+                            TimerViewModel.Mode.WORK -> "Work session complete!" to "Time for a break."
+                            TimerViewModel.Mode.BREAK -> "Break's over!" to "Back to work."
+                        }
+                        NotificationHelper.showSessionComplete(this@TimerActivity, title, message)
+                        Toast.makeText(this@TimerActivity, title, Toast.LENGTH_SHORT).show()
                     }
                 }
             }

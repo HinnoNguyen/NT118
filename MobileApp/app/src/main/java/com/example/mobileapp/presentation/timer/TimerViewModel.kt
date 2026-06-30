@@ -3,8 +3,13 @@ package com.example.mobileapp.presentation.timer
 import android.os.CountDownTimer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 
 class TimerViewModel : ViewModel() {
 
@@ -29,6 +34,9 @@ class TimerViewModel : ViewModel() {
 
     private val _totalMillis = MutableStateFlow(25 * 60 * 1000L)
     val totalMillis: StateFlow<Long> = _totalMillis
+
+    private val _sessionComplete = MutableSharedFlow<Mode>(extraBufferCapacity = 1)
+    val sessionComplete: SharedFlow<Mode> = _sessionComplete.asSharedFlow()
 
     val formattedTime: String
         get() {
@@ -56,7 +64,9 @@ class TimerViewModel : ViewModel() {
             override fun onFinish() {
                 _millisLeft.value = 0L
                 _isRunning.value = false
+                val completedMode = _mode.value
                 switchMode()
+                viewModelScope.launch { _sessionComplete.emit(completedMode) }
             }
         }.start()
         _isRunning.value = true
