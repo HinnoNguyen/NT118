@@ -50,7 +50,6 @@ class RegisterActivity : AppCompatActivity() {
         val etConfirmPassword = findViewById<EditText>(R.id.etConfirmPassword)
         val btnRegister = findViewById<Button>(R.id.btnRegister)
         val btnLoginTab = findViewById<TextView>(R.id.btnLoginTab)
-        val tvSignInLink = findViewById<TextView>(R.id.tvSignInLink)
         val btnGoogleSignUp = findViewById<Button>(R.id.btnGoogleSignUp)
 
         btnRegister.setOnClickListener {
@@ -67,7 +66,6 @@ class RegisterActivity : AppCompatActivity() {
             finish()
         }
         btnLoginTab.setOnClickListener { navigateToLogin() }
-        tvSignInLink.setOnClickListener { navigateToLogin() }
 
         btnGoogleSignUp.setOnClickListener {
             Toast.makeText(this, "Google Sign Up coming soon!", Toast.LENGTH_SHORT).show()

@@ -115,8 +115,8 @@
                     android:textSize="12sp"
                     android:textStyle="bold"
                     app:cornerRadius="0dp"
-                    app:insetBottom="0dp"
-                    app:insetTop="0dp" />
+                    android:insetBottom="0dp"
+                    android:insetTop="0dp" />
             </LinearLayout>
 
             <!-- Story Forge Section (Hidden by default) -->

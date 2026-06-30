@@ -1,31 +1,26 @@
 package com.example.mobileapp
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.mobileapp.presentation.home.MainViewModel
-import com.example.mobileapp.utils.NavHelper
+import com.google.android.material.button.MaterialButton
 
 /**
- * Home screen.
- * Communicates only with [MainViewModel]; never imports repositories or use cases.
+ * Edit Profile screen.
+ * Reached from ProfileActivity / SettingsActivity via btnEditProfile.
  */
-class MainActivity : AppCompatActivity() {
-
-    private val viewModel: MainViewModel by viewModels { MainViewModel.factory() }
+class EditProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_edit_profile)
         setupEdgeToEdge()
         setupUI()
-        NavHelper.setup(this, NavHelper.Screen.HOME)
     }
 
     private fun setupEdgeToEdge() {
@@ -37,9 +32,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
-        val userInfoCard = findViewById<LinearLayout>(R.id.userInfoCard)
-        userInfoCard.setOnClickListener {
-            startActivity(Intent(this, ProfileActivity::class.java))
+        findViewById<TextView>(R.id.btnBack).setOnClickListener { finish() }
+        findViewById<MaterialButton>(R.id.btnSaveProfile).setOnClickListener {
+            Toast.makeText(this, "Profile saved", Toast.LENGTH_SHORT).show()
+            finish()
         }
     }
 }

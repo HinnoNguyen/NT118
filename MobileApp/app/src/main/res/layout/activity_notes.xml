@@ -157,8 +157,8 @@
                     android:textSize="12sp"
                     android:textStyle="bold"
                     app:cornerRadius="0dp"
-                    app:insetBottom="0dp"
-                    app:insetTop="0dp" />
+                    android:insetBottom="0dp"
+                    android:insetTop="0dp" />
             </LinearLayout>
 
             <!-- New Note Section (Visible when +NEW is clicked) -->
