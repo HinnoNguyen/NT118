@@ -5,6 +5,8 @@ data class User(
     val name: String,
     val email: String,
     val avatarUrl: String,
+    val title: String = "",
+    val bio: String = "",
     val createdAt: Long,
     val updatedAt: Long,
     val totalFocusMinutes: Int,
