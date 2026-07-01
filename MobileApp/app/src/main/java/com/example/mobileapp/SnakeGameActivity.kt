@@ -1,15 +1,20 @@
 package com.example.mobileapp
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.MotionEvent
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import android.view.MotionEvent
+import android.view.View
+import android.widget.FrameLayout
+import com.example.mobileapp.util.AnimationUtils.popIn
+import com.example.mobileapp.util.AnimationUtils.setBounceClick
 import com.google.android.material.button.MaterialButton
 
 class SnakeGameActivity : AppCompatActivity(), SnakeGameView.GameStateListener {
@@ -37,6 +42,8 @@ class SnakeGameActivity : AppCompatActivity(), SnakeGameView.GameStateListener {
         tvScore = findViewById(R.id.tvScore)
         snakeGameView.gameStateListener = this
 
+        findViewById<View>(R.id.gameBoardContainer).popIn(duration = 500)
+
         setupControls()
         showStartDialog()
     }
@@ -51,14 +58,19 @@ class SnakeGameActivity : AppCompatActivity(), SnakeGameView.GameStateListener {
 
     @android.annotation.SuppressLint("ClickableViewAccessibility")
     private fun setupControls() {
-        findViewById<TextView>(R.id.btnBack).setOnClickListener {
-            finish()
+        findViewById<TextView>(R.id.btnBack).apply {
+            setBounceClick()
+            setOnClickListener {
+                finish()
+            }
         }
 
         val upButton = findViewById<MaterialButton>(R.id.btnUp)
         val downButton = findViewById<MaterialButton>(R.id.btnDown)
         val leftButton = findViewById<MaterialButton>(R.id.btnLeft)
         val rightButton = findViewById<MaterialButton>(R.id.btnRight)
+
+        listOf(upButton, downButton, leftButton, rightButton).forEach { it.setBounceClick() }
 
         upButton.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {

@@ -12,4 +12,6 @@ interface UserRepository {
     suspend fun sendPasswordResetEmail(email: String): Result<Unit>
     fun getCurrentUserId(): String?
     fun signOut()
+    suspend fun awardExp(uid: String, amount: Int): Result<Unit>
+    suspend fun updateUserProfile(uid: String, name: String, avatarUrl: String, title: String, bio: String): Result<Unit>
 }

@@ -16,14 +16,14 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.mobileapp.data.repository.UserRepositoryImpl
-import com.example.mobileapp.domain.usecase.LoginUseCase
+import androidx.activity.viewModels
 import com.example.mobileapp.presentation.LoginViewModel
+import com.example.mobileapp.presentation.ViewModelFactory
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: LoginViewModel
+    private val viewModel: LoginViewModel by viewModels { ViewModelFactory() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +31,6 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         
         setupEdgeToEdge()
-        setupViewModel()
         setupUI()
         setupThemeSwitch()
     }
@@ -59,11 +58,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupViewModel() {
-        val repository = UserRepositoryImpl()
-        val loginUseCase = LoginUseCase(repository)
-        viewModel = LoginViewModel(loginUseCase)
-    }
 
     private fun setupUI() {
         val etEmail = findViewById<EditText>(R.id.etEmail)
@@ -74,26 +68,27 @@ class LoginActivity : AppCompatActivity() {
         val btnGoogleSignIn = findViewById<Button>(R.id.btnGoogleSignIn)
 
         btnLogin.setOnClickListener {
-            // Bypass login for testing purposes
-            Toast.makeText(this, "Debug Login: Welcome!", Toast.LENGTH_SHORT).show()
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-            
-            /* Commented out real login for testing
             val email = etEmail.text.toString()
             val pass = etPassword.text.toString()
-            viewModel.login(email, pass)
-            */
+            
+            if (email.isBlank() || pass.isBlank()) {
+                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+            } else {
+                viewModel.login(email, pass)
+            }
         }
 
         btnRegisterTab.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.stay)
+            finish()
         }
 
         tvForgotPassword.setOnClickListener {
             val intent = Intent(this, ForgotPasswordActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.stay)
         }
 
         btnGoogleSignIn.setOnClickListener {
@@ -119,7 +114,9 @@ class LoginActivity : AppCompatActivity() {
                 btnLogin.isEnabled = true
                 btnLogin.text = "LOGIN"
                 Toast.makeText(this, "Welcome Hero!", Toast.LENGTH_SHORT).show()
+                BaseActivity.resetNavigationState()
                 startActivity(Intent(this, MainActivity::class.java))
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
                 finish()
             }
             is LoginViewModel.LoginState.Error -> {

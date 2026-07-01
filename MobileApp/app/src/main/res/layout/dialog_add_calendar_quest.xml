@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bg_dark"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="monospace"
+        android:text="NEW QUEST LOG"
+        android:textColor="@color/accent_yellow"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvDialogDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="monospace"
+        android:text="Date: 2024-01-01"
+        android:textColor="#AAAAAA"
+        android:textSize="12sp" />
+
+    <EditText
+        android:id="@+id/etQuestTitle"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_button_unselected"
+        android:fontFamily="monospace"
+        android:hint="Enter quest name..."
+        android:paddingHorizontal="12dp"
+        android:textColor="@color/white"
+        android:textColorHint="#44FFFFFF"
+        android:textSize="14sp"
+        android:inputType="textCapSentences" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="monospace"
+        android:text="SELECT TYPE:"
+        android:textColor="#AAAAAA"
+        android:textSize="12sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/btnTypeQuest"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/accent_green"
+            android:gravity="center"
+            android:paddingVertical="8dp"
+            android:text="⚔️ QUEST"
+            android:textColor="@color/black"
+            android:fontFamily="monospace"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <TextView
+            android:id="@+id/btnTypeEvent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_button_unselected"
+            android:gravity="center"
+            android:paddingVertical="8dp"
+            android:text="📌 EVENT"
+            android:textColor="#AAAAAA"
+            android:fontFamily="monospace"
+            android:textSize="10sp"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <TextView
+            android:id="@+id/btnTypeBoss"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_button_unselected"
+            android:gravity="center"
+            android:paddingVertical="8dp"
+            android:text="👹 BOSS"
+            android:textColor="#AAAAAA"
+            android:fontFamily="monospace"
+            android:textSize="10sp"
+            android:clickable="true"
+            android:focusable="true"/>
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSaveQuest"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="@color/accent_green"
+        android:text="✦ RECORD TO SCROLL"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:cornerRadius="0dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCancel"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="CANCEL"
+        android:textColor="#AAAAAA"
+        android:fontFamily="monospace"
+        android:textSize="12sp" />
+
+</LinearLayout>

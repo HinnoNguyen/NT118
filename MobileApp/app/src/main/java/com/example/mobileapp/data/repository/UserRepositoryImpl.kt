@@ -134,6 +134,49 @@ class UserRepositoryImpl : UserRepository {
         auth.signOut()
     }
 
+    override suspend fun awardExp(uid: String, amount: Int): Result<Unit> {
+        return try {
+            firestore.runTransaction { transaction ->
+                val docRef = usersCollection.document(uid)
+                val snapshot = transaction.get(docRef)
+                val userDto = snapshot.toObject(UserDto::class.java) ?: return@runTransaction
+
+                val newExp = userDto.exp + amount
+                val newLevel = (newExp / 100) + 1
+                val newCompletedCount = when {
+                    amount > 0 -> userDto.completedTaskCount + 1
+                    amount < 0 -> maxOf(0, userDto.completedTaskCount - 1)
+                    else -> userDto.completedTaskCount
+                }
+
+                transaction.update(docRef, mapOf(
+                    "exp" to newExp,
+                    "level" to newLevel,
+                    "completedTaskCount" to newCompletedCount,
+                    "updatedAt" to System.currentTimeMillis()
+                ))
+            }.await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun updateUserProfile(uid: String, name: String, avatarUrl: String, title: String, bio: String): Result<Unit> {
+        return try {
+            usersCollection.document(uid).update(mapOf(
+                "name" to name,
+                "avatarUrl" to avatarUrl,
+                "title" to title,
+                "bio" to bio,
+                "updatedAt" to System.currentTimeMillis()
+            )).await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     private suspend fun getOrCreateUserDocument(
         uid: String,
         name: String,
