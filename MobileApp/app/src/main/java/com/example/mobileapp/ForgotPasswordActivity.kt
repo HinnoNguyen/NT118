@@ -33,8 +33,8 @@ class ForgotPasswordActivity : AppCompatActivity() {
     }
 
     private fun setupThemeSwitch() {
-        val sharedPreferences = getSharedPreferences("theme_prefs", Context.MODE_PRIVATE)
-        val switchTheme = findViewById<CompoundButton>(R.id.switchTheme) ?: return // Fix crash if view is missing
+        val sharedPreferences = getSharedPreferences("theme_prefs", MODE_PRIVATE)
+        val switchTheme = findViewById<CompoundButton>(R.id.switchTheme)
         val isDarkMode = sharedPreferences.getBoolean("is_dark_mode", true)
         switchTheme.isChecked = isDarkMode
 
@@ -97,8 +97,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
         }
 
         tvBackToLogin.setOnClickListener {
-            finish()
-            overridePendingTransition(R.anim.slide_in_left, R.anim.stay)
+            finish() // Quay lại màn hình Login
         }
     }
 }

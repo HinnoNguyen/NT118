@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <queries>
-        <package android:name="com.google.android.gms" />
-        <package android:name="com.android.vending" />
-        <package android:name="com.google.android.gsf" />
-        <intent>
-            <action android:name="com.google.android.gms.common.service.START" />
-        </intent>
-    </queries>
 
     <application
         android:name=".MobileAppApplication"
@@ -26,7 +16,6 @@
 
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/Theme.MobileApp.Auth"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,18 +23,18 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".RegisterActivity" android:theme="@style/Theme.MobileApp.Auth" android:exported="false" android:launchMode="singleTop" />
-        <activity android:name=".MainActivity" android:exported="false" android:launchMode="singleTop" />
-        <activity android:name=".ProfileActivity" android:exported="false" android:launchMode="singleTop" />
-        <activity android:name=".EditProfileActivity" android:exported="false" android:launchMode="singleTop" />
-        <activity android:name=".SnakeGameActivity" android:exported="false" android:launchMode="singleTop" />
-        <activity android:name=".CalendarActivity" android:exported="false" android:launchMode="singleTop" />
-        <activity android:name=".SettingsActivity" android:exported="false" android:launchMode="singleTop" />
-        <activity android:name=".NotesActivity" android:exported="false" android:launchMode="singleTop" />
-        <activity android:name=".StoryActivity" android:exported="false" android:launchMode="singleTop" />
-        <activity android:name=".QuestActivity" android:exported="false" android:launchMode="singleTop" />
-        <activity android:name=".TimerActivity" android:exported="false" android:launchMode="singleTop" />
-        <activity android:name=".ForgotPasswordActivity" android:theme="@style/Theme.MobileApp.Auth" android:exported="false" android:launchMode="singleTop" />
+        <activity android:name=".RegisterActivity" android:exported="false" />
+        <activity android:name=".MainActivity" android:exported="false" />
+        <activity android:name=".ProfileActivity" android:exported="false" />
+        <activity android:name=".EditProfileActivity" android:exported="false" />
+        <activity android:name=".SnakeGameActivity" android:exported="false" />
+        <activity android:name=".CalendarActivity" android:exported="false" />
+        <activity android:name=".SettingsActivity" android:exported="false" />
+        <activity android:name=".NotesActivity" android:exported="false" />
+        <activity android:name=".StoryActivity" android:exported="false" />
+        <activity android:name=".QuestActivity" android:exported="false" />
+        <activity android:name=".TimerActivity" android:exported="false" />
+        <activity android:name=".ForgotPasswordActivity" android:exported="false" />
 
     </application>
 

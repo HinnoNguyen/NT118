@@ -16,14 +16,14 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.activity.viewModels
+import com.example.mobileapp.data.repository.UserRepositoryImpl
+import com.example.mobileapp.domain.usecase.RegisterUseCase
 import com.example.mobileapp.presentation.RegisterViewModel
-import com.example.mobileapp.presentation.ViewModelFactory
 import kotlinx.coroutines.launch
 
 class RegisterActivity : AppCompatActivity() {
 
-    private val viewModel: RegisterViewModel by viewModels { ViewModelFactory() }
+    private lateinit var viewModel: RegisterViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,12 +31,13 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_register)
 
         setupEdgeToEdge()
+        setupViewModel()
         setupUI()
         setupThemeSwitch()
     }
 
     private fun setupThemeSwitch() {
-        val sharedPreferences = getSharedPreferences("theme_prefs", Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences("theme_prefs", MODE_PRIVATE)
         val switchTheme = findViewById<CompoundButton>(R.id.switchTheme)
         val isDarkMode = sharedPreferences.getBoolean("is_dark_mode", true)
         
@@ -62,6 +63,11 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupViewModel() {
+        val repository = UserRepositoryImpl()
+        val registerUseCase = RegisterUseCase(repository)
+        viewModel = RegisterViewModel(registerUseCase)
+    }
 
     private fun setupUI() {
         val etUsername = findViewById<EditText>(R.id.etUsername)
@@ -84,7 +90,6 @@ class RegisterActivity : AppCompatActivity() {
         val navigateToLogin = {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
-            overridePendingTransition(R.anim.slide_in_left, R.anim.stay)
             finish()
         }
 
@@ -113,9 +118,7 @@ class RegisterActivity : AppCompatActivity() {
                 btnRegister.isEnabled = true
                 btnRegister.text = "REGISTER"
                 Toast.makeText(this, "Registration Successful! Welcome, ${state.user.name}", Toast.LENGTH_SHORT).show()
-                BaseActivity.resetNavigationState()
                 startActivity(Intent(this, MainActivity::class.java))
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
                 finish()
             }
             is RegisterViewModel.RegisterState.Error -> {

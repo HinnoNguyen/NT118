@@ -5,8 +5,6 @@ data class UserDto(
     val name: String = "",
     val email: String = "",
     val avatarUrl: String = "",
-    val title: String = "",
-    val bio: String = "",
     val createdAt: Long = 0L,
     val updatedAt: Long = 0L,
     val totalFocusMinutes: Int = 0,

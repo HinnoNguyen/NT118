@@ -12,9 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.button.MaterialButton
 
-import com.google.firebase.auth.FirebaseAuth
-
-class SettingsActivity : BaseActivity() {
+class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -28,12 +26,12 @@ class SettingsActivity : BaseActivity() {
 
     private fun setupEditProfile() {
         findViewById<LinearLayout>(R.id.btnEditProfile).setOnClickListener {
-            navigateTo(EditProfileActivity::class.java)
+            startActivity(Intent(this, EditProfileActivity::class.java))
         }
     }
 
     private fun setupDarkModeSwitch() {
-        val sharedPreferences = getSharedPreferences("theme_prefs", Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences("theme_prefs", MODE_PRIVATE)
         val switchDarkMode = findViewById<CompoundButton>(R.id.switchDarkMode)
         val isDarkMode = sharedPreferences.getBoolean("is_dark_mode", true)
         switchDarkMode.isChecked = isDarkMode
@@ -58,10 +56,6 @@ class SettingsActivity : BaseActivity() {
 
     private fun setupLogout() {
         findViewById<MaterialButton>(R.id.btnLogout).setOnClickListener {
-            // Sign out from Firebase Auth
-            FirebaseAuth.getInstance().signOut()
-            BaseActivity.resetNavigationState()
-            
             // Chuyển về màn hình Login và xóa hết lịch sử các màn hình trước đó
             val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -71,6 +65,25 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun setupNavigation() {
-        // Handled by BaseActivity
+        findViewById<LinearLayout>(R.id.navHome).setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
+        findViewById<LinearLayout>(R.id.navNotes).setOnClickListener {
+            startActivity(Intent(this, NotesActivity::class.java))
+            finish()
+        }
+        findViewById<LinearLayout>(R.id.navStory).setOnClickListener {
+            startActivity(Intent(this, StoryActivity::class.java))
+            finish()
+        }
+        findViewById<LinearLayout>(R.id.navQuest).setOnClickListener {
+            startActivity(Intent(this, QuestActivity::class.java))
+            finish()
+        }
+        findViewById<LinearLayout>(R.id.navTime).setOnClickListener {
+            startActivity(Intent(this, TimerActivity::class.java))
+            finish()
+        }
     }
 }
