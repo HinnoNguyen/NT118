@@ -43,24 +43,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:fontFamily="monospace"
-                android:text="13:16"
                 android:textColor="@color/accent_green"
                 android:textSize="12sp" />
 
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="🔔"
-                    android:textSize="18sp" />
-                <View
-                    android:layout_width="8dp"
-                    android:layout_height="8dp"
-                    android:layout_gravity="top|end"
-                    android:background="@color/rank_s" />
-            </FrameLayout>
+            <include layout="@layout/layout_notification_bell" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -99,49 +85,59 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/btnFilterAll"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
-                        android:background="@color/accent_yellow"
+                        android:background="@drawable/bg_filter_button"
+                        android:backgroundTint="@color/accent_yellow"
                         android:fontFamily="monospace"
                         android:paddingHorizontal="16dp"
                         android:text="ALL"
                         android:textColor="@color/black"
                         android:textSize="12sp"
                         android:textStyle="bold"
-                        android:gravity="center" />
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:focusable="true" />
 
                     <TextView
+                        android:id="@+id/btnFilterNotes"
                         android:layout_width="48dp"
                         android:layout_height="40dp"
                         android:layout_marginStart="8dp"
-                        android:background="@drawable/bg_main_card"
+                        android:background="@drawable/bg_filter_button"
                         android:gravity="center"
-                        android:padding="0dp"
                         android:text="📝"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:clickable="true"
+                        android:focusable="true"/>
 
                     <TextView
+                        android:id="@+id/btnFilterReminders"
                         android:layout_width="48dp"
                         android:layout_height="40dp"
                         android:layout_marginStart="8dp"
-                        android:background="@drawable/bg_main_card"
+                        android:background="@drawable/bg_filter_button"
                         android:gravity="center"
-                        android:padding="0dp"
                         android:text="🔔"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:clickable="true"
+                        android:focusable="true"/>
 
                     <TextView
+                        android:id="@+id/btnFilterFlashcards"
                         android:layout_width="48dp"
                         android:layout_height="40dp"
                         android:layout_marginStart="8dp"
-                        android:background="@drawable/bg_main_card"
+                        android:background="@drawable/bg_filter_button"
                         android:gravity="center"
-                        android:padding="0dp"
                         android:text="🃏"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:clickable="true"
+                        android:focusable="true"/>
                 </LinearLayout>
 
-                <!-- New Button (Changes to X when newNoteSection is visible) -->
+                <!-- New Button -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnNewNote"
                     android:layout_width="wrap_content"
@@ -161,7 +157,7 @@
                     android:insetTop="0dp" />
             </LinearLayout>
 
-            <!-- New Note Section (Visible when +NEW is clicked) -->
+            <!-- New Note Section -->
             <LinearLayout
                 android:id="@+id/newNoteSection"
                 android:layout_width="match_parent"
@@ -190,7 +186,9 @@
                         android:textColor="@color/white"
                         android:fontFamily="monospace"
                         android:textSize="10sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:clickable="true"
+                        android:focusable="true"/>
 
                     <TextView
                         android:id="@+id/btnTypeReminder"
@@ -203,7 +201,9 @@
                         android:text="🔔 REMINDER"
                         android:textColor="#AAAAAA"
                         android:fontFamily="monospace"
-                        android:textSize="10sp" />
+                        android:textSize="10sp"
+                        android:clickable="true"
+                        android:focusable="true"/>
 
                     <TextView
                         android:id="@+id/btnTypeFlashcard"
@@ -216,7 +216,9 @@
                         android:text="🃏 FLASHCARD"
                         android:textColor="#AAAAAA"
                         android:fontFamily="monospace"
-                        android:textSize="10sp" />
+                        android:textSize="10sp"
+                        android:clickable="true"
+                        android:focusable="true"/>
                 </LinearLayout>
 
                 <!-- Reminder Time Layout -->
@@ -251,11 +253,14 @@
                         android:text="12:00"
                         android:textColor="@color/white"
                         android:fontFamily="monospace"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:clickable="true"
+                        android:focusable="true"/>
                 </LinearLayout>
 
                 <!-- Input Fields -->
                 <EditText
+                    android:id="@+id/etNoteTitle"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_marginTop="12dp"
@@ -270,6 +275,7 @@
                     android:importantForAutofill="no" />
 
                 <EditText
+                    android:id="@+id/etNoteContent"
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
                     android:layout_marginTop="12dp"
@@ -286,6 +292,7 @@
 
                 <!-- Save Button -->
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSaveScroll"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_marginTop="16dp"
@@ -298,315 +305,22 @@
                     app:cornerRadius="0dp" />
             </LinearLayout>
 
-            <!-- Notes List -->
-            <LinearLayout
+            <!-- Notes List RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvNotes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <!-- Note 1 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/bg_main_card"
-                    android:gravity="center_vertical"
-                    android:padding="12dp">
-
-                    <TextView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="#1A1A24"
-                        android:gravity="center"
-                        android:text="📑"
-                        android:textSize="20sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="monospace"
-                            android:text="Math Formulas"
-                            android:textColor="@color/accent_green"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:fontFamily="monospace"
-                            android:text="a² + b² = c² Pythagorean theorem"
-                            android:textColor="#AAAAAA"
-                            android:textSize="11sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!-- Note 2 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/bg_main_card"
-                    android:gravity="center_vertical"
-                    android:padding="12dp">
-
-                    <TextView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="#1A1A24"
-                        android:gravity="center"
-                        android:text="🔔"
-                        android:textSize="20sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="monospace"
-                                android:text="Group Meeting"
-                                android:textColor="@color/accent_green"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="monospace"
-                                android:text="⏰ 14:00"
-                                android:textColor="@color/rank_s"
-                                android:textSize="10sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:fontFamily="monospace"
-                            android:text="Prepare slides for the meeting"
-                            android:textColor="#AAAAAA"
-                            android:textSize="11sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!-- Note 3 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/bg_main_card"
-                    android:gravity="center_vertical"
-                    android:padding="12dp">
-
-                    <TextView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="#1A1A24"
-                        android:gravity="center"
-                        android:text="📝"
-                        android:textSize="20sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="monospace"
-                            android:text="Project Ideas"
-                            android:textColor="@color/accent_green"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:fontFamily="monospace"
-                            android:text="RPG-style time management app"
-                            android:textColor="#AAAAAA"
-                            android:textSize="11sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-            </LinearLayout>
+                tools:listitem="@layout/item_note" />
 
         </LinearLayout>
     </ScrollView>
 
     <!-- Bottom Nav -->
-    <LinearLayout
+    <include
+        layout="@layout/layout_bottom_nav"
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#1A1A1A"
-        android:orientation="horizontal"
-        android:paddingVertical="8dp"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <LinearLayout
-            android:id="@+id/navHome"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:clickable="true"
-            android:focusable="true">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="🏠"
-                android:textSize="16sp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="monospace"
-                android:text="HOME"
-                android:textColor="#AAAAAA"
-                android:textSize="8sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/navQuest"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:clickable="true"
-            android:focusable="true">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="⚔️"
-                android:textSize="16sp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="monospace"
-                android:text="QUEST"
-                android:textColor="#AAAAAA"
-                android:textSize="8sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/navTime"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:clickable="true"
-            android:focusable="true">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="⏰"
-                android:textSize="16sp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="monospace"
-                android:text="TIME"
-                android:textColor="#AAAAAA"
-                android:textSize="8sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/navNotes"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:clickable="true"
-            android:focusable="true">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="📜"
-                android:textSize="16sp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="monospace"
-                android:text="NOTES"
-                android:textColor="@color/accent_green"
-                android:textSize="8sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/navStory"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:clickable="true"
-            android:focusable="true">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="📖"
-                android:textSize="16sp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="monospace"
-                android:text="STORY"
-                android:textColor="#AAAAAA"
-                android:textSize="8sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/navSettings"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:clickable="true"
-            android:focusable="true">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="⚙️"
-                android:textSize="16sp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="monospace"
-                android:text="SET"
-                android:textColor="#AAAAAA"
-                android:textSize="8sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-    </LinearLayout>
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
 
-class StoryActivity : AppCompatActivity() {
+class StoryActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,25 +64,6 @@ class StoryActivity : AppCompatActivity() {
     }
 
     private fun setupNavigation() {
-        findViewById<LinearLayout>(R.id.navHome).setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-        }
-        findViewById<LinearLayout>(R.id.navQuest).setOnClickListener {
-            startActivity(Intent(this, QuestActivity::class.java))
-            finish()
-        }
-        findViewById<LinearLayout>(R.id.navTime).setOnClickListener {
-            startActivity(Intent(this, TimerActivity::class.java))
-            finish()
-        }
-        findViewById<LinearLayout>(R.id.navNotes).setOnClickListener {
-            startActivity(Intent(this, NotesActivity::class.java))
-            finish()
-        }
-        findViewById<LinearLayout>(R.id.navSettings).setOnClickListener {
-            startActivity(Intent(this, SettingsActivity::class.java))
-            finish()
-        }
+        // Handled by BaseActivity
     }
 }

@@ -1,0 +1,57 @@
+package com.example.mobileapp.presentation
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import com.example.mobileapp.R
+import com.example.mobileapp.domain.model.Note
+import com.example.mobileapp.util.AnimationUtils.slideUp
+
+class NotesAdapter(
+    private val onDeleteClick: (String) -> Unit
+) : ListAdapter<Note, NotesAdapter.NoteViewHolder>(NoteDiffCallback()) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_note, parent, false)
+        return NoteViewHolder(view, onDeleteClick)
+    }
+
+    override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
+        holder.bind(getItem(position))
+        holder.itemView.slideUp(delay = (position * 50).toLong())
+    }
+
+    class NoteViewHolder(
+        view: View,
+        private val onDeleteClick: (String) -> Unit
+    ) : RecyclerView.ViewHolder(view) {
+        private val tvNoteTitle: TextView = view.findViewById(R.id.tvNoteTitle)
+        private val tvNoteContent: TextView = view.findViewById(R.id.tvNoteContent)
+        private val tvNoteIcon: TextView = view.findViewById(R.id.tvNoteIcon)
+        private val btnDeleteNote: TextView = view.findViewById(R.id.btnDeleteNote)
+
+        fun bind(note: Note) {
+            tvNoteTitle.text = note.title
+            tvNoteContent.text = note.content
+            
+            tvNoteIcon.text = when(note.type) {
+                "reminder" -> "🔔"
+                "flashcard" -> "🃏"
+                else -> "📑"
+            }
+
+            btnDeleteNote.setOnClickListener {
+                onDeleteClick(note.id)
+            }
+        }
+    }
+
+    class NoteDiffCallback : DiffUtil.ItemCallback<Note>() {
+        override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean = oldItem.id == newItem.id
+        override fun areContentsTheSame(oldItem: Note, newItem: Note): Boolean = oldItem == newItem
+    }
+}
