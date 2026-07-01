@@ -80,7 +80,17 @@ class UserRepositoryImpl : UserRepository {
             val userDto = snapshot.toObject(UserDto::class.java)
                 ?: return Result.failure(Exception("User profile not found"))
 
-            Result.success(userDto.toDomain())
+            val now = System.currentTimeMillis()
+            if (!isSameDay(userDto.updatedAt, now)) {
+                // Reset today stats if it's a new day
+                usersCollection.document(uid).update(mapOf(
+                    "todayFocusMinutes" to 0,
+                    "updatedAt" to now
+                )).await()
+                Result.success(userDto.copy(todayFocusMinutes = 0, updatedAt = now).toDomain())
+            } else {
+                Result.success(userDto.toDomain())
+            }
         } catch (e: Exception) {
             Result.failure(Exception(e.message ?: "Failed to fetch user profile", e))
         }
@@ -160,6 +170,38 @@ class UserRepositoryImpl : UserRepository {
         } catch (e: Exception) {
             Result.failure(e)
         }
+    }
+
+    override suspend fun addFocusMinutes(uid: String, minutes: Int): Result<Unit> {
+        return try {
+            firestore.runTransaction { transaction ->
+                val docRef = usersCollection.document(uid)
+                val snapshot = transaction.get(docRef)
+                val userDto = snapshot.toObject(UserDto::class.java) ?: return@runTransaction
+
+                val now = System.currentTimeMillis()
+                val isNewDay = !isSameDay(userDto.updatedAt, now)
+
+                val newTotalFocus = userDto.totalFocusMinutes + minutes
+                val newTodayFocus = if (isNewDay) minutes else userDto.todayFocusMinutes + minutes
+
+                transaction.update(docRef, mapOf(
+                    "totalFocusMinutes" to newTotalFocus,
+                    "todayFocusMinutes" to newTodayFocus,
+                    "updatedAt" to now
+                ))
+            }.await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    private fun isSameDay(millis1: Long, millis2: Long): Boolean {
+        val cal1 = java.util.Calendar.getInstance().apply { timeInMillis = millis1 }
+        val cal2 = java.util.Calendar.getInstance().apply { timeInMillis = millis2 }
+        return cal1.get(java.util.Calendar.YEAR) == cal2.get(java.util.Calendar.YEAR) &&
+                cal1.get(java.util.Calendar.DAY_OF_YEAR) == cal2.get(java.util.Calendar.DAY_OF_YEAR)
     }
 
     override suspend fun updateUserProfile(uid: String, name: String, avatarUrl: String, title: String, bio: String): Result<Unit> {

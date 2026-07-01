@@ -6,10 +6,10 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.activity.viewModels
 import com.example.mobileapp.presentation.MainViewModel
 import com.example.mobileapp.presentation.ViewModelFactory
 import com.example.mobileapp.util.AnimationUtils.setBounceClick
@@ -92,7 +92,9 @@ class MainActivity : BaseActivity() {
                             expProgressBar.setProgress(it.exp % 100, true)
                             
                             tvQuestsDone.text = it.completedTaskCount.toString()
-                            tvFocusTime.text = "${it.totalFocusMinutes / 60}h"
+                            val hours = it.totalFocusMinutes / 60
+                            val minutes = it.totalFocusMinutes % 60
+                            tvFocusTime.text = "${hours}h ${minutes}m"
 
                             // Load Avatar
                             if (it.avatarUrl.isNotBlank()) {

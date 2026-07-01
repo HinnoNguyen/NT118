@@ -1,14 +1,13 @@
 package com.example.mobileapp
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.CompoundButton
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
@@ -16,7 +15,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.activity.viewModels
 import com.example.mobileapp.presentation.LoginViewModel
 import com.example.mobileapp.presentation.ViewModelFactory
 import kotlinx.coroutines.launch
@@ -32,21 +30,26 @@ class LoginActivity : AppCompatActivity() {
         
         setupEdgeToEdge()
         setupUI()
-        setupThemeSwitch()
+        setupThemeToggle()
     }
 
-    private fun setupThemeSwitch() {
+    private fun setupThemeToggle() {
         val sharedPreferences = getSharedPreferences("theme_prefs", MODE_PRIVATE)
-        val switchTheme = findViewById<CompoundButton>(R.id.switchTheme)
-        val isDarkMode = sharedPreferences.getBoolean("is_dark_mode", true)
-        switchTheme.isChecked = isDarkMode
+        val btnThemeToggle = findViewById<Button>(R.id.btnThemeToggle)
 
-        switchTheme.setOnCheckedChangeListener { _, isChecked ->
-            val currentMode = if (isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
-            if (AppCompatDelegate.getDefaultNightMode() != currentMode) {
-                sharedPreferences.edit().putBoolean("is_dark_mode", isChecked).apply()
-                AppCompatDelegate.setDefaultNightMode(currentMode)
-            }
+        btnThemeToggle.setOnClickListener {
+            val isDarkMode = sharedPreferences.getBoolean("is_dark_mode", true)
+            val newDarkMode = !isDarkMode
+            val currentMode = if (newDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+            
+            sharedPreferences.edit().putBoolean("is_dark_mode", newDarkMode).apply()
+            AppCompatDelegate.setDefaultNightMode(currentMode)
+            
+            // Re-create the activity to apply theme change immediately and clearly
+            val intent = Intent(this, LoginActivity::class.java)
+            finish()
+            startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
     }
 

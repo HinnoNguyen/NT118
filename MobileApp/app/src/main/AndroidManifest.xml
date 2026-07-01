@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <queries>
         <package android:name="com.google.android.gms" />
@@ -9,6 +10,13 @@
         <package android:name="com.google.android.gsf" />
         <intent>
             <action android:name="com.google.android.gms.common.service.START" />
+        </intent>
+        <intent>
+            <action android:name="com.google.android.gms.auth.api.signin.Service.START" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
         </intent>
     </queries>
 
@@ -22,6 +30,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MobileApp" >
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
         <activity
             android:name=".LoginActivity"

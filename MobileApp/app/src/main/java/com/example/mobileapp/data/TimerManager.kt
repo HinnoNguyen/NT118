@@ -1,11 +1,22 @@
 package com.example.mobileapp.data
 
 import android.os.CountDownTimer
+import com.example.mobileapp.domain.repository.UserRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 object TimerManager {
+
+    private var userRepository: UserRepository? = null
+    private val scope = CoroutineScope(Dispatchers.IO)
+
+    fun initialize(repository: UserRepository) {
+        this.userRepository = repository
+    }
 
     private var countDownTimer: CountDownTimer? = null
 
@@ -39,6 +50,18 @@ object TimerManager {
                 _timeLeftMs.value = 0
                 _isTimerRunning.value = false
                 _timerFinished.value = true
+                
+                // Record focus time
+                val repository = userRepository
+                val minutes = getTimerLengthMinutes()
+                if (repository != null) {
+                    val uid = repository.getCurrentUserId()
+                    if (uid != null) {
+                        scope.launch {
+                            repository.addFocusMinutes(uid, minutes)
+                        }
+                    }
+                }
             }
         }.start()
 
