@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">TaleQuests</string>
+    <string name="app_name">Narrativize</string>
     <string name="forgot_password">Forgot password? Click here</string>
     <string name="sign_in_google">Sign in with Google</string>
-    <string name="login_title">TALEQUESTS</string>
+    <string name="login_title">NARRATIVIZE</string>
     <string name="login_subtitle">- PRODUCTIVITY RPG -</string>
     <string name="login_press_start">PRESS START TO BEGIN</string>
     <string name="label_email">Email</string>

@@ -1,11 +1,13 @@
 package com.example.mobileapp
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
@@ -26,6 +28,27 @@ class ForgotPasswordActivity : AppCompatActivity() {
         setupDependencies()
         setupEdgeToEdge()
         setupUI()
+        setupThemeToggle()
+    }
+
+    private fun setupThemeToggle() {
+        val sharedPreferences = getSharedPreferences("theme_prefs", MODE_PRIVATE)
+        val btnThemeToggle = findViewById<android.widget.Button>(R.id.btnThemeToggle) ?: return
+        
+        btnThemeToggle.setOnClickListener {
+            val isDarkMode = sharedPreferences.getBoolean("is_dark_mode", true)
+            val newDarkMode = !isDarkMode
+            val currentMode = if (newDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+            
+            sharedPreferences.edit().putBoolean("is_dark_mode", newDarkMode).apply()
+            AppCompatDelegate.setDefaultNightMode(currentMode)
+            
+            // Re-create the activity to apply theme change immediately and clearly
+            val intent = android.content.Intent(this, ForgotPasswordActivity::class.java)
+            finish()
+            startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        }
     }
 
     private fun setupDependencies() {
@@ -78,7 +101,8 @@ class ForgotPasswordActivity : AppCompatActivity() {
         }
 
         tvBackToLogin.setOnClickListener {
-            finish() // Quay lại màn hình Login
+            finish()
+            overridePendingTransition(R.anim.slide_in_left, R.anim.stay)
         }
     }
 }

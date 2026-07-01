@@ -1,34 +1,79 @@
 package com.example.mobileapp
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.mobileapp.presentation.NotesAdapter
+import com.example.mobileapp.presentation.NotesViewModel
+import com.example.mobileapp.presentation.ViewModelFactory
 import com.google.android.material.button.MaterialButton
+import kotlinx.coroutines.launch
 
-class NotesActivity : AppCompatActivity() {
+class NotesActivity : BaseActivity() {
+
+    private val viewModel: NotesViewModel by viewModels { ViewModelFactory() }
+    private lateinit var rvNotes: RecyclerView
+    private lateinit var notesAdapter: NotesAdapter
+    private lateinit var etNoteTitle: EditText
+    private lateinit var etNoteContent: EditText
+    private var selectedType = "note"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notes)
 
         setupUI()
-        setupNavigation()
+        observeViewModel()
     }
 
     private fun setupUI() {
+        rvNotes = findViewById(R.id.rvNotes)
+        etNoteTitle = findViewById(R.id.etNoteTitle)
+        etNoteContent = findViewById(R.id.etNoteContent)
+
+        notesAdapter = NotesAdapter { noteId ->
+            viewModel.deleteNote(noteId)
+        }
+        rvNotes.apply {
+            layoutManager = LinearLayoutManager(this@NotesActivity)
+            adapter = notesAdapter
+        }
+
+        setupFilterButtons()
+        setupNewNoteSection()
+    }
+
+    private fun setupFilterButtons() {
+        val btnFilterAll = findViewById<TextView>(R.id.btnFilterAll)
+        val btnFilterNotes = findViewById<TextView>(R.id.btnFilterNotes)
+        val btnFilterReminders = findViewById<TextView>(R.id.btnFilterReminders)
+        val btnFilterFlashcards = findViewById<TextView>(R.id.btnFilterFlashcards)
+
+        btnFilterAll.setOnClickListener { viewModel.setFilter("all") }
+        btnFilterNotes.setOnClickListener { viewModel.setFilter("note") }
+        btnFilterReminders.setOnClickListener { viewModel.setFilter("reminder") }
+        btnFilterFlashcards.setOnClickListener { viewModel.setFilter("flashcard") }
+    }
+
+    private fun setupNewNoteSection() {
         val btnNewNote = findViewById<MaterialButton>(R.id.btnNewNote)
         val newNoteSection = findViewById<LinearLayout>(R.id.newNoteSection)
-        
+        val btnSaveScroll = findViewById<MaterialButton>(R.id.btnSaveScroll)
+
         val btnTypeNote = findViewById<TextView>(R.id.btnTypeNote)
         val btnTypeReminder = findViewById<TextView>(R.id.btnTypeReminder)
         val btnTypeFlashcard = findViewById<TextView>(R.id.btnTypeFlashcard)
-        val reminderTimeLayout = findViewById<LinearLayout>(R.id.reminderTimeLayout)
 
-        // Toggle New Note Section
         btnNewNote.setOnClickListener {
             if (newNoteSection.visibility == View.GONE) {
                 newNoteSection.visibility = View.VISIBLE
@@ -39,51 +84,82 @@ class NotesActivity : AppCompatActivity() {
             }
         }
 
-        // Type Selection Logic
-        val typeButtons = listOf(btnTypeNote, btnTypeReminder, btnTypeFlashcard)
-        
-        fun selectType(selectedView: TextView) {
-            typeButtons.forEach { btn ->
-                if (btn == selectedView) {
-                    btn.setBackgroundColor(ContextCompat.getColor(this, R.color.note_purple))
-                    btn.setTextColor(ContextCompat.getColor(this, R.color.white))
-                } else {
-                    btn.setBackgroundResource(R.drawable.bg_button_unselected)
-                    btn.setTextColor(0xFFAAAAAA.toInt())
-                }
-            }
+        btnTypeNote.setOnClickListener { selectedType = "note"; updateTypeUI(btnTypeNote) }
+        btnTypeReminder.setOnClickListener { selectedType = "reminder"; updateTypeUI(btnTypeReminder) }
+        btnTypeFlashcard.setOnClickListener { selectedType = "flashcard"; updateTypeUI(btnTypeFlashcard) }
 
-            if (selectedView == btnTypeReminder) {
-                reminderTimeLayout.visibility = View.VISIBLE
+        btnSaveScroll.setOnClickListener {
+            val title = etNoteTitle.text.toString()
+            val content = etNoteContent.text.toString()
+            if (title.isNotBlank()) {
+                viewModel.addNote(title, content, selectedType)
+                etNoteTitle.text.clear()
+                etNoteContent.text.clear()
+                newNoteSection.visibility = View.GONE
+                btnNewNote.text = "+ NEW"
             } else {
-                reminderTimeLayout.visibility = View.GONE
+                Toast.makeText(this, "Title is required", Toast.LENGTH_SHORT).show()
             }
         }
-
-        btnTypeNote.setOnClickListener { selectType(btnTypeNote) }
-        btnTypeReminder.setOnClickListener { selectType(btnTypeReminder) }
-        btnTypeFlashcard.setOnClickListener { selectType(btnTypeFlashcard) }
     }
 
-    private fun setupNavigation() {
-        findViewById<LinearLayout>(R.id.navHome).setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
+    private fun updateFilterUI(selectedFilter: String) {
+        val filters = mapOf(
+            "all" to R.id.btnFilterAll,
+            "note" to R.id.btnFilterNotes,
+            "reminder" to R.id.btnFilterReminders,
+            "flashcard" to R.id.btnFilterFlashcards
+        )
+
+        filters.forEach { (type, viewId) ->
+            val btn = findViewById<TextView>(viewId)
+            btn.setBackgroundResource(R.drawable.bg_filter_button)
+            if (type == selectedFilter) {
+                btn.backgroundTintList = ContextCompat.getColorStateList(this, R.color.accent_yellow)
+                btn.setTextColor(ContextCompat.getColor(this, R.color.black))
+            } else {
+                btn.backgroundTintList = null
+                btn.setTextColor(ContextCompat.getColor(this, R.color.accent_green))
+            }
         }
-        findViewById<LinearLayout>(R.id.navQuest).setOnClickListener {
-            // Intent to QuestActivity
+    }
+
+    private fun updateTypeUI(selected: TextView) {
+        val buttons = listOf(R.id.btnTypeNote, R.id.btnTypeReminder, R.id.btnTypeFlashcard)
+        buttons.forEach { id ->
+            val btn = findViewById<TextView>(id)
+            if (btn == selected) {
+                btn.setBackgroundColor(ContextCompat.getColor(this, R.color.note_purple))
+                btn.setTextColor(ContextCompat.getColor(this, R.color.white))
+            } else {
+                btn.setBackgroundResource(R.drawable.bg_button_unselected)
+                btn.setTextColor(0xFFAAAAAA.toInt())
+            }
         }
-        findViewById<LinearLayout>(R.id.navTime).setOnClickListener {
-            // Intent to TimerActivity
-        }
-        // Current is Notes
-        findViewById<LinearLayout>(R.id.navStory).setOnClickListener {
-            startActivity(Intent(this, StoryActivity::class.java))
-            finish()
-        }
-        findViewById<LinearLayout>(R.id.navSettings).setOnClickListener {
-            startActivity(Intent(this, SettingsActivity::class.java))
-            finish()
+    }
+
+    private fun observeViewModel() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.notes.collect { notes ->
+                        notesAdapter.submitList(notes)
+                    }
+                }
+                launch {
+                    viewModel.filterType.collect { filter ->
+                        updateFilterUI(filter)
+                    }
+                }
+                launch {
+                    viewModel.error.collect { error ->
+                        error?.let {
+                            Toast.makeText(this@NotesActivity, it, Toast.LENGTH_SHORT).show()
+                            viewModel.clearError()
+                        }
+                    }
+                }
+            }
         }
     }
 }
