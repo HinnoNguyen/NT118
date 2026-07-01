@@ -92,7 +92,9 @@ class ProfileActivity : BaseActivity() {
                         }
                         
                         tvQuestsDone?.text = it.completedTaskCount.toString()
-                        tvFocusTime?.text = "${it.totalFocusMinutes / 60}h"
+                        val hours = it.totalFocusMinutes / 60
+                        val minutes = it.totalFocusMinutes % 60
+                        tvFocusTime?.text = "${hours}h ${minutes}m"
                         tvNotesWritten?.text = "8" // Mock
                         tvStoriesCount?.text = "3" // Mock
                         tvStreak?.text = "3" // Mock

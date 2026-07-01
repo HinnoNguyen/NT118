@@ -63,7 +63,9 @@ open class BaseActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 finish()
-                overridePendingTransition(0, 0)
+                if (overridePauseTransition) {
+                    overridePendingTransition(0, 0)
+                }
             }
         })
 
@@ -100,9 +102,13 @@ open class BaseActivity : AppCompatActivity() {
         }
     }
 
+    protected var overridePauseTransition = true
+
     override fun onPause() {
         super.onPause()
-        overridePendingTransition(0, 0)
+        if (overridePauseTransition) {
+            overridePendingTransition(0, 0)
+        }
     }
 
     private fun animateContent(isForward: Boolean) {
@@ -287,7 +293,9 @@ open class BaseActivity : AppCompatActivity() {
         val intent = Intent(this, cls)
         
         startActivity(intent)
-        overridePendingTransition(0, 0)
+        if (overridePauseTransition) {
+            overridePendingTransition(0, 0)
+        }
     }
 
     protected fun addNotification(title: String, message: String, type: String) {
