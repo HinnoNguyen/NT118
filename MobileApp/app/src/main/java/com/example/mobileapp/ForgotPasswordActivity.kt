@@ -2,7 +2,6 @@ package com.example.mobileapp
 
 import android.content.Context
 import android.os.Bundle
-import android.widget.CompoundButton
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -29,21 +28,26 @@ class ForgotPasswordActivity : AppCompatActivity() {
         setupDependencies()
         setupEdgeToEdge()
         setupUI()
-        setupThemeSwitch()
+        setupThemeToggle()
     }
 
-    private fun setupThemeSwitch() {
-        val sharedPreferences = getSharedPreferences("theme_prefs", Context.MODE_PRIVATE)
-        val switchTheme = findViewById<CompoundButton>(R.id.switchTheme)
-        val isDarkMode = sharedPreferences.getBoolean("is_dark_mode", true)
-        switchTheme.isChecked = isDarkMode
-
-        switchTheme.setOnCheckedChangeListener { _, isChecked ->
-            val currentMode = if (isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
-            if (AppCompatDelegate.getDefaultNightMode() != currentMode) {
-                sharedPreferences.edit().putBoolean("is_dark_mode", isChecked).apply()
-                AppCompatDelegate.setDefaultNightMode(currentMode)
-            }
+    private fun setupThemeToggle() {
+        val sharedPreferences = getSharedPreferences("theme_prefs", MODE_PRIVATE)
+        val btnThemeToggle = findViewById<android.widget.Button>(R.id.btnThemeToggle) ?: return
+        
+        btnThemeToggle.setOnClickListener {
+            val isDarkMode = sharedPreferences.getBoolean("is_dark_mode", true)
+            val newDarkMode = !isDarkMode
+            val currentMode = if (newDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+            
+            sharedPreferences.edit().putBoolean("is_dark_mode", newDarkMode).apply()
+            AppCompatDelegate.setDefaultNightMode(currentMode)
+            
+            // Re-create the activity to apply theme change immediately and clearly
+            val intent = android.content.Intent(this, ForgotPasswordActivity::class.java)
+            finish()
+            startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
     }
 
@@ -97,7 +101,8 @@ class ForgotPasswordActivity : AppCompatActivity() {
         }
 
         tvBackToLogin.setOnClickListener {
-            finish() // Quay lại màn hình Login
+            finish()
+            overridePendingTransition(R.anim.slide_in_left, R.anim.stay)
         }
     }
 }

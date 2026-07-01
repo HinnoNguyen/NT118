@@ -1,14 +1,13 @@
 package com.example.mobileapp
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.CompoundButton
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
@@ -16,14 +15,13 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.mobileapp.data.repository.UserRepositoryImpl
-import com.example.mobileapp.domain.usecase.LoginUseCase
 import com.example.mobileapp.presentation.LoginViewModel
+import com.example.mobileapp.presentation.ViewModelFactory
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: LoginViewModel
+    private val viewModel: LoginViewModel by viewModels { ViewModelFactory() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,23 +29,27 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         
         setupEdgeToEdge()
-        setupViewModel()
         setupUI()
-        setupThemeSwitch()
+        setupThemeToggle()
     }
 
-    private fun setupThemeSwitch() {
-        val sharedPreferences = getSharedPreferences("theme_prefs", Context.MODE_PRIVATE)
-        val switchTheme = findViewById<CompoundButton>(R.id.switchTheme)
-        val isDarkMode = sharedPreferences.getBoolean("is_dark_mode", true)
-        switchTheme.isChecked = isDarkMode
+    private fun setupThemeToggle() {
+        val sharedPreferences = getSharedPreferences("theme_prefs", MODE_PRIVATE)
+        val btnThemeToggle = findViewById<Button>(R.id.btnThemeToggle)
 
-        switchTheme.setOnCheckedChangeListener { _, isChecked ->
-            val currentMode = if (isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
-            if (AppCompatDelegate.getDefaultNightMode() != currentMode) {
-                sharedPreferences.edit().putBoolean("is_dark_mode", isChecked).apply()
-                AppCompatDelegate.setDefaultNightMode(currentMode)
-            }
+        btnThemeToggle.setOnClickListener {
+            val isDarkMode = sharedPreferences.getBoolean("is_dark_mode", true)
+            val newDarkMode = !isDarkMode
+            val currentMode = if (newDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+            
+            sharedPreferences.edit().putBoolean("is_dark_mode", newDarkMode).apply()
+            AppCompatDelegate.setDefaultNightMode(currentMode)
+            
+            // Re-create the activity to apply theme change immediately and clearly
+            val intent = Intent(this, LoginActivity::class.java)
+            finish()
+            startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
     }
 
@@ -59,11 +61,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupViewModel() {
-        val repository = UserRepositoryImpl()
-        val loginUseCase = LoginUseCase(repository)
-        viewModel = LoginViewModel(loginUseCase)
-    }
 
     private fun setupUI() {
         val etEmail = findViewById<EditText>(R.id.etEmail)
@@ -74,26 +71,27 @@ class LoginActivity : AppCompatActivity() {
         val btnGoogleSignIn = findViewById<Button>(R.id.btnGoogleSignIn)
 
         btnLogin.setOnClickListener {
-            // Bypass login for testing purposes
-            Toast.makeText(this, "Debug Login: Welcome!", Toast.LENGTH_SHORT).show()
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-            
-            /* Commented out real login for testing
             val email = etEmail.text.toString()
             val pass = etPassword.text.toString()
-            viewModel.login(email, pass)
-            */
+            
+            if (email.isBlank() || pass.isBlank()) {
+                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+            } else {
+                viewModel.login(email, pass)
+            }
         }
 
         btnRegisterTab.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.stay)
+            finish()
         }
 
         tvForgotPassword.setOnClickListener {
             val intent = Intent(this, ForgotPasswordActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.stay)
         }
 
         btnGoogleSignIn.setOnClickListener {
@@ -119,7 +117,9 @@ class LoginActivity : AppCompatActivity() {
                 btnLogin.isEnabled = true
                 btnLogin.text = "LOGIN"
                 Toast.makeText(this, "Welcome Hero!", Toast.LENGTH_SHORT).show()
+                BaseActivity.resetNavigationState()
                 startActivity(Intent(this, MainActivity::class.java))
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
                 finish()
             }
             is LoginViewModel.LoginState.Error -> {
