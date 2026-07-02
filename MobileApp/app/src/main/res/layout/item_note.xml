@@ -45,6 +45,18 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/btnShareNote"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="↗"
+        android:textColor="@color/accent_green"
+        android:textSize="18sp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground" />
+
+    <TextView
         android:id="@+id/btnDeleteNote"
         android:layout_width="40dp"
         android:layout_height="40dp"

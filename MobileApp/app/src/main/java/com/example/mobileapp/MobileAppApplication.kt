@@ -19,10 +19,10 @@ class MobileAppApplication : Application() {
 
         val sharedPreferences = getSharedPreferences("theme_prefs", MODE_PRIVATE)
         val isDarkMode = sharedPreferences.getBoolean("is_dark_mode", true)
-        if (isDarkMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        val targetMode = if (isDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+        
+        if (AppCompatDelegate.getDefaultNightMode() != targetMode) {
+            AppCompatDelegate.setDefaultNightMode(targetMode)
         }
     }
 }

@@ -22,9 +22,18 @@ class TimerActivity : BaseActivity() {
     private lateinit var tvTimer: TextView
     private lateinit var btnStartTimer: MaterialButton
 
+    private val notificationPermissionLauncher =
+        registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) { /* no-op */ }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timer)
+        
+        com.example.mobileapp.utils.NotificationHelper.createChannel(this)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            notificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+        }
+
         setupTabs()
         setupTimer()
         observeViewModel()
@@ -81,6 +90,11 @@ class TimerActivity : BaseActivity() {
                     viewModel.timerFinished.collect { finished ->
                         if (finished) {
                             Toast.makeText(this@TimerActivity, "Focus session complete! Great job!", Toast.LENGTH_LONG).show()
+                            com.example.mobileapp.utils.NotificationHelper.showSessionComplete(
+                                this@TimerActivity, 
+                                "Focus session complete!", 
+                                "Great job! Time for a well-deserved break."
+                            )
                             viewModel.clearFinishedFlag()
                         }
                     }

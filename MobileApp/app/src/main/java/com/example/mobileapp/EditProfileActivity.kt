@@ -114,19 +114,18 @@ class EditProfileActivity : BaseActivity() {
         selectedView.setBackgroundResource(R.drawable.bg_button_selected)
     }
 
+    private var isProfileLoaded = false
+
     private fun observeViewModel() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.userProfile.collect { user ->
                     user?.let {
-                        if (etUsername?.text?.isBlank() == true) {
-                             etUsername?.setText(it.name)
-                        }
-                        if (etUserTitle?.text?.isBlank() == true) {
+                        if (!isProfileLoaded) {
+                            etUsername?.setText(it.name)
                             etUserTitle?.setText(it.title)
-                        }
-                        if (etBio?.text?.isBlank() == true) {
                             etBio?.setText(it.bio)
+                            isProfileLoaded = true
                         }
                         
                         // Set current avatar if valid
