@@ -2,6 +2,7 @@ package com.example.mobileapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -9,14 +10,19 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.credentials.CredentialManager
+import androidx.credentials.GetCredentialRequest
+import androidx.credentials.exceptions.GetCredentialException
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.mobileapp.presentation.LoginViewModel
 import com.example.mobileapp.presentation.ViewModelFactory
+import com.example.mobileapp.util.ThemeUtils
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
@@ -40,17 +46,10 @@ class LoginActivity : AppCompatActivity() {
         btnThemeToggle.setOnClickListener {
             val isDarkMode = sharedPreferences.getBoolean("is_dark_mode", true)
             val newDarkMode = !isDarkMode
-            val currentMode = if (newDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
-            
-            sharedPreferences.edit().putBoolean("is_dark_mode", newDarkMode).apply()
-            AppCompatDelegate.setDefaultNightMode(currentMode)
-            
-            // Re-create the activity to apply theme change immediately and clearly
-            val intent = Intent(this, LoginActivity::class.java)
-            finish()
-            startActivity(intent)
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+            ThemeUtils.toggleTheme(this, findViewById(R.id.main), btnThemeToggle, newDarkMode)
         }
+        
+        ThemeUtils.checkAndPerformRevealAnimation(this, findViewById<ViewGroup>(R.id.main))
     }
 
     private fun setupEdgeToEdge() {
@@ -95,7 +94,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         btnGoogleSignIn.setOnClickListener {
-            Toast.makeText(this, "Google Login coming soon!", Toast.LENGTH_SHORT).show()
+            signInWithGoogle()
         }
 
         lifecycleScope.launch {
@@ -103,6 +102,42 @@ class LoginActivity : AppCompatActivity() {
                 viewModel.loginState.collect { state ->
                     handleLoginState(state, btnLogin)
                 }
+            }
+        }
+    }
+
+    private fun signInWithGoogle() {
+        val credentialManager = CredentialManager.create(this)
+        
+        // TODO: Replace with your actual Web Client ID from Firebase Console
+        val webClientId = getString(R.string.default_web_client_id)
+
+        val googleIdOption = GetGoogleIdOption.Builder()
+            .setFilterByAuthorizedAccounts(false)
+            .setServerClientId(webClientId)
+            .setAutoSelectEnabled(true)
+            .build()
+
+        val request = GetCredentialRequest.Builder()
+            .addCredentialOption(googleIdOption)
+            .build()
+
+        lifecycleScope.launch {
+            try {
+                val result = credentialManager.getCredential(
+                    context = this@LoginActivity,
+                    request = request
+                )
+                
+                val credential = result.credential
+                if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+                    val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
+                    viewModel.loginWithGoogle(googleIdTokenCredential.idToken)
+                }
+            } catch (e: GetCredentialException) {
+                Toast.makeText(this@LoginActivity, "Google Sign-In failed: ${e.message}", Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                Toast.makeText(this@LoginActivity, "An error occurred: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -2,16 +2,18 @@ package com.example.mobileapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.ViewGroup
 import android.widget.CompoundButton
 import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.mobileapp.util.ThemeUtils
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 
 class SettingsActivity : BaseActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -21,6 +23,8 @@ class SettingsActivity : BaseActivity() {
         setupLogout()
         setupDarkModeSwitch()
         setupEditProfile()
+
+        ThemeUtils.checkAndPerformRevealAnimation(this, findViewById<ViewGroup>(R.id.main))
     }
 
     private fun setupEditProfile() {
@@ -38,22 +42,12 @@ class SettingsActivity : BaseActivity() {
 
         val isDarkMode = sharedPreferences.getBoolean("is_dark_mode", true)
         
-        // Disable listener before setting initial state
         switchDarkMode.setOnCheckedChangeListener(null)
         switchDarkMode.isChecked = isDarkMode
 
         switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
-            val currentMode = if (isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
-            
             if (sharedPreferences.getBoolean("is_dark_mode", !isChecked) != isChecked) {
-                sharedPreferences.edit().putBoolean("is_dark_mode", isChecked).apply()
-                AppCompatDelegate.setDefaultNightMode(currentMode)
-
-                // Re-create the activity stack to apply theme change immediately and clearly
-                val intent = Intent(this, SettingsActivity::class.java)
-                finish()
-                startActivity(intent)
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+                ThemeUtils.toggleTheme(this, findViewById(R.id.main), switchDarkMode, isChecked)
             }
         }
         

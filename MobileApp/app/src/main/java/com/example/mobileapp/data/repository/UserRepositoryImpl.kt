@@ -6,6 +6,7 @@ import com.example.mobileapp.domain.model.User
 import com.example.mobileapp.domain.repository.UserRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -64,13 +65,34 @@ class UserRepositoryImpl : UserRepository {
                 todayFocusMinutes = 0,
                 completedTaskCount = 0,
                 level = 1,
-                exp = 0
+                exp = 0,
+                currentStreak = 1,
+                bestStreak = 1,
+                miniGameRewardCount = 0,
+                lastMiniGameRewardAt = 0L
             )
 
             usersCollection.document(firebaseUser.uid).set(userDto).await()
             Result.success(userDto.toDomain())
         } catch (e: Exception) {
             Result.failure(Exception(e.message ?: "Registration failed", e))
+        }
+    }
+
+    override suspend fun signInWithGoogle(idToken: String): Result<User> {
+        return try {
+            val credential = GoogleAuthProvider.getCredential(idToken, null)
+            val result = auth.signInWithCredential(credential).await()
+            val firebaseUser = result.user ?: return Result.failure(Exception("Google sign-in failed"))
+            
+            val user = getOrCreateUserDocument(
+                uid = firebaseUser.uid,
+                name = firebaseUser.displayName ?: "Hero",
+                email = firebaseUser.email ?: ""
+            )
+            Result.success(user)
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 
@@ -82,12 +104,29 @@ class UserRepositoryImpl : UserRepository {
 
             val now = System.currentTimeMillis()
             if (!isSameDay(userDto.updatedAt, now)) {
+                // Handle streak
+                val newStreak = if (isYesterday(userDto.updatedAt)) {
+                    userDto.currentStreak + 1
+                } else {
+                    1
+                }
+                val newBestStreak = maxOf(newStreak, userDto.bestStreak)
+
                 // Reset today stats if it's a new day
                 usersCollection.document(uid).update(mapOf(
                     "todayFocusMinutes" to 0,
+                    "miniGameRewardCount" to 0,
+                    "currentStreak" to newStreak,
+                    "bestStreak" to newBestStreak,
                     "updatedAt" to now
                 )).await()
-                Result.success(userDto.copy(todayFocusMinutes = 0, updatedAt = now).toDomain())
+                Result.success(userDto.copy(
+                    todayFocusMinutes = 0,
+                    miniGameRewardCount = 0,
+                    currentStreak = newStreak,
+                    bestStreak = newBestStreak,
+                    updatedAt = now
+                ).toDomain())
             } else {
                 Result.success(userDto.toDomain())
             }
@@ -144,27 +183,46 @@ class UserRepositoryImpl : UserRepository {
         auth.signOut()
     }
 
-    override suspend fun awardExp(uid: String, amount: Int): Result<Unit> {
+    override suspend fun awardExp(uid: String, amount: Int, isTask: Boolean): Result<Unit> {
         return try {
             firestore.runTransaction { transaction ->
                 val docRef = usersCollection.document(uid)
                 val snapshot = transaction.get(docRef)
-                val userDto = snapshot.toObject(UserDto::class.java) ?: return@runTransaction
+                val userDto = snapshot.toObject(UserDto::class.java) 
+                    ?: throw Exception("User profile not found during awardExp")
+
+                val now = System.currentTimeMillis()
+                
+                val updateData = mutableMapOf<String, Any>(
+                    "updatedAt" to now
+                )
+
+                if (!isTask && amount > 0) {
+                    val isNewDay = !isSameDay(userDto.lastMiniGameRewardAt, now)
+                    val currentCount = if (isNewDay) 0 else userDto.miniGameRewardCount
+                    if (currentCount >= 3) {
+                        throw Exception("Daily mini-game reward limit reached (max 3 times/day)")
+                    }
+                    updateData["miniGameRewardCount"] = currentCount + 1
+                    updateData["lastMiniGameRewardAt"] = now
+                }
 
                 val newExp = userDto.exp + amount
                 val newLevel = (newExp / 100) + 1
-                val newCompletedCount = when {
-                    amount > 0 -> userDto.completedTaskCount + 1
-                    amount < 0 -> maxOf(0, userDto.completedTaskCount - 1)
-                    else -> userDto.completedTaskCount
+                
+                updateData["exp"] = newExp
+                updateData["level"] = newLevel
+
+                if (isTask) {
+                    val newCompletedCount = when {
+                        amount > 0 -> userDto.completedTaskCount + 1
+                        amount < 0 -> maxOf(0, userDto.completedTaskCount - 1)
+                        else -> userDto.completedTaskCount
+                    }
+                    updateData["completedTaskCount"] = newCompletedCount
                 }
 
-                transaction.update(docRef, mapOf(
-                    "exp" to newExp,
-                    "level" to newLevel,
-                    "completedTaskCount" to newCompletedCount,
-                    "updatedAt" to System.currentTimeMillis()
-                ))
+                transaction.update(docRef, updateData)
             }.await()
             Result.success(Unit)
         } catch (e: Exception) {
@@ -177,17 +235,24 @@ class UserRepositoryImpl : UserRepository {
             firestore.runTransaction { transaction ->
                 val docRef = usersCollection.document(uid)
                 val snapshot = transaction.get(docRef)
-                val userDto = snapshot.toObject(UserDto::class.java) ?: return@runTransaction
+                val userDto = snapshot.toObject(UserDto::class.java)
+                    ?: throw Exception("User profile not found during addFocusMinutes")
 
                 val now = System.currentTimeMillis()
                 val isNewDay = !isSameDay(userDto.updatedAt, now)
 
                 val newTotalFocus = userDto.totalFocusMinutes + minutes
                 val newTodayFocus = if (isNewDay) minutes else userDto.todayFocusMinutes + minutes
+                
+                // Award EXP for focus minutes (1 EXP per minute)
+                val newExp = userDto.exp + minutes
+                val newLevel = (newExp / 100) + 1
 
                 transaction.update(docRef, mapOf(
                     "totalFocusMinutes" to newTotalFocus,
                     "todayFocusMinutes" to newTodayFocus,
+                    "exp" to newExp,
+                    "level" to newLevel,
                     "updatedAt" to now
                 ))
             }.await()
@@ -202,6 +267,13 @@ class UserRepositoryImpl : UserRepository {
         val cal2 = java.util.Calendar.getInstance().apply { timeInMillis = millis2 }
         return cal1.get(java.util.Calendar.YEAR) == cal2.get(java.util.Calendar.YEAR) &&
                 cal1.get(java.util.Calendar.DAY_OF_YEAR) == cal2.get(java.util.Calendar.DAY_OF_YEAR)
+    }
+
+    private fun isYesterday(millis: Long): Boolean {
+        val cal = java.util.Calendar.getInstance()
+        cal.add(java.util.Calendar.DAY_OF_YEAR, -1)
+        val yesterday = cal.timeInMillis
+        return isSameDay(millis, yesterday)
     }
 
     override suspend fun updateUserProfile(uid: String, name: String, avatarUrl: String, title: String, bio: String): Result<Unit> {
@@ -243,7 +315,11 @@ class UserRepositoryImpl : UserRepository {
             todayFocusMinutes = 0,
             completedTaskCount = 0,
             level = 1,
-            exp = 0
+            exp = 0,
+            currentStreak = 1,
+            bestStreak = 1,
+            miniGameRewardCount = 0,
+            lastMiniGameRewardAt = 0L
         )
         userDocument.set(userDto).await()
         return userDto.toDomain()

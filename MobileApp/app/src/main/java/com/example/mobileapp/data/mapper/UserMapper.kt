@@ -16,7 +16,11 @@ fun UserDto.toDomain(): User = User(
     todayFocusMinutes = todayFocusMinutes,
     completedTaskCount = completedTaskCount,
     level = level,
-    exp = exp
+    exp = exp,
+    currentStreak = currentStreak,
+    bestStreak = bestStreak,
+    miniGameRewardCount = miniGameRewardCount,
+    lastMiniGameRewardAt = lastMiniGameRewardAt
 )
 
 fun User.toDto(): UserDto = UserDto(
@@ -32,5 +36,9 @@ fun User.toDto(): UserDto = UserDto(
     todayFocusMinutes = todayFocusMinutes,
     completedTaskCount = completedTaskCount,
     level = level,
-    exp = exp
+    exp = exp,
+    currentStreak = currentStreak,
+    bestStreak = bestStreak,
+    miniGameRewardCount = miniGameRewardCount,
+    lastMiniGameRewardAt = lastMiniGameRewardAt
 )

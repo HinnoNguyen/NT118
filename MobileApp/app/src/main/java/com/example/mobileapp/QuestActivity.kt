@@ -1,16 +1,11 @@
 package com.example.mobileapp
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.widget.CheckBox
 import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobileapp.presentation.QuestAdapter
@@ -55,7 +50,7 @@ class QuestActivity : BaseActivity() {
                 viewModel.addTask(title)
                 etQuestTitle.text.clear()
             } else {
-                Toast.makeText(this, "Please enter a quest name", Toast.LENGTH_SHORT).show()
+                showAppNotification("Attention", "Please enter a quest name")
             }
         }
     }
@@ -71,7 +66,7 @@ class QuestActivity : BaseActivity() {
                 launch {
                     viewModel.error.collect { error ->
                         error?.let {
-                            Toast.makeText(this@QuestActivity, it, Toast.LENGTH_SHORT).show()
+                            showAppNotification("System Error", it)
                             viewModel.clearError()
                         }
                     }

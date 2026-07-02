@@ -13,5 +13,9 @@ data class UserDto(
     val todayFocusMinutes: Int = 0,
     val completedTaskCount: Int = 0,
     val level: Int = 1,
-    val exp: Int = 0
+    val exp: Int = 0,
+    val currentStreak: Int = 0,
+    val bestStreak: Int = 0,
+    val miniGameRewardCount: Int = 0,
+    val lastMiniGameRewardAt: Long = 0L
 )

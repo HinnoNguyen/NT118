@@ -97,8 +97,8 @@ class ProfileActivity : BaseActivity() {
                         tvFocusTime?.text = "${hours}h ${minutes}m"
                         tvNotesWritten?.text = "8" // Mock
                         tvStoriesCount?.text = "3" // Mock
-                        tvStreak?.text = "3" // Mock
-                        tvBestStreak?.text = "7" // Mock
+                        tvStreak?.text = it.currentStreak.toString()
+                        tvBestStreak?.text = it.bestStreak.toString()
                     }
                 }
             }

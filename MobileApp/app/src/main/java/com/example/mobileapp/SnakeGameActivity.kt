@@ -1,26 +1,34 @@
 package com.example.mobileapp
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.MotionEvent
+import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import android.view.MotionEvent
-import android.view.View
-import android.widget.FrameLayout
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.example.mobileapp.presentation.SnakeGameViewModel
+import com.example.mobileapp.presentation.ViewModelFactory
 import com.example.mobileapp.util.AnimationUtils.popIn
 import com.example.mobileapp.util.AnimationUtils.setBounceClick
 import com.google.android.material.button.MaterialButton
+import kotlinx.coroutines.launch
 
 class SnakeGameActivity : AppCompatActivity(), SnakeGameView.GameStateListener {
 
+    private val viewModel: SnakeGameViewModel by viewModels { ViewModelFactory() }
     private lateinit var snakeGameView: SnakeGameView
     private lateinit var tvScore: TextView
+    private var hasShownStartDialog = false
     
     private val handler = Handler(Looper.getMainLooper())
     private val gameTickMs = 250L // Slower snake speed (250ms per tick)
@@ -45,7 +53,38 @@ class SnakeGameActivity : AppCompatActivity(), SnakeGameView.GameStateListener {
         findViewById<View>(R.id.gameBoardContainer).popIn(duration = 500)
 
         setupControls()
-        showStartDialog()
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.userProfile.collect { user ->
+                        if (user != null && !hasShownStartDialog) {
+                            hasShownStartDialog = true
+                            showStartDialog()
+                        }
+                    }
+                }
+                launch {
+                    viewModel.expAwarded.collect { exp ->
+                        exp?.let {
+                            Toast.makeText(this@SnakeGameActivity, "Bonus +$it EXP awarded!", Toast.LENGTH_SHORT).show()
+                            viewModel.clearExpFlag()
+                        }
+                    }
+                }
+                launch {
+                    viewModel.error.collect { error ->
+                        error?.let {
+                            Toast.makeText(this@SnakeGameActivity, it, Toast.LENGTH_SHORT).show()
+                            viewModel.clearError()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun setupEdgeToEdge() {
@@ -103,9 +142,15 @@ class SnakeGameActivity : AppCompatActivity(), SnakeGameView.GameStateListener {
     }
 
     private fun showStartDialog() {
+        val user = viewModel.userProfile.value
+        val now = System.currentTimeMillis()
+        val isNewDay = user?.let { !isSameDay(it.lastMiniGameRewardAt, now) } ?: true
+        val currentCount = if (isNewDay) 0 else (user?.miniGameRewardCount ?: 0)
+        val remaining = maxOf(0, 3 - currentCount)
+
         val builder = AlertDialog.Builder(this)
         builder.setTitle("SNAKE RUN")
-        builder.setMessage("Navigate the snake using the D-Pad or swipe gestures.\nEat yellow orbs to grow and score points.\n\nReady?")
+        builder.setMessage("Navigate the snake using the D-Pad or swipe gestures.\nEat yellow orbs to grow and score points.\n\nNote: Rewards are limited to 3 times per day.\nRemaining rewards today: $remaining/3\n\nReady?")
         builder.setCancelable(false)
         builder.setPositiveButton("START") { dialog, _ ->
             dialog.dismiss()
@@ -139,10 +184,21 @@ class SnakeGameActivity : AppCompatActivity(), SnakeGameView.GameStateListener {
         
         // Award bonus EXP (5 EXP per food eaten)
         val expGained = finalScore / 10 * 5
+        if (expGained > 0) {
+            viewModel.awardExp(expGained)
+        }
         
+        val user = viewModel.userProfile.value
+        val now = System.currentTimeMillis()
+        val isNewDay = user?.let { !isSameDay(it.lastMiniGameRewardAt, now) } ?: true
+        val currentCount = if (isNewDay) 0 else (user?.miniGameRewardCount ?: 0)
+        // If expGained > 0, we just requested to increment the count, so visually we should subtract one more if it's not already at limit
+        val nextCount = if (expGained > 0) minOf(3, currentCount + 1) else currentCount
+        val remaining = maxOf(0, 3 - nextCount)
+
         val builder = AlertDialog.Builder(this)
         builder.setTitle("GAME OVER")
-        builder.setMessage("Final Score: $finalScore\nEXP Gained: +$expGained XP")
+        builder.setMessage("Final Score: $finalScore\nEXP Gained: +$expGained XP\nRemaining rewards: $remaining/3")
         builder.setCancelable(false)
         builder.setPositiveButton("PLAY AGAIN") { dialog, _ ->
             dialog.dismiss()
@@ -166,5 +222,12 @@ class SnakeGameActivity : AppCompatActivity(), SnakeGameView.GameStateListener {
     override fun onDestroy() {
         super.onDestroy()
         stopGame()
+    }
+
+    private fun isSameDay(t1: Long, t2: Long): Boolean {
+        val cal1 = java.util.Calendar.getInstance().apply { timeInMillis = t1 }
+        val cal2 = java.util.Calendar.getInstance().apply { timeInMillis = t2 }
+        return cal1.get(java.util.Calendar.YEAR) == cal2.get(java.util.Calendar.YEAR) &&
+                cal1.get(java.util.Calendar.DAY_OF_YEAR) == cal2.get(java.util.Calendar.DAY_OF_YEAR)
     }
 }
