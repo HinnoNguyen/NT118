@@ -74,11 +74,17 @@ class QuestViewModel(
 
     fun toggleTask(taskId: String, completed: Boolean) {
         viewModelScope.launch {
+            val task = _tasks.value.find { it.id == taskId } ?: return@launch
             val result = toggleTaskCompletionUseCase(taskId, completed)
             if (result.isSuccess) {
                 // Fetch current user profile to ensure we don't drop below 0 EXP
                 userRepository.getUserProfile(userId).onSuccess { user ->
-                    val expAmount = if (completed) 10 else -10
+                    val baseExp = when (task.priority) {
+                        "high" -> 50
+                        "normal" -> 20
+                        else -> 10
+                    }
+                    val expAmount = if (completed) baseExp else -baseExp
                     // Ensure total EXP doesn't go below 0
                     if (user.exp + expAmount >= 0) {
                         userRepository.awardExp(userId, expAmount)

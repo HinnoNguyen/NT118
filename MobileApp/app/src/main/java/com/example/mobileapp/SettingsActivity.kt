@@ -1,11 +1,13 @@
 package com.example.mobileapp
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.CompoundButton
 import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.mobileapp.util.ThemeUtils
@@ -47,7 +49,17 @@ class SettingsActivity : BaseActivity() {
 
         switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
             if (sharedPreferences.getBoolean("is_dark_mode", !isChecked) != isChecked) {
-                ThemeUtils.toggleTheme(this, findViewById(R.id.main), switchDarkMode, isChecked)
+                // Save preference
+                sharedPreferences.edit().putBoolean("is_dark_mode", isChecked).apply()
+                
+                // Update global night mode
+                val currentMode = if (isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+                AppCompatDelegate.setDefaultNightMode(currentMode)
+                
+                // Recreate activity with no animation for a "not destroy" feel 
+                // but full layout update
+                overridePendingTransition(0, 0)
+                recreate()
             }
         }
         

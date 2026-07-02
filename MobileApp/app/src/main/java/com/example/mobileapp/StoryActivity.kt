@@ -54,7 +54,6 @@ class StoryActivity : BaseActivity() {
     private fun setupRecyclerView() {
         val rvStories = findViewById<RecyclerView>(R.id.rvStories)
         storyAdapter = StoryAdapter(
-            stories = mutableListOf(),
             onClick = { story -> showStoryDialog(story.content, story.title) },
             onDelete = { story -> deleteStory(story) }
         )

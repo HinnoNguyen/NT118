@@ -40,16 +40,34 @@ object ThemeUtils {
         startX = location[0] + triggerView.width / 2
         startY = location[1] + triggerView.height / 2
 
-        applyThemeWithoutAnimation(activity, isDarkMode)
+        // Transform animation: Scale down and fade before applying
+        viewToCapture.animate()
+            .scaleX(0.96f)
+            .scaleY(0.96f)
+            .alpha(0.85f)
+            .setDuration(150)
+            .setInterpolator(AccelerateDecelerateInterpolator())
+            .withEndAction {
+                applyThemeWithoutAnimation(activity, isDarkMode)
+            }
+            .start()
     }
 
     private fun applyThemeWithoutAnimation(activity: Activity, isDarkMode: Boolean) {
         if (activity.isFinishing) return
 
         val sharedPreferences = activity.getSharedPreferences("theme_prefs", Activity.MODE_PRIVATE)
-        sharedPreferences.edit().putBoolean("is_dark_mode", isDarkMode).apply()
-        
         val currentMode = if (isDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+        
+        // Prevent infinity loop: check if mode is already set
+        if (AppCompatDelegate.getDefaultNightMode() == currentMode && 
+            sharedPreferences.getBoolean("is_dark_mode", !isDarkMode) == isDarkMode) {
+            return
+        }
+
+        // Save preference using commit for synchronous write
+        sharedPreferences.edit().putBoolean("is_dark_mode", isDarkMode).commit()
+
         AppCompatDelegate.setDefaultNightMode(currentMode)
 
         val intent = Intent(activity, activity::class.java)
