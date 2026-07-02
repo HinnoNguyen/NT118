@@ -2,21 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp"
+    android:layout_marginBottom="12dp"
     android:background="@drawable/bg_main_card"
     android:gravity="center_vertical"
     android:padding="16dp"
-    android:clickable="true"
-    android:focusable="true">
+    android:orientation="horizontal">
 
     <TextView
         android:id="@+id/tvStoryEmoji"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
         android:background="#1A1A24"
         android:gravity="center"
         android:text="📖"
-        android:textSize="24sp" />
+        android:textSize="20sp" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -30,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
-            android:text="GENRE"
+            android:text="EPIC"
             android:textColor="@color/accent_yellow"
             android:textSize="10sp"
             android:textStyle="bold" />
@@ -39,33 +38,33 @@
             android:id="@+id/tvStoryTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="2dp"
             android:fontFamily="monospace"
-            android:text="Story Title"
+            android:text="STORY TITLE"
             android:textColor="@color/accent_green"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvStoryPreview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="2dp"
             android:ellipsize="end"
             android:fontFamily="monospace"
-            android:maxLines="2"
-            android:text="Story preview content..."
-            android:textColor="#AAAAAA"
+            android:maxLines="1"
+            android:text="Preview of the story content..."
+            android:textColor="#999999"
             android:textSize="11sp" />
 
         <TextView
             android:id="@+id/tvStoryDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:fontFamily="monospace"
             android:text="2024-01-01"
-            android:textColor="#666666"
+            android:textColor="#555555"
             android:textSize="9sp" />
     </LinearLayout>
 
@@ -75,6 +74,7 @@
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:text="🗑️"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:alpha="0.6"/>
 
 </LinearLayout>

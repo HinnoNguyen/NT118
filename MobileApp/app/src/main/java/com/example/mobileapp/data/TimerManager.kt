@@ -14,7 +14,6 @@ object TimerManager {
     private var userRepository: UserRepository? = null
     private val scope = CoroutineScope(Dispatchers.IO)
 
-    @JvmStatic
     fun initialize(repository: UserRepository) {
         this.userRepository = repository
     }
@@ -31,40 +30,61 @@ object TimerManager {
     val timerFinished: StateFlow<Boolean> = _timerFinished.asStateFlow()
 
     private var currentTimerLengthMs = 25 * 60 * 1000L
+    
+    // Tracks accumulated milliseconds focused that haven't been awarded as minutes yet
+    private var accumulatedFocusMs: Long = 0
+    private var lastMillisUntilFinished: Long = 0
 
-    @JvmStatic
     fun setTimer(minutes: Int) {
         stopTimer()
         currentTimerLengthMs = minutes * 60 * 1000L
         _timeLeftMs.value = currentTimerLengthMs
         _timerFinished.value = false
+        accumulatedFocusMs = 0
     }
 
-    @JvmStatic
     fun startTimer() {
         if (_isTimerRunning.value) return
+        
+        lastMillisUntilFinished = _timeLeftMs.value
 
         countDownTimer = object : CountDownTimer(_timeLeftMs.value, 1000) {
             override fun onTick(millisUntilFinished: Long) {
+                // Calculate how much time passed since last tick
+                val diff = lastMillisUntilFinished - millisUntilFinished
+                if (diff > 0) {
+                    accumulatedFocusMs += diff
+                }
+                lastMillisUntilFinished = millisUntilFinished
                 _timeLeftMs.value = millisUntilFinished
+                
+                // Award 1 EXP/Minute for every 60,000ms accumulated
+                if (accumulatedFocusMs >= 60000) {
+                    val minutesToAward = (accumulatedFocusMs / 60000).toInt()
+                    awardFocusMinute(minutesToAward)
+                    accumulatedFocusMs %= 60000
+                }
             }
 
             override fun onFinish() {
+                // Final accumulation
+                val diff = lastMillisUntilFinished - 0
+                if (diff > 0) {
+                    accumulatedFocusMs += diff
+                }
+                
                 _timeLeftMs.value = 0
                 _isTimerRunning.value = false
                 _timerFinished.value = true
                 
-                // Record focus time
-                val repository = userRepository
-                val minutes = getTimerLengthMinutes()
-                if (repository != null) {
-                    val uid = repository.getCurrentUserId()
-                    if (uid != null) {
-                        scope.launch {
-                            repository.addFocusMinutes(uid, minutes)
-                        }
-                    }
+                // Award any remaining accumulated time if it's significant (e.g. >= 30s)
+                // or just clear the accumulation. For fairness, let's award one last minute
+                // if we have at least 30s accumulated at the very end.
+                if (accumulatedFocusMs >= 30000) {
+                    awardFocusMinute(1)
                 }
+                accumulatedFocusMs = 0
+                lastMillisUntilFinished = 0
             }
         }.start()
 
@@ -72,31 +92,37 @@ object TimerManager {
         _timerFinished.value = false
     }
 
-    @JvmStatic
+    private fun awardFocusMinute(minutes: Int) {
+        if (minutes <= 0) return
+        val repository = userRepository ?: return
+        val uid = repository.getCurrentUserId() ?: return
+        scope.launch {
+            repository.addFocusMinutes(uid, minutes)
+        }
+    }
+
     fun pauseTimer() {
         countDownTimer?.cancel()
         _isTimerRunning.value = false
+        // We don't reset accumulatedFocusMs here, so it persists when we resume!
     }
 
-    @JvmStatic
     fun resetTimer() {
         stopTimer()
         _timeLeftMs.value = currentTimerLengthMs
         _timerFinished.value = false
+        accumulatedFocusMs = 0
     }
 
-    @JvmStatic
     fun stopTimer() {
         countDownTimer?.cancel()
         _isTimerRunning.value = false
     }
     
-    @JvmStatic
     fun clearFinishedFlag() {
         _timerFinished.value = false
     }
 
-    @JvmStatic
     fun getTimerLengthMinutes(): Int {
         return (currentTimerLengthMs / 60000).toInt()
     }

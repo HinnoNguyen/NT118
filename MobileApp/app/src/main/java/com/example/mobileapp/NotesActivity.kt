@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
@@ -98,7 +97,7 @@ class NotesActivity : BaseActivity() {
                 newNoteSection.visibility = View.GONE
                 btnNewNote.text = "+ NEW"
             } else {
-                Toast.makeText(this, "Title is required", Toast.LENGTH_SHORT).show()
+                showAppNotification("Attention", "Title is required")
             }
         }
     }
@@ -154,7 +153,7 @@ class NotesActivity : BaseActivity() {
                 launch {
                     viewModel.error.collect { error ->
                         error?.let {
-                            Toast.makeText(this@NotesActivity, it, Toast.LENGTH_SHORT).show()
+                            showAppNotification("System Error", it)
                             viewModel.clearError()
                         }
                     }

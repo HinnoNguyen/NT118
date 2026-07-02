@@ -5,7 +5,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -34,6 +33,7 @@ class MainActivity : BaseActivity() {
     private lateinit var tvDailyQuestFocus: TextView
     private lateinit var tvDailyQuestNote: TextView
     private lateinit var tvMainMessage: TextView
+    private lateinit var tvGameRewardStatus: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +65,7 @@ class MainActivity : BaseActivity() {
         tvDailyQuestFocus = findViewById(R.id.tvDailyQuestFocus)
         tvDailyQuestNote = findViewById(R.id.tvDailyQuestNote)
         tvMainMessage = findViewById(R.id.tvMainMessage)
+        tvGameRewardStatus = findViewById(R.id.tvGameRewardStatus)
         
         val userInfoCard = findViewById<LinearLayout>(R.id.userInfoCard)
         userInfoCard.setBounceClick()
@@ -95,6 +96,7 @@ class MainActivity : BaseActivity() {
                             val hours = it.totalFocusMinutes / 60
                             val minutes = it.totalFocusMinutes % 60
                             tvFocusTime.text = "${hours}h ${minutes}m"
+                            tvStreak.text = it.currentStreak.toString()
 
                             // Load Avatar
                             if (it.avatarUrl.isNotBlank()) {
@@ -107,6 +109,12 @@ class MainActivity : BaseActivity() {
                             // Daily Quest Focus Progress
                             val focusProgress = minOf(it.todayFocusMinutes, 30)
                             tvDailyQuestFocus.text = "${if (focusProgress >= 30) "■" else "□"} Focus for 30 min ($focusProgress/30)"
+
+                            // Mini Game Reward Status
+                            val isNewDay = !isSameDay(it.lastMiniGameRewardAt, System.currentTimeMillis())
+                            val currentRewardCount = if (isNewDay) 0 else it.miniGameRewardCount
+                            val remainingRewards = maxOf(0, 3 - currentRewardCount)
+                            tvGameRewardStatus.text = "Play to earn bonus EXP! ($remainingRewards/3)"
                         }
                     }
                 }
@@ -140,12 +148,19 @@ class MainActivity : BaseActivity() {
                 launch {
                     viewModel.error.collect { error ->
                         error?.let {
-                            Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show()
+                            showAppNotification("System Error", it)
                             viewModel.clearError()
                         }
                     }
                 }
             }
         }
+    }
+
+    private fun isSameDay(t1: Long, t2: Long): Boolean {
+        val cal1 = java.util.Calendar.getInstance().apply { timeInMillis = t1 }
+        val cal2 = java.util.Calendar.getInstance().apply { timeInMillis = t2 }
+        return cal1.get(java.util.Calendar.YEAR) == cal2.get(java.util.Calendar.YEAR) &&
+                cal1.get(java.util.Calendar.DAY_OF_YEAR) == cal2.get(java.util.Calendar.DAY_OF_YEAR)
     }
 }

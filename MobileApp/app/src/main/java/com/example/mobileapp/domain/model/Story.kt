@@ -4,6 +4,7 @@ data class Story(
     val id: String,
     val userId: String,
     val title: String,
+    val genre: String,
     val content: String,
     val relatedNoteIds: List<String>,
     val createdAt: Long,

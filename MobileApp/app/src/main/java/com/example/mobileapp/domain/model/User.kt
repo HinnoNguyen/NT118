@@ -13,5 +13,9 @@ data class User(
     val todayFocusMinutes: Int,
     val completedTaskCount: Int,
     val level: Int,
-    val exp: Int
+    val exp: Int,
+    val currentStreak: Int,
+    val bestStreak: Int,
+    val miniGameRewardCount: Int = 0,
+    val lastMiniGameRewardAt: Long = 0L
 )

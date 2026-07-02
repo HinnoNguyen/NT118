@@ -38,14 +38,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:fontFamily="monospace"
-                android:textColor="@color/accent_green"
-                android:textSize="12sp" />
-
             <include layout="@layout/layout_notification_bell" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -60,6 +52,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toTopOf="@id/bottomNav"
         app:layout_constraintTop_toBottomOf="@id/topDivider">
 
@@ -292,8 +285,8 @@
 
                 <ProgressBar
                     android:id="@+id/pbLoading"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="8dp"
                     android:visibility="gone"
@@ -306,8 +299,7 @@
                 android:id="@+id/rvStories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                android:paddingTop="16dp" />
+                android:nestedScrollingEnabled="false" />
 
         </LinearLayout>
     </ScrollView>

@@ -4,10 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.view.animation.DecelerateInterpolator
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -176,7 +176,7 @@ open class BaseActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 notificationsViewModel.error.collect { error ->
                     error?.let {
-                        Toast.makeText(this@BaseActivity, it, Toast.LENGTH_SHORT).show()
+                        showAppNotification("Error", it)
                         notificationsViewModel.clearError()
                     }
                 }
@@ -300,5 +300,32 @@ open class BaseActivity : AppCompatActivity() {
 
     protected fun addNotification(title: String, message: String, type: String) {
         notificationsViewModel.addNotification(title, message, type)
+        showAppNotification(title, message)
+    }
+
+    protected fun showAppNotification(title: String, message: String) {
+        val root = findViewById<ViewGroup>(android.R.id.content) ?: return
+        val view = layoutInflater.inflate(R.layout.layout_custom_notification, root, false)
+        
+        view.findViewById<TextView>(R.id.tvNotificationTitle).text = title.uppercase()
+        view.findViewById<TextView>(R.id.tvNotificationMessage).text = message
+        
+        root.addView(view)
+        
+        val inAnim = AnimationUtils.loadAnimation(this, R.anim.notification_in)
+        val outAnim = AnimationUtils.loadAnimation(this, R.anim.notification_out)
+        
+        view.startAnimation(inAnim)
+        
+        view.postDelayed({
+            outAnim.setAnimationListener(object : android.view.animation.Animation.AnimationListener {
+                override fun onAnimationStart(p0: android.view.animation.Animation?) {}
+                override fun onAnimationRepeat(p0: android.view.animation.Animation?) {}
+                override fun onAnimationEnd(p0: android.view.animation.Animation?) {
+                    root.removeView(view)
+                }
+            })
+            view.startAnimation(outAnim)
+        }, 3000)
     }
 }

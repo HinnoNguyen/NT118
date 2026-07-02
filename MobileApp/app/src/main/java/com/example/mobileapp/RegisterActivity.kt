@@ -2,6 +2,7 @@ package com.example.mobileapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -9,7 +10,6 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Lifecycle
@@ -17,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.mobileapp.presentation.RegisterViewModel
 import com.example.mobileapp.presentation.ViewModelFactory
+import com.example.mobileapp.util.ThemeUtils
 import kotlinx.coroutines.launch
 
 class RegisterActivity : AppCompatActivity() {
@@ -40,17 +41,10 @@ class RegisterActivity : AppCompatActivity() {
         btnThemeToggle.setOnClickListener {
             val isDarkMode = sharedPreferences.getBoolean("is_dark_mode", true)
             val newDarkMode = !isDarkMode
-            val currentMode = if (newDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
-            
-            sharedPreferences.edit().putBoolean("is_dark_mode", newDarkMode).apply()
-            AppCompatDelegate.setDefaultNightMode(currentMode)
-            
-            // Re-create the activity to apply theme change immediately and clearly
-            val intent = Intent(this, RegisterActivity::class.java)
-            finish()
-            startActivity(intent)
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+            ThemeUtils.toggleTheme(this, findViewById(R.id.main), btnThemeToggle, newDarkMode)
         }
+        
+        ThemeUtils.checkAndPerformRevealAnimation(this, findViewById<ViewGroup>(R.id.main))
     }
 
     private fun setupEdgeToEdge() {

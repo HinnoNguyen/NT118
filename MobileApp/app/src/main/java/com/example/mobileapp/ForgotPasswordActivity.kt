@@ -1,18 +1,20 @@
 package com.example.mobileapp
 
-import android.content.Context
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.mobileapp.data.repository.UserRepositoryImpl
 import com.example.mobileapp.domain.usecase.SendPasswordResetEmailUseCase
+import com.example.mobileapp.util.ThemeUtils
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
 
@@ -38,17 +40,10 @@ class ForgotPasswordActivity : AppCompatActivity() {
         btnThemeToggle.setOnClickListener {
             val isDarkMode = sharedPreferences.getBoolean("is_dark_mode", true)
             val newDarkMode = !isDarkMode
-            val currentMode = if (newDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
-            
-            sharedPreferences.edit().putBoolean("is_dark_mode", newDarkMode).apply()
-            AppCompatDelegate.setDefaultNightMode(currentMode)
-            
-            // Re-create the activity to apply theme change immediately and clearly
-            val intent = android.content.Intent(this, ForgotPasswordActivity::class.java)
-            finish()
-            startActivity(intent)
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+            ThemeUtils.toggleTheme(this, findViewById(R.id.main), btnThemeToggle, newDarkMode)
         }
+        
+        ThemeUtils.checkAndPerformRevealAnimation(this, findViewById<ViewGroup>(R.id.main))
     }
 
     private fun setupDependencies() {
@@ -68,6 +63,9 @@ class ForgotPasswordActivity : AppCompatActivity() {
         val etEmail = findViewById<EditText>(R.id.etResetEmail)
         val btnSendReset = findViewById<MaterialButton>(R.id.btnSendReset)
         val tvBackToLogin = findViewById<TextView>(R.id.tvBackToLogin)
+        val cardContainer = findViewById<LinearLayout>(R.id.cardContainer)
+        val successContainer = findViewById<LinearLayout>(R.id.successContainer)
+        val btnSuccessDone = findViewById<MaterialButton>(R.id.btnSuccessDone)
 
         btnSendReset.setOnClickListener {
             val email = etEmail.text.toString()
@@ -85,11 +83,8 @@ class ForgotPasswordActivity : AppCompatActivity() {
                 btnSendReset.text = "SEND NEW PASSWORD"
 
                 result.onSuccess {
-                    Toast.makeText(
-                        this@ForgotPasswordActivity,
-                        "If this email is registered, a password reset email has been sent.",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    cardContainer.visibility = View.GONE
+                    successContainer.visibility = View.VISIBLE
                 }.onFailure {
                     Toast.makeText(
                         this@ForgotPasswordActivity,
@@ -98,6 +93,11 @@ class ForgotPasswordActivity : AppCompatActivity() {
                     ).show()
                 }
             }
+        }
+
+        btnSuccessDone.setOnClickListener {
+            finish()
+            overridePendingTransition(R.anim.slide_in_left, R.anim.stay)
         }
 
         tvBackToLogin.setOnClickListener {

@@ -253,7 +253,16 @@
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🎮" android:textSize="24sp" />
-                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:fontFamily="monospace" android:text="Play to earn bonus EXP! (3/3)" android:textColor="#AAAAAA" android:textSize="10sp" />
+                <TextView
+                    android:id="@+id/tvGameRewardStatus"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="12dp"
+                    android:fontFamily="monospace"
+                    android:text="Play to earn bonus EXP! (3/3)"
+                    android:textColor="#AAAAAA"
+                    android:textSize="10sp" />
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="PLAY ▶" android:textColor="@color/accent_green" android:textSize="12sp" android:textStyle="bold" />
             </LinearLayout>
 

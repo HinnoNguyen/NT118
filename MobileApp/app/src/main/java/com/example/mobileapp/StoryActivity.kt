@@ -1,20 +1,28 @@
 package com.example.mobileapp
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.mobileapp.adapter.StoryAdapter
 import com.example.mobileapp.adapter.StoryItem
 import com.example.mobileapp.api.AiConstants
 import com.example.mobileapp.api.GroqApiService
 import com.example.mobileapp.api.GroqRequest
 import com.example.mobileapp.api.Message
+import com.example.mobileapp.presentation.StoryViewModel
+import com.example.mobileapp.presentation.ViewModelFactory
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
@@ -24,13 +32,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import java.util.UUID
 
 class StoryActivity : BaseActivity() {
 
+    private val viewModel: StoryViewModel by viewModels { ViewModelFactory() }
     private var selectedGenre: String = "EPIC"
     private lateinit var storyAdapter: StoryAdapter
-    private val storyList = mutableListOf<StoryItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,34 +46,35 @@ class StoryActivity : BaseActivity() {
         setupRecyclerView()
         setupStoryForge()
         setupNavigation()
+        observeViewModel()
+
+        com.example.mobileapp.util.ThemeUtils.checkAndPerformRevealAnimation(this, findViewById<ViewGroup>(R.id.main))
     }
 
     private fun setupRecyclerView() {
-        val rvStories = findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.rvStories)
+        val rvStories = findViewById<RecyclerView>(R.id.rvStories)
         storyAdapter = StoryAdapter(
-            stories = storyList,
+            stories = mutableListOf(),
             onClick = { story -> showStoryDialog(story.content, story.title) },
             onDelete = { story -> deleteStory(story) }
         )
-        rvStories.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+        rvStories.layoutManager = LinearLayoutManager(this)
         rvStories.adapter = storyAdapter
     }
 
     private fun setupStoryForge() {
         val btnCreateStory = findViewById<MaterialButton>(R.id.btnCreateStory)
         val newStorySection = findViewById<LinearLayout>(R.id.newStorySection)
+        val btnStoryfy = findViewById<MaterialButton>(R.id.btnStoryfy)
+        val etStoryInput = findViewById<EditText>(R.id.etStoryInput)
         
         val genreEpic = findViewById<LinearLayout>(R.id.genreEpic)
         val genreMystery = findViewById<LinearLayout>(R.id.genreMystery)
         val genreComedy = findViewById<LinearLayout>(R.id.genreComedy)
         val genreHorror = findViewById<LinearLayout>(R.id.genreHorror)
 
-        val etStoryInput = findViewById<EditText>(R.id.etStoryInput)
-        val btnStoryfy = findViewById<MaterialButton>(R.id.btnStoryfy)
-
         val genres = listOf(genreEpic, genreMystery, genreComedy, genreHorror)
 
-        // Toggle Forge Section
         btnCreateStory.setOnClickListener {
             if (newStorySection.visibility == View.GONE) {
                 newStorySection.visibility = View.VISIBLE
@@ -77,14 +85,12 @@ class StoryActivity : BaseActivity() {
             }
         }
 
-        // Genre Selection Logic
         fun selectGenre(selected: LinearLayout, genreName: String) {
             selectedGenre = genreName
             genres.forEach { layout ->
                 val text = layout.getChildAt(1) as TextView
-                
                 if (layout == selected) {
-                    layout.setBackgroundColor(0xFFFFD700.toInt()) // Gold
+                    layout.setBackgroundColor(0xFFFFD700.toInt())
                     text.setTextColor(ContextCompat.getColor(this, R.color.black))
                 } else {
                     layout.setBackgroundResource(R.drawable.bg_button_unselected)
@@ -103,7 +109,7 @@ class StoryActivity : BaseActivity() {
             if (input.isNotBlank()) {
                 generateStory(input)
             } else {
-                Toast.makeText(this, "Please enter some information first", Toast.LENGTH_SHORT).show()
+                showAppNotification("Attention", "Please enter some information first")
             }
         }
     }
@@ -111,16 +117,12 @@ class StoryActivity : BaseActivity() {
     private fun generateStory(input: String) {
         val pbLoading = findViewById<ProgressBar>(R.id.pbLoading)
         val btnStoryfy = findViewById<MaterialButton>(R.id.btnStoryfy)
+        val etStoryInput = findViewById<EditText>(R.id.etStoryInput)
 
-        // Groq API Configuration - Public key for easy cloning
-        val apiKey = AiConstants.GROQ_API_KEY
-        
         val logging = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
-        val client = OkHttpClient.Builder()
-            .addInterceptor(logging)
-            .build()
+        val client = OkHttpClient.Builder().addInterceptor(logging).build()
 
         val retrofit = Retrofit.Builder()
             .baseUrl("https://api.groq.com/openai/")
@@ -129,10 +131,7 @@ class StoryActivity : BaseActivity() {
             .build()
 
         val service = retrofit.create(GroqApiService::class.java)
-
-        val prompt = "Write a short $selectedGenre story based on these notes: $input. " +
-                "Make it engaging and fitting the genre. Keep it under 200 words."
-
+        val prompt = "Write a short $selectedGenre story based on these notes: $input. Keep it under 200 words."
         val request = GroqRequest(
             messages = listOf(
                 Message(role = "system", content = "You are a creative story writer."),
@@ -145,24 +144,17 @@ class StoryActivity : BaseActivity() {
                 pbLoading.visibility = View.VISIBLE
                 btnStoryfy.isEnabled = false
                 
-                val response = service.generateContent(apiKey, request)
-                
+                val response = service.generateContent(AiConstants.GROQ_API_KEY, request)
                 if (response.isSuccessful) {
                     val storyText = response.body()?.choices?.firstOrNull()?.message?.content
                     if (storyText != null) {
-                        addNewStoryToList(storyText)
+                        addNewStoryToList(storyText, input)
                     }
                 } else {
-                    val errorBody = response.errorBody()?.string()
-                    if (errorBody?.contains("rate_limit") == true) {
-                        Toast.makeText(this@StoryActivity, "Groq limit reached. Please wait a bit.", Toast.LENGTH_LONG).show()
-                    } else {
-                        Toast.makeText(this@StoryActivity, "API Error: ${response.code()}", Toast.LENGTH_SHORT).show()
-                    }
+                    showAppNotification("API Error", "Code: ${response.code()}")
                 }
             } catch (e: Exception) {
-                Toast.makeText(this@StoryActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-                android.util.Log.e("StoryActivity", "Groq Error: ", e)
+                showAppNotification("System Error", e.message ?: "Unknown error")
             } finally {
                 pbLoading.visibility = View.GONE
                 btnStoryfy.isEnabled = true
@@ -170,51 +162,64 @@ class StoryActivity : BaseActivity() {
         }
     }
 
-    private fun addNewStoryToList(content: String) {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val currentDate = dateFormat.format(Date())
-        
-        // Extract a simple title from input or first words
-        val etStoryInput = findViewById<EditText>(R.id.etStoryInput)
-        val input = etStoryInput.text.toString()
+    private fun addNewStoryToList(content: String, input: String) {
         val title = if (input.length > 20) input.substring(0, 17) + "..." else input
-
-        val newStory = StoryItem(
-            id = UUID.randomUUID().toString(),
-            genre = selectedGenre,
-            title = title,
-            content = content,
-            date = currentDate
-        )
-        
-        storyList.add(0, newStory)
-        storyAdapter.notifyItemInserted(0)
-        findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.rvStories).scrollToPosition(0)
-        
+        viewModel.saveStory(title, selectedGenre, content)
         showStoryDialog(content, title)
     }
 
     private fun deleteStory(story: StoryItem) {
         androidx.appcompat.app.AlertDialog.Builder(this)
             .setTitle("Delete Story")
-            .setMessage("Are you sure you want to delete this story?")
+            .setMessage("Are you sure?")
             .setPositiveButton("Delete") { _, _ ->
-                val position = storyList.indexOf(story)
-                if (position != -1) {
-                    storyList.removeAt(position)
-                    storyAdapter.notifyItemRemoved(position)
-                }
+                viewModel.deleteStory(story.id)
             }
             .setNegativeButton("Cancel", null)
             .show()
     }
 
+    private fun observeViewModel() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.stories.collect { stories ->
+                        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                        val items = stories.map {
+                            StoryItem(
+                                it.id,
+                                it.genre,
+                                it.title,
+                                it.content,
+                                dateFormat.format(Date(it.createdAt))
+                            )
+                        }
+                        storyAdapter.updateStories(items)
+                    }
+                }
+                launch {
+                    viewModel.error.collect { error ->
+                        error?.let {
+                            showAppNotification("System Error", it)
+                            viewModel.clearError()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private fun showStoryDialog(story: String, title: String = "Your Story") {
-        androidx.appcompat.app.AlertDialog.Builder(this)
-            .setTitle(title)
-            .setMessage(story)
-            .setPositiveButton("Close") { dialog, _ -> dialog.dismiss() }
-            .show()
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_story_detail)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+        dialog.findViewById<TextView>(R.id.tvDialogTitle).text = title.uppercase()
+        dialog.findViewById<TextView>(R.id.tvDialogContent).text = story
+        dialog.findViewById<MaterialButton>(R.id.btnDialogClose).setOnClickListener { dialog.dismiss() }
+
+        dialog.show()
     }
 
     private fun setupNavigation() {

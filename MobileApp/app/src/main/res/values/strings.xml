@@ -2,6 +2,7 @@
     <string name="app_name">Narrativize</string>
     <string name="forgot_password">Forgot password? Click here</string>
     <string name="sign_in_google">Sign in with Google</string>
+    <string name="default_web_client_id" translatable="false">952046477557-98nvs9ibovi94cp0nqo5nemak2d3tf5n.apps.googleusercontent.com</string>
     <string name="login_title">NARRATIVIZE</string>
     <string name="login_subtitle">- PRODUCTIVITY RPG -</string>
     <string name="login_press_start">PRESS START TO BEGIN</string>
