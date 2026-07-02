@@ -12,12 +12,13 @@ import com.example.mobileapp.domain.model.Note
 import com.example.mobileapp.util.AnimationUtils.slideUp
 
 class NotesAdapter(
-    private val onDeleteClick: (String) -> Unit
+    private val onDeleteClick: (String) -> Unit,
+    private val onShareClick: (Note) -> Unit
 ) : ListAdapter<Note, NotesAdapter.NoteViewHolder>(NoteDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_note, parent, false)
-        return NoteViewHolder(view, onDeleteClick)
+        return NoteViewHolder(view, onDeleteClick, onShareClick)
     }
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
@@ -27,12 +28,14 @@ class NotesAdapter(
 
     class NoteViewHolder(
         view: View,
-        private val onDeleteClick: (String) -> Unit
+        private val onDeleteClick: (String) -> Unit,
+        private val onShareClick: (Note) -> Unit
     ) : RecyclerView.ViewHolder(view) {
         private val tvNoteTitle: TextView = view.findViewById(R.id.tvNoteTitle)
         private val tvNoteContent: TextView = view.findViewById(R.id.tvNoteContent)
         private val tvNoteIcon: TextView = view.findViewById(R.id.tvNoteIcon)
         private val btnDeleteNote: TextView = view.findViewById(R.id.btnDeleteNote)
+        private val btnShareNote: TextView = view.findViewById(R.id.btnShareNote)
 
         fun bind(note: Note) {
             tvNoteTitle.text = note.title
@@ -46,6 +49,10 @@ class NotesAdapter(
 
             btnDeleteNote.setOnClickListener {
                 onDeleteClick(note.id)
+            }
+
+            btnShareNote.setOnClickListener {
+                onShareClick(note)
             }
         }
     }

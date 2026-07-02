@@ -40,9 +40,14 @@ class NotesActivity : BaseActivity() {
         etNoteTitle = findViewById(R.id.etNoteTitle)
         etNoteContent = findViewById(R.id.etNoteContent)
 
-        notesAdapter = NotesAdapter { noteId ->
-            viewModel.deleteNote(noteId)
-        }
+        notesAdapter = NotesAdapter(
+            onDeleteClick = { noteId ->
+                viewModel.deleteNote(noteId)
+            },
+            onShareClick = { note ->
+                com.example.mobileapp.utils.ShareHelper.showShareDialog(this, note.title, note.content)
+            }
+        )
         rvNotes.apply {
             layoutManager = LinearLayoutManager(this@NotesActivity)
             adapter = notesAdapter
