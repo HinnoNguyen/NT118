@@ -14,6 +14,7 @@ object TimerManager {
     private var userRepository: UserRepository? = null
     private val scope = CoroutineScope(Dispatchers.IO)
 
+    @JvmStatic
     fun initialize(repository: UserRepository) {
         this.userRepository = repository
     }
@@ -31,6 +32,7 @@ object TimerManager {
 
     private var currentTimerLengthMs = 25 * 60 * 1000L
 
+    @JvmStatic
     fun setTimer(minutes: Int) {
         stopTimer()
         currentTimerLengthMs = minutes * 60 * 1000L
@@ -38,6 +40,7 @@ object TimerManager {
         _timerFinished.value = false
     }
 
+    @JvmStatic
     fun startTimer() {
         if (_isTimerRunning.value) return
 
@@ -69,26 +72,31 @@ object TimerManager {
         _timerFinished.value = false
     }
 
+    @JvmStatic
     fun pauseTimer() {
         countDownTimer?.cancel()
         _isTimerRunning.value = false
     }
 
+    @JvmStatic
     fun resetTimer() {
         stopTimer()
         _timeLeftMs.value = currentTimerLengthMs
         _timerFinished.value = false
     }
 
+    @JvmStatic
     fun stopTimer() {
         countDownTimer?.cancel()
         _isTimerRunning.value = false
     }
     
+    @JvmStatic
     fun clearFinishedFlag() {
         _timerFinished.value = false
     }
 
+    @JvmStatic
     fun getTimerLengthMinutes(): Int {
         return (currentTimerLengthMs / 60000).toInt()
     }

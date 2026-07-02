@@ -34,6 +34,9 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {
@@ -56,4 +59,11 @@ dependencies {
     implementation(libs.firebase.analytics)
 
     implementation(libs.kotlinx.coroutines.play.services)
+    implementation(libs.play.services.base)
+    implementation(libs.play.services.auth)
+    implementation(libs.generativeai)
+
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 }
