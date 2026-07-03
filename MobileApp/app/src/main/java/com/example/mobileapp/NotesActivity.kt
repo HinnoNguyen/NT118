@@ -32,9 +32,17 @@ class NotesActivity : BaseActivity() {
     private var selectedType = "note"
     private var selectedReminderTime: Calendar? = null
 
+    private val notificationPermissionLauncher =
+        registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) { /* no-op */ }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notes)
+
+        com.example.mobileapp.utils.NotificationHelper.createChannel(this)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            notificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+        }
 
         setupUI()
         observeViewModel()
@@ -106,20 +114,54 @@ class NotesActivity : BaseActivity() {
         }
 
         btnTypeNote.setOnClickListener { selectedType = "note"; updateTypeUI(btnTypeNote) }
-        btnTypeReminder.setOnClickListener { selectedType = "reminder"; updateTypeUI(btnTypeReminder) }
+        btnTypeReminder.setOnClickListener { 
+            selectedType = "reminder"
+            if (selectedReminderTime == null) {
+                // Default to current time
+                selectedReminderTime = Calendar.getInstance().apply {
+                    add(Calendar.HOUR_OF_DAY, 1)
+                    set(Calendar.MINUTE, 0)
+                    set(Calendar.SECOND, 0)
+                }
+                val sdf = SimpleDateFormat("MMM dd, HH:mm", Locale.getDefault())
+                findViewById<TextView>(R.id.tvReminderTime).text = sdf.format(selectedReminderTime!!.time)
+            }
+            updateTypeUI(btnTypeReminder) 
+        }
         btnTypeFlashcard.setOnClickListener { selectedType = "flashcard"; updateTypeUI(btnTypeFlashcard) }
 
         tvReminderTime.setOnClickListener {
             val calendar = selectedReminderTime ?: Calendar.getInstance()
-            TimePickerDialog(this, { _, hourOfDay, minute ->
-                val newTime = Calendar.getInstance().apply {
-                    set(Calendar.HOUR_OF_DAY, hourOfDay)
-                    set(Calendar.MINUTE, minute)
-                }
-                selectedReminderTime = newTime
-                val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
-                tvReminderTime.text = sdf.format(newTime.time)
-            }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show()
+            
+            // Step 1: Pick Date
+            android.app.DatePickerDialog(
+                this,
+                { _, year, month, dayOfMonth ->
+                    // Step 2: Pick Time after Date is selected
+                    TimePickerDialog(
+                        this,
+                        { _, hourOfDay, minute ->
+                            val newTime = Calendar.getInstance().apply {
+                                set(Calendar.YEAR, year)
+                                set(Calendar.MONTH, month)
+                                set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                                set(Calendar.HOUR_OF_DAY, hourOfDay)
+                                set(Calendar.MINUTE, minute)
+                                set(Calendar.SECOND, 0)
+                            }
+                            selectedReminderTime = newTime
+                            val sdf = SimpleDateFormat("MMM dd, HH:mm", Locale.getDefault())
+                            tvReminderTime.text = sdf.format(newTime.time)
+                        },
+                        calendar.get(Calendar.HOUR_OF_DAY),
+                        calendar.get(Calendar.MINUTE),
+                        true
+                    ).show()
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            ).show()
         }
 
         btnSaveScroll.setOnClickListener {
@@ -127,6 +169,29 @@ class NotesActivity : BaseActivity() {
             val content = etNoteContent.text.toString()
             if (title.isNotBlank()) {
                 val reminderTime = if (selectedType == "reminder") selectedReminderTime?.timeInMillis else null
+                
+                // Schedule notification if it's a reminder
+                if (selectedType == "reminder" && reminderTime != null) {
+                    val alarmManager = getSystemService(android.content.Context.ALARM_SERVICE) as android.app.AlarmManager
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms()) {
+                        val intent = android.content.Intent().apply {
+                            action = android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
+                        }
+                        startActivity(intent)
+                        return@setOnClickListener
+                    }
+
+                    val userId = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid ?: ""
+                    com.example.mobileapp.util.ReminderManager.scheduleReminder(
+                        this,
+                        userId,
+                        title,
+                        content,
+                        reminderTime
+                    )
+                    android.widget.Toast.makeText(this, "Reminder set for ${tvReminderTime.text}", android.widget.Toast.LENGTH_SHORT).show()
+                }
+
                 viewModel.addNote(title, content, selectedType, reminderTime)
                 etNoteTitle.text.clear()
                 etNoteContent.text.clear()

@@ -57,7 +57,7 @@ class NotesAdapter(
             }
 
             if (note.reminderTime != null && note.type == "reminder") {
-                val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
+                val sdf = SimpleDateFormat("MMM dd, HH:mm", Locale.getDefault())
                 tvReminderTime.text = sdf.format(note.reminderTime)
                 tvReminderTime.visibility = View.VISIBLE
             } else {

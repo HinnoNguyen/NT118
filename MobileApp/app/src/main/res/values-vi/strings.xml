@@ -105,4 +105,7 @@
     <string name="btn_cancel">Hủy</string>
     <string name="notification_attention">Chú ý</string>
     <string name="notification_system_error">Lỗi hệ thống</string>
+    <string name="notifications_title">THÔNG BÁO NHIỆM VỤ</string>
+    <string name="btn_clear">XÓA</string>
+    <string name="btn_dismiss">ĐÓNG</string>
 </resources>

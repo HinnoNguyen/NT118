@@ -106,4 +106,7 @@
     <string name="btn_cancel">Cancel</string>
     <string name="notification_attention">Attention</string>
     <string name="notification_system_error">System Error</string>
+    <string name="notifications_title">QUEST NOTIFICATIONS</string>
+    <string name="btn_clear">CLEAR</string>
+    <string name="btn_dismiss">DISMISS</string>
 </resources>
