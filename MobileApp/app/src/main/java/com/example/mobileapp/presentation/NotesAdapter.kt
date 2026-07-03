@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mobileapp.R
 import com.example.mobileapp.domain.model.Note
 import com.example.mobileapp.util.AnimationUtils.slideUp
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class NotesAdapter(
     private val onDeleteClick: (String) -> Unit,
@@ -40,6 +42,7 @@ class NotesAdapter(
         private val tvNoteTitle: TextView = view.findViewById(R.id.tvNoteTitle)
         private val tvNoteContent: TextView = view.findViewById(R.id.tvNoteContent)
         private val tvNoteIcon: TextView = view.findViewById(R.id.tvNoteIcon)
+        private val tvReminderTime: TextView = view.findViewById(R.id.tvReminderTime)
         private val btnDeleteNote: TextView = view.findViewById(R.id.btnDeleteNote)
         private val btnShareNote: TextView = view.findViewById(R.id.btnShareNote)
 
@@ -51,6 +54,14 @@ class NotesAdapter(
                 "reminder" -> "🔔"
                 "flashcard" -> "🃏"
                 else -> "📑"
+            }
+
+            if (note.reminderTime != null && note.type == "reminder") {
+                val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
+                tvReminderTime.text = sdf.format(note.reminderTime)
+                tvReminderTime.visibility = View.VISIBLE
+            } else {
+                tvReminderTime.visibility = View.GONE
             }
 
             btnDeleteNote.setOnClickListener {

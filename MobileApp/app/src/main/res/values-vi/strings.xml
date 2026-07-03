@@ -1,0 +1,108 @@
+<resources>
+    <string name="app_name">Narrativize</string>
+    <string name="forgot_password">Quên mật khẩu? Nhấn vào đây</string>
+    <string name="sign_in_google">Đăng nhập với Google</string>
+    <string name="login_title">NARRATIVIZE</string>
+    <string name="login_subtitle">- RPG NĂNG SUẤT -</string>
+    <string name="login_press_start">NHẤN START ĐỂ BẮT ĐẦU</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Mật khẩu</string>
+    <string name="label_username">Tên người dùng</string>
+    <string name="label_confirm_password">Xác nhận mật khẩu</string>
+    <string name="btn_login">ĐĂNG NHẬP</string>
+    <string name="btn_register">ĐĂNG KÝ</string>
+    <string name="hint_email">vidu@gmail.com</string>
+    <string name="hint_password">••••••••••••</string>
+    <string name="hint_username">Tên</string>
+
+    <!-- Main Screen Strings -->
+    <string name="label_user">NGƯỜI DÙNG</string>
+    <string name="label_level">LV.5</string>
+    <string name="label_exp_value">340/500</string>
+    <string name="label_exp_title">EXP</string>
+    <string name="quests_done_title">Nhiệm vụ hoàn thành</string>
+    <string name="quests_done_value">12</string>
+    <string name="notes_written_title">Ghi chú đã viết</string>
+    <string name="notes_written_value">8</string>
+    <string name="focus_time_title">Thời gian tập trung</string>
+    <string name="focus_time_value">4h</string>
+    <string name="streak_title">Chuỗi</string>
+    <string name="streak_value">3</string>
+    <string name="daily_quests_title">▶ NHIỆM VỤ HÀNG NGÀY</string>
+    <string name="quest_task_1">Hoàn thành 3 nhiệm vụ</string>
+    <string name="quest_task_1_exp">+10xp</string>
+    <string name="quest_task_2">Tập trung 30 phút</string>
+    <string name="quest_task_2_exp">+20xp</string>
+    <string name="quest_task_3">Viết một ghi chú</string>
+    <string name="quest_task_3_exp">+30xp</string>
+    <string name="main_character_message">\"Chào buổi sáng! Bạn có 5 nhiệm vụ cần hoàn thành hôm nay.\"</string>
+
+    <!-- Profile Screen Strings -->
+    <string name="profile_title">▶ HỒ SƠ</string>
+    <string name="profile_subtitle">~ trạng thái người dùng ~</string>
+    <string name="profile_user_title">Hiệp sĩ Pixel</string>
+    <string name="profile_bio_label">▶ TIỂU SỬ</string>
+    <string name="profile_bio_text">\"Nhà thám hiểm của những cõi năng suất\"</string>
+    <string name="profile_stats_label">▶ THỐNG KÊ</string>
+    <string name="profile_stat_focus_hours">Giờ tập trung</string>
+    <string name="profile_stat_focus_hours_val">24h</string>
+    <string name="profile_stat_stories">Câu chuyện</string>
+    <string name="profile_stat_stories_val">3</string>
+    <string name="profile_stat_current_streak">Chuỗi hiện tại</string>
+    <string name="profile_stat_best_streak">Chuỗi tốt nhất</string>
+    <string name="profile_stat_best_streak_val">7</string>
+    <string name="profile_achievements_label">▶ THÀNH TỰU</string>
+    <string name="profile_edit_btn">✎ CHỈNH SỬA HỒ SƠ</string>
+
+    <!-- Settings Screen Strings -->
+    <string name="settings_title">CÀI ĐẶT</string>
+    <string name="settings_header_label">⚙ CÀI ĐẶT</string>
+    <string name="settings_subtitle">~ tùy chỉnh ~</string>
+    <string name="settings_language_label">▶ NGÔN NGỮ</string>
+    <string name="settings_lang_vn">VN Tiếng Việt</string>
+    <string name="settings_lang_en">GB Tiếng Anh</string>
+    <string name="settings_notifications_label">▶ THÔNG BÁO</string>
+    <string name="settings_notif_quests">Nhắc nhở nhiệm vụ</string>
+    <string name="settings_notif_timer">Hết giờ tập trung</string>
+    <string name="settings_notif_login">Đăng nhập hàng ngày</string>
+    <string name="settings_about_label">▶ GIỚI THIỆU</string>
+    <string name="settings_version_label">Phiên bản</string>
+    <string name="settings_version_val">1.0.0</string>
+    <string name="settings_build_label">Bản dựng</string>
+    <string name="settings_build_val">PIXEL-2024</string>
+    <string name="settings_logout_btn">ĐĂNG XUẤT</string>
+
+    <!-- Edit Profile Screen Strings -->
+    <string name="edit_profile_title">▶ CHỈNH SỬA HỒ SƠ</string>
+    <string name="choose_avatar_label">▶ CHỌN ẢNH ĐẠI DIỆN</string>
+    <string name="btn_save_profile">✔ LƯU THAY ĐỔI</string>
+
+    <!-- Quest Screen Strings -->
+    <string name="quest_header_label">⚔ NHẬT KÝ NHIỆM VỤ</string>
+    <string name="quest_subtitle">Hoàn thành nhiệm vụ để nhận EXP!</string>
+    <string name="new_quest_label">NHIỆM VỤ MỚI</string>
+    <string name="hint_enter_quest">Nhập nhiệm vụ mới...</string>
+    <string name="label_rank">HẠNG</string>
+    <string name="btn_add_quest">THÊM</string>
+
+    <!-- Bottom Nav Labels -->
+    <string name="nav_home">CHÍNH</string>
+    <string name="nav_quest">N.VỤ</string>
+    <string name="nav_notes">G.CHÚ</string>
+    <string name="nav_story">TRUYỆN</string>
+    <string name="nav_game">GAME</string>
+    <string name="nav_set">C.ĐẶT</string>
+
+    <!-- Notes Screen -->
+    <string name="scroll_keeper_title">NGƯỜI GIỮ CUỘN - GHI CHÚ</string>
+    <string name="btn_new">+ MỚI</string>
+    <string name="btn_close_x">✕</string>
+    <string name="default_time">12:00</string>
+    <string name="error_title_required">Tiêu đề là bắt buộc</string>
+    <string name="dialog_delete_note">Xóa ghi chú</string>
+    <string name="dialog_delete_confirm">Bạn có chắc không?</string>
+    <string name="btn_delete">Xóa</string>
+    <string name="btn_cancel">Hủy</string>
+    <string name="notification_attention">Chú ý</string>
+    <string name="notification_system_error">Lỗi hệ thống</string>
+</resources>

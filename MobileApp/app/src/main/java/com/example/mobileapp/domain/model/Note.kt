@@ -7,6 +7,7 @@ data class Note(
     val content: String,
     val type: String,
     val pinned: Boolean,
+    val reminderTime: Long? = null,
     val createdAt: Long,
     val updatedAt: Long
 )

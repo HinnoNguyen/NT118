@@ -10,6 +10,7 @@ fun NoteDto.toDomain(): Note = Note(
     content = content,
     type = type,
     pinned = pinned,
+    reminderTime = reminderTime,
     createdAt = createdAt,
     updatedAt = updatedAt
 )
@@ -21,6 +22,7 @@ fun Note.toDto(): NoteDto = NoteDto(
     content = content,
     type = type,
     pinned = pinned,
+    reminderTime = reminderTime,
     createdAt = createdAt,
     updatedAt = updatedAt
 )
