@@ -76,7 +76,7 @@
                     android:fontFamily="monospace"
                     android:paddingVertical="8dp"
                     android:text="TIMER"
-                    android:textColor="#AAAAAA"
+                    android:textColor="@color/text_gray"
                     android:textSize="12sp"
                     android:clickable="true"
                     android:focusable="true"

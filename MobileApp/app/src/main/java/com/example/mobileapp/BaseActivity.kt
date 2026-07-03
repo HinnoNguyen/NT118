@@ -118,7 +118,7 @@ open class BaseActivity : AppCompatActivity() {
         val topDivider = findViewById<View>(R.id.topDivider)
 
         val screenWidth = resources.displayMetrics.widthPixels.toFloat()
-        val startX = if (isForward) screenWidth else -screenWidth
+        val startX = if (isForward) screenWidth / 4 else -screenWidth / 4 // Subtle move
 
         for (i in 0 until root.childCount) {
             val child = root.getChildAt(i)
@@ -126,15 +126,11 @@ open class BaseActivity : AppCompatActivity() {
                 child.animate().cancel()
                 child.translationX = startX
                 child.alpha = 0.0f
-                child.scaleX = 0.95f
-                child.scaleY = 0.95f
-
+                
                 child.animate()
                     .translationX(0f)
                     .alpha(1f)
-                    .scaleX(1f)
-                    .scaleY(1f)
-                    .setDuration(350)
+                    .setDuration(300)
                     .setInterpolator(DecelerateInterpolator())
                     .start()
             }
@@ -147,6 +143,10 @@ open class BaseActivity : AppCompatActivity() {
         setupNavigationListeners()
         updateBottomNavSelection()
         setupNotificationListener()
+        
+        // Handle theme reveal animation if it was triggered
+        val root = findViewById<ViewGroup>(R.id.main)
+        com.example.mobileapp.util.ThemeUtils.checkAndPerformRevealAnimation(this, root)
     }
 
     private fun setupNotificationListener() {
@@ -272,17 +272,15 @@ open class BaseActivity : AppCompatActivity() {
             SettingsActivity::class.java to Pair(R.id.icSettings, R.id.tvSettings)
         )
 
+        val accentGreen = ContextCompat.getColor(this, R.color.accent_green)
+        val white = ContextCompat.getColor(this, R.color.white)
+
         navItems.forEach { (cls, views) ->
-            val icon = findViewById<TextView>(views.first)
-            val text = findViewById<TextView>(views.second)
-            if (cls == currentCls) {
-                icon?.setTextColor(ContextCompat.getColor(this, R.color.accent_green))
-                text?.setTextColor(ContextCompat.getColor(this, R.color.accent_green))
-                text?.alpha = 1.0f
-            } else {
-                icon?.setTextColor(ContextCompat.getColor(this, R.color.white))
-                text?.setTextColor(ContextCompat.getColor(this, R.color.white))
-                text?.alpha = 0.5f
+            val isSelected = cls == currentCls
+            findViewById<TextView>(views.first)?.setTextColor(if (isSelected) accentGreen else white)
+            findViewById<TextView>(views.second)?.apply {
+                setTextColor(if (isSelected) accentGreen else white)
+                alpha = if (isSelected) 1.0f else 0.5f
             }
         }
     }
@@ -317,15 +315,19 @@ open class BaseActivity : AppCompatActivity() {
         
         view.startAnimation(inAnim)
         
-        view.postDelayed({
-            outAnim.setAnimationListener(object : android.view.animation.Animation.AnimationListener {
-                override fun onAnimationStart(p0: android.view.animation.Animation?) {}
-                override fun onAnimationRepeat(p0: android.view.animation.Animation?) {}
-                override fun onAnimationEnd(p0: android.view.animation.Animation?) {
-                    root.removeView(view)
-                }
-            })
-            view.startAnimation(outAnim)
-        }, 3000)
+        val removeRunnable = Runnable {
+            if (view.parent != null) {
+                outAnim.setAnimationListener(object : android.view.animation.Animation.AnimationListener {
+                    override fun onAnimationStart(p0: android.view.animation.Animation?) {}
+                    override fun onAnimationRepeat(p0: android.view.animation.Animation?) {}
+                    override fun onAnimationEnd(p0: android.view.animation.Animation?) {
+                        root.removeView(view)
+                    }
+                })
+                view.startAnimation(outAnim)
+            }
+        }
+        
+        view.postDelayed(removeRunnable, 3000)
     }
 }

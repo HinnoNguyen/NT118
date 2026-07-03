@@ -23,7 +23,7 @@
         android:layout_marginTop="4dp"
         android:fontFamily="monospace"
         android:text="Date: 2024-01-01"
-        android:textColor="#AAAAAA"
+        android:textColor="@color/text_gray"
         android:textSize="12sp" />
 
     <EditText
@@ -46,7 +46,7 @@
         android:layout_marginTop="16dp"
         android:fontFamily="monospace"
         android:text="SELECT TYPE:"
-        android:textColor="#AAAAAA"
+        android:textColor="@color/text_gray"
         android:textSize="12sp" />
 
     <LinearLayout
@@ -81,7 +81,7 @@
             android:gravity="center"
             android:paddingVertical="8dp"
             android:text="📌 EVENT"
-            android:textColor="#AAAAAA"
+            android:textColor="@color/text_gray"
             android:fontFamily="monospace"
             android:textSize="10sp"
             android:clickable="true"
@@ -97,7 +97,7 @@
             android:gravity="center"
             android:paddingVertical="8dp"
             android:text="👹 BOSS"
-            android:textColor="#AAAAAA"
+            android:textColor="@color/text_gray"
             android:fontFamily="monospace"
             android:textSize="10sp"
             android:clickable="true"
@@ -124,7 +124,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="CANCEL"
-        android:textColor="#AAAAAA"
+        android:textColor="@color/text_gray"
         android:fontFamily="monospace"
         android:textSize="12sp" />
 

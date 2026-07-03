@@ -23,9 +23,15 @@ class QuestAdapter(
         return QuestViewHolder(view, onToggleTask)
     }
 
+    private var lastAnimatedPosition = -1
+
     override fun onBindViewHolder(holder: QuestViewHolder, position: Int) {
+        val currentPosition = holder.adapterPosition
         holder.bind(getItem(position))
-        holder.itemView.slideUp(delay = (position * 50).toLong())
+        if (currentPosition > lastAnimatedPosition) {
+            holder.itemView.slideUp(delay = (currentPosition * 30).coerceAtMost(300).toLong())
+            lastAnimatedPosition = currentPosition
+        }
     }
 
     class QuestViewHolder(

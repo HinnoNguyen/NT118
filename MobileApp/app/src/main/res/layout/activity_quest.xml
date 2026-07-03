@@ -109,7 +109,7 @@
                         android:hint="Enter quest name..."
                         android:padding="10dp"
                         android:textColor="@color/white"
-                        android:textColorHint="#44FFFFFF"
+                        android:textColorHint="@color/text_hint"
                         android:textSize="14sp"
                         android:importantForAutofill="no"
                         android:inputType="text" />

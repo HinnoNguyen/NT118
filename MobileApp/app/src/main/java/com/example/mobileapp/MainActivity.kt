@@ -139,9 +139,18 @@ class MainActivity : BaseActivity() {
                             "All daily quests completed! Great job hero!"
                         }
                         if (tvMainMessage.text != newMessage) {
-                            tvMainMessage.text = newMessage
-                            tvMainMessage.alpha = 0f
-                            tvMainMessage.animate().alpha(1f).setDuration(500).start()
+                            tvMainMessage.animate().cancel()
+                            tvMainMessage.animate()
+                                .alpha(0f)
+                                .setDuration(200)
+                                .withEndAction {
+                                    tvMainMessage.text = newMessage
+                                    tvMainMessage.animate()
+                                        .alpha(1f)
+                                        .setDuration(200)
+                                        .start()
+                                }
+                                .start()
                         }
                     }
                 }

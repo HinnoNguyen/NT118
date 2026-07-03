@@ -8,11 +8,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobileapp.R
+import com.example.mobileapp.util.AnimationUtils.slideUp
 
 class StoryAdapter(
     private val onClick: (StoryItem) -> Unit,
     private val onDelete: (StoryItem) -> Unit
 ) : ListAdapter<StoryItem, StoryAdapter.StoryViewHolder>(StoryDiffCallback()) {
+
+    private var lastAnimatedPosition = -1
 
     fun updateStories(newStories: List<StoryItem>) {
         submitList(newStories)
@@ -24,7 +27,12 @@ class StoryAdapter(
     }
 
     override fun onBindViewHolder(holder: StoryViewHolder, position: Int) {
+        val currentPosition = holder.adapterPosition
         holder.bind(getItem(position), onClick, onDelete)
+        if (currentPosition > lastAnimatedPosition) {
+            holder.itemView.slideUp(delay = (currentPosition * 30).coerceAtMost(300).toLong())
+            lastAnimatedPosition = currentPosition
+        }
     }
 
     class StoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {

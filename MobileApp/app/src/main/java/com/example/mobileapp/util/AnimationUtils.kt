@@ -57,12 +57,30 @@ object AnimationUtils {
             .scaleY(1.05f)
             .setDuration(duration / 2)
             .withEndAction {
-                this.animate()
-                    .scaleX(1f)
-                    .scaleY(1f)
-                    .setDuration(duration / 2)
-                    .withEndAction { pulse(duration) }
-                    .start()
+                if (isAttachedToWindow) {
+                    this.animate()
+                        .scaleX(1f)
+                        .scaleY(1f)
+                        .setDuration(duration / 2)
+                        .withEndAction { 
+                            if (isAttachedToWindow) pulse(duration) 
+                        }
+                        .start()
+                }
+            }
+            .start()
+    }
+
+    fun View.popOut(duration: Long = 300, endAction: (() -> Unit)? = null) {
+        this.animate()
+            .alpha(0f)
+            .scaleX(0.8f)
+            .scaleY(0.8f)
+            .setDuration(duration)
+            .setInterpolator(AccelerateDecelerateInterpolator())
+            .withEndAction { 
+                this.visibility = View.GONE
+                endAction?.invoke()
             }
             .start()
     }

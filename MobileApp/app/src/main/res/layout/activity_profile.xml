@@ -125,7 +125,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="monospace"
                         android:text="@string/profile_user_title"
-                        android:textColor="#8A2BE2"
+                        android:textColor="@color/level_color"
                         android:textSize="11sp" />
 
                     <TextView
@@ -135,7 +135,7 @@
                         android:layout_marginTop="4dp"
                         android:fontFamily="monospace"
                         android:text="@string/label_level"
-                        android:textColor="#AAAAAA"
+                        android:textColor="@color/text_gray"
                         android:textSize="11sp" />
 
                     <RelativeLayout
@@ -158,7 +158,7 @@
                             android:layout_marginTop="-14dp"
                             android:fontFamily="monospace"
                             android:text="@string/label_exp_value"
-                            android:textColor="#AAAAAA"
+                            android:textColor="@color/text_gray"
                             android:textSize="9sp" />
                     </RelativeLayout>
                 </LinearLayout>
@@ -199,7 +199,7 @@
                 android:background="@drawable/bg_main_card"
                 android:orientation="vertical"
                 android:padding="10dp"
-                android:backgroundTint="#1A1A1A">
+                android:backgroundTint="@color/input_bg">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -221,7 +221,7 @@
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚔️" />
                         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="6dp" android:orientation="vertical">
                             <TextView android:id="@+id/tvQuestsDone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="@string/quests_done_value" android:textColor="@color/accent_green" android:textSize="13sp" />
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="@string/quests_done_title" android:textColor="#AAAAAA" android:textSize="8sp" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="@string/quests_done_title" android:textColor="@color/text_gray" android:textSize="8sp" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -230,7 +230,7 @@
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📜" />
                         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="6dp" android:orientation="vertical">
                             <TextView android:id="@+id/tvNotesWritten" android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="@string/notes_written_value" android:textColor="@color/accent_green" android:textSize="13sp" />
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="@string/notes_written_title" android:textColor="#AAAAAA" android:textSize="8sp" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="@string/notes_written_title" android:textColor="@color/text_gray" android:textSize="8sp" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -239,7 +239,7 @@
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⏰" />
                         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="6dp" android:orientation="vertical">
                             <TextView android:id="@+id/tvFocusTime" android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="@string/profile_stat_focus_hours_val" android:textColor="@color/accent_green" android:textSize="13sp" />
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="@string/profile_stat_focus_hours" android:textColor="#AAAAAA" android:textSize="8sp" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="@string/profile_stat_focus_hours" android:textColor="@color/text_gray" android:textSize="8sp" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -248,7 +248,7 @@
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📖" />
                         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="6dp" android:orientation="vertical">
                             <TextView android:id="@+id/tvStoriesCount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="@string/profile_stat_stories_val" android:textColor="@color/accent_green" android:textSize="13sp" />
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="@string/profile_stat_stories" android:textColor="#AAAAAA" android:textSize="8sp" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="@string/profile_stat_stories" android:textColor="@color/text_gray" android:textSize="8sp" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -257,7 +257,7 @@
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🔥" />
                         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="6dp" android:orientation="vertical">
                             <TextView android:id="@+id/tvStreak" android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="@string/streak_value" android:textColor="@color/accent_green" android:textSize="13sp" />
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="@string/profile_stat_current_streak" android:textColor="#AAAAAA" android:textSize="8sp" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="@string/profile_stat_current_streak" android:textColor="@color/text_gray" android:textSize="8sp" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -266,7 +266,7 @@
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🏆" />
                         <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="6dp" android:orientation="vertical">
                             <TextView android:id="@+id/tvBestStreak" android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="@string/profile_stat_best_streak_val" android:textColor="@color/accent_green" android:textSize="13sp" />
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="@string/profile_stat_best_streak" android:textColor="#AAAAAA" android:textSize="8sp" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="@string/profile_stat_best_streak" android:textColor="@color/text_gray" android:textSize="8sp" />
                         </LinearLayout>
                     </LinearLayout>
                 </GridLayout>
@@ -314,7 +314,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:minHeight="40dp"
-                android:backgroundTint="#8A2BE2"
+                android:backgroundTint="@color/level_color"
                 android:fontFamily="monospace"
                 android:text="@string/profile_edit_btn"
                 android:textColor="@color/white"
