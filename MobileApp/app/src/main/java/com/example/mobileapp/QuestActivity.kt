@@ -49,9 +49,14 @@ class QuestActivity : BaseActivity() {
         var selectedPriority = "normal"
 
         tvQuestRank?.setOnClickListener {
-            val ranks = arrayOf("Rank S (High - +50xp)", "Rank A (High - +50xp)", "Rank B (Normal - +20xp)", "Rank C (Low - +10xp)")
+            val ranks = arrayOf(
+                getString(R.string.rank_s_desc),
+                getString(R.string.rank_a_desc),
+                getString(R.string.rank_b_desc),
+                getString(R.string.rank_c_desc)
+            )
             android.app.AlertDialog.Builder(this)
-                .setTitle("Select Quest Rank")
+                .setTitle(getString(R.string.select_quest_rank))
                 .setItems(ranks) { _, which ->
                     when (which) {
                         0 -> {
@@ -88,7 +93,7 @@ class QuestActivity : BaseActivity() {
                 tvQuestRank?.setTextColor(android.graphics.Color.parseColor("#00FF00"))
                 selectedPriority = "normal"
             } else {
-                showAppNotification("Attention", "Please enter a quest name")
+                showAppNotification(getString(R.string.notification_attention), getString(R.string.error_empty_quest))
             }
         }
     }
@@ -104,7 +109,7 @@ class QuestActivity : BaseActivity() {
                 launch {
                     viewModel.error.collect { error ->
                         error?.let {
-                            showAppNotification("System Error", it)
+                            showAppNotification(getString(R.string.notification_system_error), it)
                             viewModel.clearError()
                         }
                     }

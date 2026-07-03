@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
-            android:text="TIME MAGIC"
+            android:text="@string/time_magic_title"
             android:textColor="@color/accent_yellow"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -75,7 +75,7 @@
                     android:background="@drawable/bg_button_unselected"
                     android:fontFamily="monospace"
                     android:paddingVertical="8dp"
-                    android:text="TIMER"
+                    android:text="@string/tab_timer"
                     android:textColor="@color/text_gray"
                     android:textSize="12sp"
                     android:clickable="true"
@@ -90,7 +90,7 @@
                     android:background="@color/accent_green"
                     android:fontFamily="monospace"
                     android:paddingVertical="8dp"
-                    android:text="CALENDAR"
+                    android:text="@string/tab_calendar"
                     android:textColor="@color/black"
                     android:textSize="12sp"
                     android:textStyle="bold"
@@ -162,13 +162,13 @@
                         android:useDefaultMargins="false">
 
                         <!-- Header days -->
-                        <TextView style="@style/CalendarHeader" android:text="SU" android:textColor="@color/accent_yellow" />
-                        <TextView style="@style/CalendarHeader" android:text="MO" android:textColor="@color/accent_yellow" />
-                        <TextView style="@style/CalendarHeader" android:text="TU" android:textColor="@color/accent_yellow" />
-                        <TextView style="@style/CalendarHeader" android:text="WE" android:textColor="@color/accent_yellow" />
-                        <TextView style="@style/CalendarHeader" android:text="TH" android:textColor="@color/accent_yellow" />
-                        <TextView style="@style/CalendarHeader" android:text="FR" android:textColor="@color/accent_yellow" />
-                        <TextView style="@style/CalendarHeader" android:text="SA" android:textColor="@color/accent_yellow" />
+                        <TextView style="@style/CalendarHeader" android:text="@string/day_su" android:textColor="@color/accent_yellow" />
+                        <TextView style="@style/CalendarHeader" android:text="@string/day_mo" android:textColor="@color/accent_yellow" />
+                        <TextView style="@style/CalendarHeader" android:text="@string/day_tu" android:textColor="@color/accent_yellow" />
+                        <TextView style="@style/CalendarHeader" android:text="@string/day_we" android:textColor="@color/accent_yellow" />
+                        <TextView style="@style/CalendarHeader" android:text="@string/day_th" android:textColor="@color/accent_yellow" />
+                        <TextView style="@style/CalendarHeader" android:text="@string/day_fr" android:textColor="@color/accent_yellow" />
+                        <TextView style="@style/CalendarHeader" android:text="@string/day_sa" android:textColor="@color/accent_yellow" />
 
                         <!-- Days will be added programmatically -->
                     </GridLayout>
@@ -201,7 +201,7 @@
                     android:backgroundTint="@color/accent_green"
                     android:fontFamily="monospace"
                     android:paddingHorizontal="12dp"
-                    android:text="+ ADD"
+                    android:text="@string/btn_add"
                     android:textColor="@color/black"
                     android:textSize="10sp"
                     android:textStyle="bold"

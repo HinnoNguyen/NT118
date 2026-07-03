@@ -87,15 +87,15 @@ class MainActivity : BaseActivity() {
                     viewModel.userProfile.collect { user ->
                         user?.let {
                             tvUserName.text = it.name
-                            tvLevel.text = "LV.${it.level}"
-                            tvExpValue.text = "${it.exp}/${it.level * 100}"
+                            tvLevel.text = getString(R.string.level_format, it.level)
+                            tvExpValue.text = getString(R.string.exp_format, it.exp, it.level * 100)
                             
                             expProgressBar.setProgress(it.exp % 100, true)
                             
                             tvQuestsDone.text = it.completedTaskCount.toString()
                             val hours = it.totalFocusMinutes / 60
                             val minutes = it.totalFocusMinutes % 60
-                            tvFocusTime.text = "${hours}h ${minutes}m"
+                            tvFocusTime.text = getString(R.string.focus_time_format, hours, minutes)
                             tvStreak.text = it.currentStreak.toString()
 
                             // Load Avatar
@@ -108,13 +108,14 @@ class MainActivity : BaseActivity() {
                             
                             // Daily Quest Focus Progress
                             val focusProgress = minOf(it.todayFocusMinutes, 30)
-                            tvDailyQuestFocus.text = "${if (focusProgress >= 30) "■" else "□"} Focus for 30 min ($focusProgress/30)"
+                            val focusCheck = if (focusProgress >= 30) "■" else "□"
+                            tvDailyQuestFocus.text = getString(R.string.daily_quest_focus, focusCheck, focusProgress)
 
                             // Mini Game Reward Status
                             val isNewDay = !isSameDay(it.lastMiniGameRewardAt, System.currentTimeMillis())
                             val currentRewardCount = if (isNewDay) 0 else it.miniGameRewardCount
                             val remainingRewards = maxOf(0, 3 - currentRewardCount)
-                            tvGameRewardStatus.text = "Play to earn bonus EXP! ($remainingRewards/3)"
+                            tvGameRewardStatus.text = getString(R.string.game_bonus_exp, remainingRewards)
                         }
                     }
                 }
@@ -122,21 +123,23 @@ class MainActivity : BaseActivity() {
                     viewModel.notesCount.collect { count ->
                         tvNotesWritten.text = count.toString()
                         val noteDone = count > 0 
-                        tvDailyQuestNote.text = "${if (noteDone) "■" else "□"} Write a note (${minOf(count, 1)}/1)"
+                        val noteCheck = if (noteDone) "■" else "□"
+                        tvDailyQuestNote.text = getString(R.string.daily_quest_note, noteCheck, minOf(count, 1))
                     }
                 }
                 launch {
                     viewModel.todayTasksCompleted.collect { count ->
                         val taskProgress = minOf(count, 3)
-                        tvDailyQuestTasks.text = "${if (taskProgress >= 3) "■" else "□"} Complete 3 tasks ($taskProgress/3)"
+                        val taskCheck = if (taskProgress >= 3) "■" else "□"
+                        tvDailyQuestTasks.text = getString(R.string.daily_quest_task, taskCheck, taskProgress)
                     }
                 }
                 launch {
                     viewModel.remainingQuests.collect { count ->
                         val newMessage = if (count > 0) {
-                            "You have $count quests to complete today!"
+                            getString(R.string.quests_remaining, count)
                         } else {
-                            "All daily quests completed! Great job hero!"
+                            getString(R.string.quests_all_completed)
                         }
                         if (tvMainMessage.text != newMessage) {
                             tvMainMessage.animate().cancel()

@@ -21,6 +21,10 @@ import kotlinx.coroutines.launch
 
 class RegisterActivity : AppCompatActivity() {
 
+    override fun attachBaseContext(newBase: android.content.Context) {
+        super.attachBaseContext(com.example.mobileapp.util.LocaleHelper.onAttach(newBase))
+    }
+
     private val viewModel: RegisterViewModel by viewModels { ViewModelFactory() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,8 +107,8 @@ class RegisterActivity : AppCompatActivity() {
             }
             is RegisterViewModel.RegisterState.Success -> {
                 btnRegister.isEnabled = true
-                btnRegister.text = "REGISTER"
-                Toast.makeText(this, "Registration Successful! Welcome, ${state.user.name}", Toast.LENGTH_SHORT).show()
+                btnRegister.text = getString(R.string.btn_register)
+                Toast.makeText(this, getString(R.string.registration_success, state.user.name), Toast.LENGTH_SHORT).show()
                 BaseActivity.resetNavigationState()
                 startActivity(Intent(this, MainActivity::class.java))
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out)

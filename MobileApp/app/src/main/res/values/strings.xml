@@ -92,5 +92,116 @@
     <string name="nav_notes">NOTES</string>
     <string name="nav_story">STORY</string>
     <string name="nav_game">GAME</string>
+    <string name="nav_time">TIME</string>
     <string name="nav_set">SET</string>
+
+    <!-- Notes Screen -->
+    <string name="scroll_keeper_title">SCROLL KEEPER - NOTE</string>
+    <string name="filter_all">ALL</string>
+    <string name="btn_new">+ NEW</string>
+    <string name="type_note">📄 NOTE</string>
+    <string name="type_reminder">🔔 REMINDER</string>
+    <string name="type_flashcard">🃏 FLASHCARD</string>
+    <string name="label_time">TIME:</string>
+    <string name="hint_title">Title...</string>
+    <string name="hint_content">Content...</string>
+    <string name="btn_save_scroll">✦ SAVE SCROLL</string>
+
+    <!-- Timer & Calendar -->
+    <string name="time_magic_title">TIME MAGIC</string>
+    <string name="tab_timer">TIMER</string>
+    <string name="tab_calendar">CALENDAR</string>
+    <string name="btn_start">▶ START</string>
+    <string name="btn_pause">❚❚ PAUSE</string>
+    <string name="btn_reset">↺ RESET</string>
+    <string name="focus_tip_label">💡 FOCUS TIP</string>
+    <string name="focus_tip_text">\"Each minute of focus = 1 EXP. Stay focused to level up faster!\"</string>
+    <string name="day_su">SU</string>
+    <string name="day_mo">MO</string>
+    <string name="day_tu">TU</string>
+    <string name="day_we">WE</string>
+    <string name="day_th">TH</string>
+    <string name="day_fr">FR</string>
+    <string name="day_sa">SA</string>
+    <string name="quests_for_day">QUESTS FOR %1$s</string>
+    <string name="no_quests_for_day">No quests for this day.</string>
+    <string name="btn_add">+ ADD</string>
+
+    <!-- Game -->
+    <string name="snake_run_title">SNAKE RUN</string>
+    <string name="score_label">SCORE: %1$d</string>
+
+    <!-- Notifications Dialog -->
+    <string name="notifications_title">QUEST NOTIFICATIONS</string>
+    <string name="btn_clear">CLEAR</string>
+    <string name="btn_dismiss">DISMISS</string>
+    <string name="settings_game_sounds">Game Sounds</string>
+    <string name="settings_dark_mode">Dark Mode</string>
+    <string name="settings_label_account">ACCOUNT</string>
+    <string name="settings_label_system">SYSTEM</string>
+    <string name="settings_version_build">Version 1.0.4 - Alpha Build</string>
+    <string name="quests_remaining">You have %1$d quests to complete today!</string>
+    <string name="quests_all_completed">All daily quests completed! Great job hero!</string>
+    <string name="exp_high">+50xp</string>
+    <string name="exp_normal">+20xp</string>
+    <string name="exp_low">+10xp</string>
+    <string name="rank_s_desc">Rank S (High - +50xp)</string>
+    <string name="rank_a_desc">Rank A (High - +50xp)</string>
+    <string name="rank_b_desc">Rank B (Normal - +20xp)</string>
+    <string name="rank_c_desc">Rank C (Low - +10xp)</string>
+    <string name="select_quest_rank">Select Quest Rank</string>
+    <string name="story_mode_title">STORY MODE</string>
+    <string name="story_mode_desc">Turn your notes into adventure stories!</string>
+    <string name="btn_create_story">+ CREATE</string>
+    <string name="story_forge_title">✦ STORY FORGE</string>
+    <string name="choose_genre_label">CHOOSE GENRE</string>
+    <string name="genre_epic">EPIC</string>
+    <string name="genre_mystery">MYSTERY</string>
+    <string name="genre_comedy">COMEDY</string>
+    <string name="genre_horror">HORROR</string>
+    <string name="enter_note_label">ENTER NOTE</string>
+    <string name="hint_story_input">Write a note to turn into a story...</string>
+    <string name="btn_storyfy">✦ STORY-FY!</string>
+    <string name="daily_quest_task">%1$s Complete 3 tasks (%2$d/3)</string>
+    <string name="daily_quest_focus">%1$s Focus for 30 min (%2$d/30)</string>
+    <string name="daily_quest_note">%1$s Write a note (%2$d/1)</string>
+    <string name="game_bonus_exp">Play to earn bonus EXP! (%1$d/3)</string>
+    <string name="error_empty_quest">Please enter a quest name</string>
+    <string name="notification_attention">Attention</string>
+    <string name="notification_system_error">System Error</string>
+    <string name="error_empty_story_input">Please enter some information first</string>
+    <string name="api_error">API Error</string>
+    <string name="dialog_delete_story">Delete Story</string>
+    <string name="dialog_delete_confirm">Are you sure?</string>
+    <string name="btn_delete">Delete</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="dialog_your_story">Your Story</string>
+    <string name="dialog_delete_note">Delete Note</string>
+    <string name="dialog_select_type">Select Type</string>
+    <string name="type_note_plain">Note</string>
+    <string name="type_reminder_plain">Reminder</string>
+    <string name="type_flashcard_plain">Flashcard</string>
+    <string name="error_empty_note">Please enter both title and content</string>
+    <string name="error_title_required">Title is required</string>
+    <string name="btn_close_x">✕</string>
+    <string name="timer_finished_toast">Focus session complete! Great job!</string>
+    <string name="timer_finished_title">Focus session complete!</string>
+    <string name="timer_finished_msg">Great job! Time for a well-deserved break.</string>
+    <string name="snake_start_desc">Navigate the snake using the D-Pad or swipe gestures.\nEat yellow orbs to grow and score points.\n\nNote: Rewards are limited to 3 times per day.\nRemaining rewards today: %1$d/3\n\nReady?</string>
+    <string name="btn_game_start">START</string>
+    <string name="btn_game_exit">EXIT</string>
+    <string name="game_over_title">GAME OVER</string>
+    <string name="game_over_desc">Final Score: %1$d\nEXP Gained: +%2$d XP\nRemaining rewards: %3$d/3</string>
+    <string name="btn_play_again">PLAY AGAIN</string>
+    <string name="bonus_exp_awarded">Bonus +%1$d EXP awarded!</string>
+    <string name="error_username_empty">Username cannot be empty</string>
+    <string name="profile_saved">Profile Saved!</string>
+    <string name="profile_save_failed">Failed to save profile</string>
+    <string name="welcome_hero">Welcome Hero!</string>
+    <string name="registration_success">Registration Successful! Welcome, %1$s</string>
+    <string name="focus_time_format">%1$dh %2$dm</string>
+    <string name="level_format">LV.%1$d</string>
+    <string name="exp_format">%1$d/%2$d</string>
+    <string name="applying_language">Applying language settings...</string>
+    <string name="error_wait_cooldown">Please wait 5s before changing again</string>
 </resources>

@@ -81,10 +81,10 @@ class NotesActivity : BaseActivity() {
         btnNewNote.setOnClickListener {
             if (newNoteSection.visibility == View.GONE) {
                 newNoteSection.visibility = View.VISIBLE
-                btnNewNote.text = "✕"
+                btnNewNote.text = getString(R.string.btn_close_x)
             } else {
                 newNoteSection.visibility = View.GONE
-                btnNewNote.text = "+ NEW"
+                btnNewNote.text = getString(R.string.btn_new)
             }
         }
 
@@ -100,9 +100,9 @@ class NotesActivity : BaseActivity() {
                 etNoteTitle.text.clear()
                 etNoteContent.text.clear()
                 newNoteSection.visibility = View.GONE
-                btnNewNote.text = "+ NEW"
+                btnNewNote.text = getString(R.string.btn_new)
             } else {
-                showAppNotification("Attention", "Title is required")
+                showAppNotification(getString(R.string.notification_attention), getString(R.string.error_title_required))
             }
         }
     }
@@ -158,7 +158,7 @@ class NotesActivity : BaseActivity() {
                 launch {
                     viewModel.error.collect { error ->
                         error?.let {
-                            showAppNotification("System Error", it)
+                            showAppNotification(getString(R.string.notification_system_error), it)
                             viewModel.clearError()
                         }
                     }

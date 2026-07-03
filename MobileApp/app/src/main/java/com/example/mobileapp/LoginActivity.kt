@@ -26,6 +26,10 @@ import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
 
+    override fun attachBaseContext(newBase: android.content.Context) {
+        super.attachBaseContext(com.example.mobileapp.util.LocaleHelper.onAttach(newBase))
+    }
+
     private val viewModel: LoginViewModel by viewModels { ViewModelFactory() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -149,8 +153,8 @@ class LoginActivity : AppCompatActivity() {
             }
             is LoginViewModel.LoginState.Success -> {
                 btnLogin.isEnabled = true
-                btnLogin.text = "LOGIN"
-                Toast.makeText(this, "Welcome Hero!", Toast.LENGTH_SHORT).show()
+                btnLogin.text = getString(R.string.btn_login)
+                Toast.makeText(this, getString(R.string.welcome_hero), Toast.LENGTH_SHORT).show()
                 BaseActivity.resetNavigationState()
                 startActivity(Intent(this, MainActivity::class.java))
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out)

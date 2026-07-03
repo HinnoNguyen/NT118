@@ -60,6 +60,7 @@
         <activity android:name=".StoryActivity" android:exported="false" android:launchMode="singleTop" />
         <activity android:name=".QuestActivity" android:exported="false" android:launchMode="singleTop" />
         <activity android:name=".TimerActivity" android:exported="false" android:launchMode="singleTop" />
+        <activity android:name=".LanguageTransitionActivity" android:exported="false" android:theme="@style/Theme.MobileApp.Auth" />
         <activity android:name=".ForgotPasswordActivity" android:theme="@style/Theme.MobileApp.Auth" android:exported="false" android:launchMode="singleTop" />
 
         <provider

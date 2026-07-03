@@ -27,10 +27,15 @@ import com.example.mobileapp.presentation.TimerViewModel
 import com.example.mobileapp.presentation.ViewModelFactory
 import com.example.mobileapp.util.AnimationUtils.popIn
 import com.example.mobileapp.util.AnimationUtils.setBounceClick
+import com.example.mobileapp.util.LocaleHelper
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
 
 open class BaseActivity : AppCompatActivity() {
+
+    override fun attachBaseContext(newBase: android.content.Context) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase))
+    }
 
     companion object {
         private var lastActivityIndex = -1

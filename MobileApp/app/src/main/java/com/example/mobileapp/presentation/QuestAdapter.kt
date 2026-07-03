@@ -47,10 +47,11 @@ class QuestAdapter(
             cbComplete.setOnCheckedChangeListener(null)
             cbComplete.isChecked = task.completed
             
+            val context = itemView.context
             tvExp.text = when(task.priority) {
-                "high" -> "+50xp"
-                "normal" -> "+20xp"
-                else -> "+10xp"
+                "high" -> context.getString(R.string.exp_high)
+                "normal" -> context.getString(R.string.exp_normal)
+                else -> context.getString(R.string.exp_low)
             }
 
             if (task.completed) {

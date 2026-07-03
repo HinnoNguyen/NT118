@@ -19,6 +19,10 @@ import kotlinx.coroutines.launch
 
 class ForgotPasswordActivity : AppCompatActivity() {
 
+    override fun attachBaseContext(newBase: android.content.Context) {
+        super.attachBaseContext(com.example.mobileapp.util.LocaleHelper.onAttach(newBase))
+    }
+
     private lateinit var sendPasswordResetEmailUseCase: SendPasswordResetEmailUseCase
 
     override fun onCreate(savedInstanceState: Bundle?) {

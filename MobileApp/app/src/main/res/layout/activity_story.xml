@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
-            android:text="STORY MODE"
+            android:text="@string/story_mode_title"
             android:textColor="@color/accent_yellow"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="monospace"
-                    android:text="Turn your notes into adventure stories!"
+                    android:text="@string/story_mode_desc"
                     android:textColor="@color/accent_green"
                     android:textSize="13sp" />
 
@@ -89,7 +89,7 @@
                     android:minHeight="0dp"
                     android:minWidth="40dp"
                     android:paddingHorizontal="12dp"
-                    android:text="+ CREATE"
+                    android:text="@string/btn_create_story"
                     android:textColor="@color/black"
                     android:textSize="12sp"
                     android:textStyle="bold"
@@ -114,7 +114,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="monospace"
-                    android:text="✦ STORY FORGE"
+                    android:text="@string/story_forge_title"
                     android:textColor="@color/accent_green"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -124,7 +124,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:fontFamily="monospace"
-                    android:text="CHOOSE GENRE"
+                    android:text="@string/choose_genre_label"
                     android:textColor="@color/text_gray"
                     android:textSize="10sp"
                     android:textStyle="bold" />
@@ -156,7 +156,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="monospace"
-                            android:text="EPIC"
+                            android:text="@string/genre_epic"
                             android:textColor="@color/black"
                             android:textSize="8sp"
                             android:textStyle="bold" />
@@ -184,7 +184,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="monospace"
-                            android:text="MYSTERY"
+                            android:text="@string/genre_mystery"
                             android:textColor="@color/text_gray"
                             android:textSize="8sp" />
                     </LinearLayout>
@@ -211,7 +211,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="monospace"
-                            android:text="COMEDY"
+                            android:text="@string/genre_comedy"
                             android:textColor="@color/text_gray"
                             android:textSize="8sp" />
                     </LinearLayout>
@@ -238,7 +238,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="monospace"
-                            android:text="HORROR"
+                            android:text="@string/genre_horror"
                             android:textColor="@color/text_gray"
                             android:textSize="8sp" />
                     </LinearLayout>
@@ -249,7 +249,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:fontFamily="monospace"
-                    android:text="ENTER NOTE"
+                    android:text="@string/enter_note_label"
                     android:textColor="@color/text_gray"
                     android:textSize="10sp"
                     android:textStyle="bold" />
@@ -262,7 +262,7 @@
                     android:background="@drawable/bg_button_unselected"
                     android:fontFamily="monospace"
                     android:gravity="top"
-                    android:hint="Write a note to turn into a story..."
+                    android:hint="@string/hint_story_input"
                     android:padding="12dp"
                     android:textColor="@color/white"
                     android:textColorHint="@color/text_hint"
@@ -276,7 +276,7 @@
                     android:layout_height="48dp"
                     android:layout_marginTop="16dp"
                     android:backgroundTint="@color/accent_yellow"
-                    android:text="✦ STORY-FY!"
+                    android:text="@string/btn_storyfy"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:insetTop="0dp"

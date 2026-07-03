@@ -198,15 +198,15 @@ class CalendarActivity : BaseActivity() {
     }
 
     private fun showEventsForDate(date: Calendar) {
-        val sdfLabel = SimpleDateFormat("MMMM dd", Locale.US)
-        tvSelectedDateLabel.text = "QUESTS FOR ${sdfLabel.format(date.time).uppercase()}"
+        val sdfLabel = SimpleDateFormat("MMMM dd", Locale.getDefault())
+        tvSelectedDateLabel.text = getString(R.string.quests_for_day, sdfLabel.format(date.time).uppercase())
 
         eventListContainer.removeAllViews()
         val tasksForDate = allTasks.filter { isSameDay(it.dueAt, date.timeInMillis) }
 
         if (tasksForDate.isEmpty()) {
             val emptyTv = TextView(this).apply {
-                text = "No quests for this day."
+                text = getString(R.string.no_quests_for_day)
                 typeface = Typeface.MONOSPACE
                 setTextColor(Color.GRAY)
                 textSize = 12f

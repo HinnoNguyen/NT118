@@ -78,9 +78,9 @@ class ProfileActivity : BaseActivity() {
                 viewModel.userProfile.collect { user ->
                     user?.let {
                         tvUserName?.text = it.name
-                        tvUserTitle?.text = if (it.title.isNotBlank()) it.title else "Pixel Knight"
-                        tvLevel?.text = "LV.${it.level}"
-                        tvExpValue?.text = "${it.exp}/${it.level * 100}"
+                        tvUserTitle?.text = if (it.title.isNotBlank()) it.title else getString(R.string.profile_user_title)
+                        tvLevel?.text = getString(R.string.level_format, it.level)
+                        tvExpValue?.text = getString(R.string.exp_format, it.exp, it.level * 100)
                         expProgressBar?.setProgress(it.exp % 100, true)
                         tvBio?.text = if (it.bio.isNotBlank()) it.bio else "Adventurer of productivity realms"
 
@@ -94,7 +94,7 @@ class ProfileActivity : BaseActivity() {
                         tvQuestsDone?.text = it.completedTaskCount.toString()
                         val hours = it.totalFocusMinutes / 60
                         val minutes = it.totalFocusMinutes % 60
-                        tvFocusTime?.text = "${hours}h ${minutes}m"
+                        tvFocusTime?.text = getString(R.string.focus_time_format, hours, minutes)
                         tvNotesWritten?.text = "8" // Mock
                         tvStoriesCount?.text = "3" // Mock
                         tvStreak?.text = it.currentStreak.toString()

@@ -94,7 +94,7 @@ class StoryActivity : BaseActivity() {
                         newStorySection.visibility = View.GONE 
                     }
                     .start()
-                btnCreateStory.text = "+ CREATE"
+                btnCreateStory.text = getString(R.string.btn_create_story)
             }
         }
 
@@ -122,7 +122,7 @@ class StoryActivity : BaseActivity() {
             if (input.isNotBlank()) {
                 generateStory(input)
             } else {
-                showAppNotification("Attention", "Please enter some information first")
+                showAppNotification(getString(R.string.notification_attention), getString(R.string.error_empty_story_input))
             }
         }
     }
@@ -164,10 +164,10 @@ class StoryActivity : BaseActivity() {
                         addNewStoryToList(storyText, input)
                     }
                 } else {
-                    showAppNotification("API Error", "Code: ${response.code()}")
+                    showAppNotification(getString(R.string.api_error), "Code: ${response.code()}")
                 }
             } catch (e: Exception) {
-                showAppNotification("System Error", e.message ?: "Unknown error")
+                showAppNotification(getString(R.string.notification_system_error), e.message ?: "Unknown error")
             } finally {
                 pbLoading.visibility = View.GONE
                 btnStoryfy.isEnabled = true
@@ -183,12 +183,12 @@ class StoryActivity : BaseActivity() {
 
     private fun deleteStory(story: StoryItem) {
         androidx.appcompat.app.AlertDialog.Builder(this)
-            .setTitle("Delete Story")
-            .setMessage("Are you sure?")
-            .setPositiveButton("Delete") { _, _ ->
+            .setTitle(getString(R.string.dialog_delete_story))
+            .setMessage(getString(R.string.dialog_delete_confirm))
+            .setPositiveButton(getString(R.string.btn_delete)) { _, _ ->
                 viewModel.deleteStory(story.id)
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(getString(R.string.btn_cancel), null)
             .show()
     }
 
@@ -213,7 +213,7 @@ class StoryActivity : BaseActivity() {
                 launch {
                     viewModel.error.collect { error ->
                         error?.let {
-                            showAppNotification("System Error", it)
+                            showAppNotification(getString(R.string.notification_system_error), it)
                             viewModel.clearError()
                         }
                     }
@@ -222,7 +222,7 @@ class StoryActivity : BaseActivity() {
         }
     }
 
-    private fun showStoryDialog(story: String, title: String = "Your Story") {
+    private fun showStoryDialog(story: String, title: String = getString(R.string.dialog_your_story)) {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_story_detail)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)

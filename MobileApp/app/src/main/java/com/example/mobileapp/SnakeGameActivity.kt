@@ -25,6 +25,10 @@ import kotlinx.coroutines.launch
 
 class SnakeGameActivity : AppCompatActivity(), SnakeGameView.GameStateListener {
 
+    override fun attachBaseContext(newBase: android.content.Context) {
+        super.attachBaseContext(com.example.mobileapp.util.LocaleHelper.onAttach(newBase))
+    }
+
     private val viewModel: SnakeGameViewModel by viewModels { ViewModelFactory() }
     private lateinit var snakeGameView: SnakeGameView
     private lateinit var tvScore: TextView
@@ -70,7 +74,7 @@ class SnakeGameActivity : AppCompatActivity(), SnakeGameView.GameStateListener {
                 launch {
                     viewModel.expAwarded.collect { exp ->
                         exp?.let {
-                            Toast.makeText(this@SnakeGameActivity, "Bonus +$it EXP awarded!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@SnakeGameActivity, getString(R.string.bonus_exp_awarded, it), Toast.LENGTH_SHORT).show()
                             viewModel.clearExpFlag()
                         }
                     }
@@ -149,14 +153,14 @@ class SnakeGameActivity : AppCompatActivity(), SnakeGameView.GameStateListener {
         val remaining = maxOf(0, 3 - currentCount)
 
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("SNAKE RUN")
-        builder.setMessage("Navigate the snake using the D-Pad or swipe gestures.\nEat yellow orbs to grow and score points.\n\nNote: Rewards are limited to 3 times per day.\nRemaining rewards today: $remaining/3\n\nReady?")
+        builder.setTitle(getString(R.string.snake_run_title))
+        builder.setMessage(getString(R.string.snake_start_desc, remaining))
         builder.setCancelable(false)
-        builder.setPositiveButton("START") { dialog, _ ->
+        builder.setPositiveButton(getString(R.string.btn_game_start)) { dialog, _ ->
             dialog.dismiss()
             startGame()
         }
-        builder.setNegativeButton("EXIT") { _, _ ->
+        builder.setNegativeButton(getString(R.string.btn_game_exit)) { _, _ ->
             finish()
         }
         
@@ -176,7 +180,7 @@ class SnakeGameActivity : AppCompatActivity(), SnakeGameView.GameStateListener {
     }
 
     override fun onScoreUpdated(score: Int) {
-        tvScore.text = "SCORE: $score"
+        tvScore.text = getString(R.string.score_label, score)
     }
 
     override fun onGameOver(finalScore: Int) {
@@ -197,15 +201,15 @@ class SnakeGameActivity : AppCompatActivity(), SnakeGameView.GameStateListener {
         val remaining = maxOf(0, 3 - nextCount)
 
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("GAME OVER")
-        builder.setMessage("Final Score: $finalScore\nEXP Gained: +$expGained XP\nRemaining rewards: $remaining/3")
+        builder.setTitle(getString(R.string.game_over_title))
+        builder.setMessage(getString(R.string.game_over_desc, finalScore, expGained, remaining))
         builder.setCancelable(false)
-        builder.setPositiveButton("PLAY AGAIN") { dialog, _ ->
+        builder.setPositiveButton(getString(R.string.btn_play_again)) { dialog, _ ->
             dialog.dismiss()
             snakeGameView.resetGame()
             startGame()
         }
-        builder.setNegativeButton("EXIT") { dialog, _ ->
+        builder.setNegativeButton(getString(R.string.btn_game_exit)) { dialog, _ ->
             dialog.dismiss()
             finish()
         }

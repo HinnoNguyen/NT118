@@ -65,7 +65,7 @@ class EditProfileActivity : BaseActivity() {
             val bio = etBio?.text?.toString() ?: ""
 
             if (username.isBlank()) {
-                Toast.makeText(this, "Username cannot be empty", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.error_username_empty), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -138,8 +138,8 @@ class EditProfileActivity : BaseActivity() {
                             }
                         }
 
-                        tvLevel?.text = "LV.${it.level}"
-                        tvExpValue?.text = "${it.exp}/${it.level * 100}"
+                        tvLevel?.text = getString(R.string.level_format, it.level)
+                        tvExpValue?.text = getString(R.string.exp_format, it.exp, it.level * 100)
                         expProgressBar?.progress = (it.exp % 100)
                     }
                 }
@@ -151,11 +151,11 @@ class EditProfileActivity : BaseActivity() {
                 viewModel.updateResult.collect { result ->
                     result?.let {
                         if (it.isSuccess) {
-                            Toast.makeText(this@EditProfileActivity, "Profile Saved!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@EditProfileActivity, getString(R.string.profile_saved), Toast.LENGTH_SHORT).show()
                             viewModel.clearUpdateResult()
                             finish()
                         } else {
-                            Toast.makeText(this@EditProfileActivity, "Failed to save profile", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@EditProfileActivity, getString(R.string.profile_save_failed), Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

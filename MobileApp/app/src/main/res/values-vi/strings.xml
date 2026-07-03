@@ -1,0 +1,206 @@
+<resources>
+    <string name="app_name">Narrativize</string>
+    <string name="forgot_password">Quên mật khẩu? Nhấn vào đây</string>
+    <string name="sign_in_google">Đăng nhập với Google</string>
+    <string name="login_title">NARRATIVIZE</string>
+    <string name="login_subtitle">- RPG NĂNG SUẤT -</string>
+    <string name="login_press_start">NHẤN START ĐỂ BẮT ĐẦU</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Mật khẩu</string>
+    <string name="label_username">Tên người dùng</string>
+    <string name="label_confirm_password">Xác nhận mật khẩu</string>
+    <string name="btn_login">ĐĂNG NHẬP</string>
+    <string name="btn_register">ĐĂNG KÝ</string>
+    <string name="hint_email">vidu@gmail.com</string>
+    <string name="hint_password">••••••••••••</string>
+    <string name="hint_username">Tên</string>
+
+    <!-- Main Screen Strings -->
+    <string name="label_user">NGƯỜI DÙNG</string>
+    <string name="label_level">LV.5</string>
+    <string name="label_exp_value">340/500</string>
+    <string name="label_exp_title">EXP</string>
+    <string name="quests_done_title">Nhiệm vụ hoàn thành</string>
+    <string name="quests_done_value">12</string>
+    <string name="notes_written_title">Ghi chú đã viết</string>
+    <string name="notes_written_value">8</string>
+    <string name="focus_time_title">Thời gian tập trung</string>
+    <string name="focus_time_value">4h</string>
+    <string name="streak_title">Chuỗi</string>
+    <string name="streak_value">3</string>
+    <string name="daily_quests_title">▶ NHIỆM VỤ HÀNG NGÀY</string>
+    <string name="quest_task_1">Hoàn thành 3 nhiệm vụ</string>
+    <string name="quest_task_1_exp">+10xp</string>
+    <string name="quest_task_2">Tập trung 30 phút</string>
+    <string name="quest_task_2_exp">+20xp</string>
+    <string name="quest_task_3">Viết một ghi chú</string>
+    <string name="quest_task_3_exp">+30xp</string>
+    <string name="main_character_message">\"Bạn có 5 nhiệm vụ cần hoàn thành hôm nay.\"</string>
+
+    <!-- Profile Screen Strings -->
+    <string name="profile_title">▶ HỒ SƠ</string>
+    <string name="profile_subtitle">~ trạng thái người dùng ~</string>
+    <string name="profile_user_title">Hiệp sĩ Pixel</string>
+    <string name="profile_bio_label">▶ TIỂU SỬ</string>
+    <string name="profile_bio_text">\"Nhà thám hiểm của những cõi năng suất\"</string>
+    <string name="profile_stats_label">▶ THỐNG KÊ</string>
+    <string name="profile_stat_focus_hours">Giờ tập trung</string>
+    <string name="profile_stat_focus_hours_val">24h</string>
+    <string name="profile_stat_stories">Câu chuyện</string>
+    <string name="profile_stat_stories_val">3</string>
+    <string name="profile_stat_current_streak">Chuỗi hiện tại</string>
+    <string name="profile_stat_best_streak">Chuỗi tốt nhất</string>
+    <string name="profile_stat_best_streak_val">7</string>
+    <string name="profile_achievements_label">▶ THÀNH TỰU</string>
+    <string name="profile_edit_btn">✎ CHỈNH SỬA HỒ SƠ</string>
+
+    <!-- Settings Screen Strings -->
+    <string name="settings_title">CÀI ĐẶT</string>
+    <string name="settings_header_label">⚙ CÀI ĐẶT</string>
+    <string name="settings_subtitle">~ tùy chỉnh ~</string>
+    <string name="settings_language_label">▶ NGÔN NGỮ</string>
+    <string name="settings_lang_vn">VN Tiếng Việt</string>
+    <string name="settings_lang_en">GB Tiếng Anh</string>
+    <string name="settings_notifications_label">▶ THÔNG BÁO</string>
+    <string name="settings_notif_quests">Nhắc nhở nhiệm vụ</string>
+    <string name="settings_notif_timer">Hết giờ tập trung</string>
+    <string name="settings_notif_login">Đăng nhập hàng ngày</string>
+    <string name="settings_about_label">▶ GIỚI THIỆU</string>
+    <string name="settings_version_label">Phiên bản</string>
+    <string name="settings_version_val">1.0.0</string>
+    <string name="settings_build_label">Bản dựng</string>
+    <string name="settings_build_val">PIXEL-2024</string>
+    <string name="settings_logout_btn">ĐĂNG XUẤT</string>
+
+    <!-- Edit Profile Screen Strings -->
+    <string name="edit_profile_title">▶ CHỈNH SỬA HỒ SƠ</string>
+    <string name="choose_avatar_label">▶ CHỌN ẢNH ĐẠI DIỆN</string>
+    <string name="btn_save_profile">✔ LƯU THAY ĐỔI</string>
+
+    <!-- Quest Screen Strings -->
+    <string name="quest_header_label">⚔ NHẬT KÝ NHIỆM VỤ</string>
+    <string name="quest_subtitle">Hoàn thành nhiệm vụ để nhận EXP!</string>
+    <string name="new_quest_label">NHIỆM VỤ MỚI</string>
+    <string name="hint_enter_quest">Nhập nhiệm vụ mới...</string>
+    <string name="label_rank">HẠNG</string>
+    <string name="btn_add_quest">THÊM</string>
+
+    <!-- Bottom Nav Labels -->
+    <string name="nav_home">CHÍNH</string>
+    <string name="nav_quest">N.VỤ</string>
+    <string name="nav_notes">G.CHÚ</string>
+    <string name="nav_story">TRUYỆN</string>
+    <string name="nav_game">GAME</string>
+    <string name="nav_time">GIỜ</string>
+    <string name="nav_set">C.ĐẶT</string>
+
+    <!-- Notes Screen -->
+    <string name="scroll_keeper_title">NGƯỜI GIỮ CUỘN - GHI CHÚ</string>
+    <string name="filter_all">TẤT CẢ</string>
+    <string name="btn_new">+ MỚI</string>
+    <string name="type_note">📄 GHI CHÚ</string>
+    <string name="type_reminder">🔔 NHẮC NHỞ</string>
+    <string name="type_flashcard">🃏 THẺ NHỚ</string>
+    <string name="label_time">GIỜ:</string>
+    <string name="hint_title">Tiêu đề...</string>
+    <string name="hint_content">Nội dung...</string>
+    <string name="btn_save_scroll">✦ LƯU CUỘN</string>
+
+    <!-- Timer & Calendar -->
+    <string name="time_magic_title">MA THUẬT THỜI GIAN</string>
+    <string name="tab_timer">HẸN GIỜ</string>
+    <string name="tab_calendar">LỊCH</string>
+    <string name="btn_start">▶ BẮT ĐẦU</string>
+    <string name="btn_pause">❚❚ TẠM DỪNG</string>
+    <string name="btn_reset">↺ ĐẶT LẠI</string>
+    <string name="focus_tip_label">💡 MẸO TẬP TRUNG</string>
+    <string name="focus_tip_text">\"Mỗi phút tập trung = 1 EXP. Hãy tập trung để lên cấp nhanh hơn!\"</string>
+    <string name="day_su">CN</string>
+    <string name="day_mo">T2</string>
+    <string name="day_tu">T3</string>
+    <string name="day_we">T4</string>
+    <string name="day_th">T5</string>
+    <string name="day_fr">T6</string>
+    <string name="day_sa">T7</string>
+    <string name="quests_for_day">NHIỆM VỤ NGÀY %1$s</string>
+    <string name="no_quests_for_day">Không có nhiệm vụ cho ngày này.</string>
+    <string name="btn_add">+ THÊM</string>
+
+    <!-- Game -->
+    <string name="snake_run_title">RẮN SĂN MỒI</string>
+    <string name="score_label">ĐIỂM: %1$d</string>
+
+    <!-- Notifications Dialog -->
+    <string name="notifications_title">THÔNG BÁO NHIỆM VỤ</string>
+    <string name="btn_clear">XÓA</string>
+    <string name="btn_dismiss">ĐÓNG</string>
+    <string name="settings_game_sounds">Âm thanh trò chơi</string>
+    <string name="settings_dark_mode">Chế độ tối</string>
+    <string name="settings_label_account">TÀI KHOẢN</string>
+    <string name="settings_label_system">HỆ THỐNG</string>
+    <string name="settings_version_build">Phiên bản 1.0.4 - Alpha Build</string>
+    <string name="quests_remaining">Bạn còn %1$d nhiệm vụ cần hoàn thành hôm nay!</string>
+    <string name="quests_all_completed">Tất cả nhiệm vụ đã hoàn thành! Làm tốt lắm anh hùng!</string>
+    <string name="exp_high">+50xp</string>
+    <string name="exp_normal">+20xp</string>
+    <string name="exp_low">+10xp</string>
+    <string name="rank_s_desc">Hạng S (Cao - +50xp)</string>
+    <string name="rank_a_desc">Hạng A (Cao - +50xp)</string>
+    <string name="rank_b_desc">Hạng B (Thường - +20xp)</string>
+    <string name="rank_c_desc">Hạng C (Thấp - +10xp)</string>
+    <string name="select_quest_rank">Chọn hạng nhiệm vụ</string>
+    <string name="story_mode_title">CHẾ ĐỘ TRUYỆN</string>
+    <string name="story_mode_desc">Biến ghi chú của bạn thành những câu chuyện phiêu lưu!</string>
+    <string name="btn_create_story">+ TẠO MỚI</string>
+    <string name="story_forge_title">✦ LÒ RÈN TRUYỆN</string>
+    <string name="choose_genre_label">CHỌN THỂ LOẠI</string>
+    <string name="genre_epic">ANH HÙNG</string>
+    <string name="genre_mystery">BÍ ẨN</string>
+    <string name="genre_comedy">HÀI HƯỚC</string>
+    <string name="genre_horror">KINH DỊ</string>
+    <string name="enter_note_label">NHẬP GHI CHÚ</string>
+    <string name="hint_story_input">Viết một ghi chú để biến nó thành truyện...</string>
+    <string name="btn_storyfy">✦ TRUYỆN HÓA!</string>
+    <string name="daily_quest_task">%1$s Hoàn thành 3 nhiệm vụ (%2$d/3)</string>
+    <string name="daily_quest_focus">%1$s Tập trung 30 phút (%2$d/30)</string>
+    <string name="daily_quest_note">%1$s Viết một ghi chú (%2$d/1)</string>
+    <string name="game_bonus_exp">Chơi để nhận thêm EXP! (%1$d/3)</string>
+    <string name="error_empty_quest">Vui lòng nhập tên nhiệm vụ</string>
+    <string name="notification_attention">Chú ý</string>
+    <string name="notification_system_error">Lỗi hệ thống</string>
+    <string name="error_empty_story_input">Vui lòng nhập một số thông tin trước</string>
+    <string name="api_error">Lỗi API</string>
+    <string name="dialog_delete_story">Xóa truyện</string>
+    <string name="dialog_delete_confirm">Bạn có chắc không?</string>
+    <string name="btn_delete">Xóa</string>
+    <string name="btn_cancel">Hủy</string>
+    <string name="dialog_your_story">Truyện của bạn</string>
+    <string name="dialog_delete_note">Xóa ghi chú</string>
+    <string name="dialog_select_type">Chọn loại</string>
+    <string name="type_note_plain">Ghi chú</string>
+    <string name="type_reminder_plain">Nhắc nhở</string>
+    <string name="type_flashcard_plain">Thẻ nhớ</string>
+    <string name="error_empty_note">Vui lòng nhập cả tiêu đề và nội dung</string>
+    <string name="error_title_required">Tiêu đề là bắt buộc</string>
+    <string name="btn_close_x">✕</string>
+    <string name="timer_finished_toast">Phiên tập trung đã hoàn thành! Làm tốt lắm!</string>
+    <string name="timer_finished_title">Tập trung hoàn tất!</string>
+    <string name="timer_finished_msg">Làm tốt lắm! Đã đến lúc nghỉ ngơi xứng đáng.</string>
+    <string name="snake_start_desc">Điều khiển rắn bằng phím D-Pad hoặc vuốt.\nĂn các viên màu vàng để lớn hơn và ghi điểm.\n\nGhi chú: Phần thưởng giới hạn 3 lần mỗi ngày.\nPhần thưởng còn lại hôm nay: %1$d/3\n\nSẵn sàng chưa?</string>
+    <string name="btn_game_start">BẮT ĐẦU</string>
+    <string name="btn_game_exit">THOÁT</string>
+    <string name="game_over_title">TRÒ CHƠI KẾT THÚC</string>
+    <string name="game_over_desc">Điểm cuối cùng: %1$d\nEXP nhận được: +%2$d XP\nPhần thưởng còn lại: %3$d/3</string>
+    <string name="btn_play_again">CHƠI LẠI</string>
+    <string name="bonus_exp_awarded">Đã nhận thêm +%1$d EXP!</string>
+    <string name="error_username_empty">Tên người dùng không được để trống</string>
+    <string name="profile_saved">Đã lưu hồ sơ!</string>
+    <string name="profile_save_failed">Lưu hồ sơ thất bại</string>
+    <string name="welcome_hero">Chào mừng Anh hùng!</string>
+    <string name="registration_success">Đăng ký thành công! Chào mừng, %1$s</string>
+    <string name="focus_time_format">%1$dh %2$dm</string>
+    <string name="level_format">CẤP %1$d</string>
+    <string name="exp_format">%1$d/%2$d</string>
+    <string name="applying_language">Đang áp dụng cài đặt ngôn ngữ...</string>
+    <string name="error_wait_cooldown">Vui lòng đợi 5 giây trước khi thay đổi lần nữa</string>
+</resources>
