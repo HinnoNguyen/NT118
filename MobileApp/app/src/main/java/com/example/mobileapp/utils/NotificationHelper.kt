@@ -9,15 +9,37 @@ import androidx.core.app.NotificationManagerCompat
 
 object NotificationHelper {
     const val CHANNEL_ID = "timer_channel"
+    const val REMINDER_CHANNEL_ID = "reminder_channel"
     private const val NOTIFICATION_ID = 1001
 
     fun createChannel(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
+            val manager = context.getSystemService(NotificationManager::class.java)
+
+            val timerChannel = NotificationChannel(
                 CHANNEL_ID, "Timer Notifications", NotificationManager.IMPORTANCE_DEFAULT
             ).apply { description = "Notifies when a Pomodoro work or break session ends" }
-            val manager = context.getSystemService(NotificationManager::class.java)
-            manager?.createNotificationChannel(channel)
+            
+            val reminderChannel = NotificationChannel(
+                REMINDER_CHANNEL_ID, "Notes Reminders", NotificationManager.IMPORTANCE_HIGH
+            ).apply { description = "Notifies for scheduled note reminders" }
+
+            manager?.createNotificationChannel(timerChannel)
+            manager?.createNotificationChannel(reminderChannel)
+        }
+    }
+
+    fun showReminder(context: Context, title: String, message: String) {
+        val builder = NotificationCompat.Builder(context, REMINDER_CHANNEL_ID)
+            .setSmallIcon(android.R.drawable.ic_popup_reminder)
+            .setContentTitle(title)
+            .setContentText(message)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
+
+        try {
+            NotificationManagerCompat.from(context).notify(System.currentTimeMillis().toInt(), builder.build())
+        } catch (e: SecurityException) {
         }
     }
 

@@ -7,7 +7,7 @@ data class NoteDto(
     val content: String = "",
     val type: String = "note",
     val pinned: Boolean = false,
+    val reminderTime: Long? = null,
     val createdAt: Long = 0L,
     val updatedAt: Long = 0L
 )
-

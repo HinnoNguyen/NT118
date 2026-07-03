@@ -93,4 +93,20 @@
     <string name="nav_story">STORY</string>
     <string name="nav_game">GAME</string>
     <string name="nav_set">SET</string>
+
+    <!-- Notes Screen -->
+    <string name="scroll_keeper_title">SCROLL KEEPER - NOTE</string>
+    <string name="btn_new">+ NEW</string>
+    <string name="btn_close_x">✕</string>
+    <string name="default_time">12:00</string>
+    <string name="error_title_required">Title is required</string>
+    <string name="dialog_delete_note">Delete Note</string>
+    <string name="dialog_delete_confirm">Are you sure?</string>
+    <string name="btn_delete">Delete</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="notification_attention">Attention</string>
+    <string name="notification_system_error">System Error</string>
+    <string name="notifications_title">QUEST NOTIFICATIONS</string>
+    <string name="btn_clear">CLEAR</string>
+    <string name="btn_dismiss">DISMISS</string>
 </resources>

@@ -9,9 +9,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobileapp.R
 import com.example.mobileapp.domain.model.AppNotification
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class NotificationsAdapter(
-    private val onNotificationClick: (AppNotification) -> Unit
+    private val onNotificationClick: (AppNotification) -> Unit,
 ) : ListAdapter<AppNotification, NotificationsAdapter.NotificationViewHolder>(NotificationDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder {
@@ -29,12 +32,17 @@ class NotificationsAdapter(
     ) : RecyclerView.ViewHolder(view) {
         private val tvTitle: TextView = view.findViewById(R.id.tvNotifTitle)
         private val tvMessage: TextView = view.findViewById(R.id.tvNotifMessage)
+        private val tvTime: TextView = view.findViewById(R.id.tvNotifTime)
         private val tvIcon: TextView = view.findViewById(R.id.tvNotifIcon)
         private val indicator: View = view.findViewById(R.id.viewUnreadIndicator)
 
         fun bind(notification: AppNotification) {
             tvTitle.text = notification.title
             tvMessage.text = notification.message
+            
+            val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
+            tvTime.text = sdf.format(Date(notification.timestamp))
+
             tvIcon.text = when(notification.type) {
                 "calendar" -> "⚔️"
                 "timer" -> "⏰"

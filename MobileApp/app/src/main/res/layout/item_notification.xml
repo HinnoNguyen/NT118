@@ -8,10 +8,18 @@
     android:padding="12dp"
     android:gravity="center_vertical">
 
+    <View
+        android:id="@+id/viewUnreadIndicator"
+        android:layout_width="4dp"
+        android:layout_height="match_parent"
+        android:layout_marginVertical="8dp"
+        android:background="@color/rank_s" />
+
     <TextView
         android:id="@+id/tvNotifIcon"
         android:layout_width="32dp"
         android:layout_height="32dp"
+        android:layout_marginStart="8dp"
         android:background="#1A1A24"
         android:gravity="center"
         android:text="🔔"
@@ -24,15 +32,32 @@
         android:layout_marginStart="12dp"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvNotifTitle"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="monospace"
-            android:text="Notification Title"
-            android:textColor="@color/accent_green"
-            android:textSize="13sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tvNotifTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="monospace"
+                android:text="Notification Title"
+                android:textColor="@color/accent_green"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvNotifTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:text="@string/default_time"
+                android:textColor="@color/text_gray"
+                android:textSize="9sp" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tvNotifMessage"
@@ -44,11 +69,4 @@
             android:textColor="@color/text_gray"
             android:textSize="11sp" />
     </LinearLayout>
-
-    <View
-        android:id="@+id/viewUnreadIndicator"
-        android:layout_width="8dp"
-        android:layout_height="8dp"
-        android:layout_marginStart="8dp"
-        android:background="@color/rank_s" />
 </LinearLayout>

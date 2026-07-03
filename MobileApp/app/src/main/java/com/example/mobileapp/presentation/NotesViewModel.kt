@@ -49,7 +49,7 @@ class NotesViewModel(
         _filterType.value = type
     }
 
-    fun addNote(title: String, content: String, type: String = "note") {
+    fun addNote(title: String, content: String, type: String = "note", reminderTime: Long? = null) {
         if (title.isBlank()) return
         viewModelScope.launch {
             val now = System.currentTimeMillis()
@@ -60,6 +60,7 @@ class NotesViewModel(
                 content = content,
                 type = type,
                 pinned = false,
+                reminderTime = reminderTime,
                 createdAt = now,
                 updatedAt = now
             )
