@@ -6,6 +6,9 @@
     <color name="accent_green">#00FF00</color>
     <color name="input_bg">#1A1A24</color>
     <color name="button_bg_disabled">#24242E</color>
+    <color name="text_gray">#AAAAAA</color>
+    <color name="text_hint">#44FFFFFF</color>
+    <color name="divider_color">#1AFFFFFF</color>
 
     <!-- Rank Colors -->
     <color name="rank_s">#FF4444</color>
@@ -14,6 +17,7 @@
     <color name="rank_b">#00FF00</color>
     <color name="rank_c">#448AFF</color>
 
-    <!-- Note Colors -->
+    <!-- UI Colors -->
     <color name="note_purple">#8A2BE2</color>
+    <color name="level_color">#8A2BE2</color>
 </resources>

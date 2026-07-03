@@ -106,7 +106,7 @@
                             android:layout_marginStart="8dp"
                             android:fontFamily="monospace"
                             android:text="LV.5"
-                            android:textColor="#8A2BE2"
+                            android:textColor="@color/level_color"
                             android:textSize="12sp" />
                     </LinearLayout>
 
@@ -117,7 +117,7 @@
                         android:layout_marginTop="2dp"
                         android:fontFamily="monospace"
                         android:text="EXP"
-                        android:textColor="#AAAAAA"
+                        android:textColor="@color/text_gray"
                         android:textSize="10sp" />
 
                     <RelativeLayout
@@ -162,22 +162,22 @@
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:gravity="center" android:orientation="vertical" android:padding="6dp">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚔️" android:textSize="18sp" />
                         <TextView android:id="@+id/tvQuestsDone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="12" android:textColor="@color/accent_green" android:textSize="16sp" android:textStyle="bold" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="Quests Done" android:textColor="#AAAAAA" android:textSize="9sp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="Quests Done" android:textColor="@color/text_gray" android:textSize="9sp" />
                     </LinearLayout>
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:gravity="center" android:orientation="vertical" android:padding="6dp">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📜" android:textSize="18sp" />
                         <TextView android:id="@+id/tvNotesWritten" android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="8" android:textColor="@color/accent_green" android:textSize="16sp" android:textStyle="bold" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="Notes Written" android:textColor="#AAAAAA" android:textSize="9sp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="Notes Written" android:textColor="@color/text_gray" android:textSize="9sp" />
                     </LinearLayout>
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:gravity="center" android:orientation="vertical" android:padding="6dp">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⏰" android:textSize="18sp" />
                         <TextView android:id="@+id/tvFocusTime" android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="4h" android:textColor="@color/accent_green" android:textSize="16sp" android:textStyle="bold" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="Focus Time" android:textColor="#AAAAAA" android:textSize="9sp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="Focus Time" android:textColor="@color/text_gray" android:textSize="9sp" />
                     </LinearLayout>
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:gravity="center" android:orientation="vertical" android:padding="6dp">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🔥" android:textSize="18sp" />
                         <TextView android:id="@+id/tvStreak" android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="3" android:textColor="@color/accent_green" android:textSize="16sp" android:textStyle="bold" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="Streak" android:textColor="#AAAAAA" android:textSize="9sp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="Streak" android:textColor="@color/text_gray" android:textSize="9sp" />
                     </LinearLayout>
                 </GridLayout>
             </LinearLayout>
@@ -198,7 +198,7 @@
                     android:layout_marginTop="4dp"
                     android:fontFamily="monospace"
                     android:text="□ Complete 3 tasks (0/3)"
-                    android:textColor="#AAAAAA"
+                    android:textColor="@color/text_gray"
                     android:textSize="12sp" />
                 <TextView
                     android:id="@+id/tvDailyQuestFocus"
@@ -207,7 +207,7 @@
                     android:layout_marginTop="4dp"
                     android:fontFamily="monospace"
                     android:text="□ Focus for 30 min (0/30)"
-                    android:textColor="#AAAAAA"
+                    android:textColor="@color/text_gray"
                     android:textSize="12sp" />
                 <TextView
                     android:id="@+id/tvDailyQuestNote"
@@ -216,7 +216,7 @@
                     android:layout_marginTop="4dp"
                     android:fontFamily="monospace"
                     android:text="□ Write a note (0/1)"
-                    android:textColor="#AAAAAA"
+                    android:textColor="@color/text_gray"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -261,7 +261,7 @@
                     android:layout_marginStart="12dp"
                     android:fontFamily="monospace"
                     android:text="Play to earn bonus EXP! (3/3)"
-                    android:textColor="#AAAAAA"
+                    android:textColor="@color/text_gray"
                     android:textSize="10sp" />
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:fontFamily="monospace" android:text="PLAY ▶" android:textColor="@color/accent_green" android:textSize="12sp" android:textStyle="bold" />
             </LinearLayout>

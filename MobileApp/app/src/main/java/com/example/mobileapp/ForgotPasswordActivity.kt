@@ -2,7 +2,6 @@ package com.example.mobileapp
 
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -40,10 +39,10 @@ class ForgotPasswordActivity : AppCompatActivity() {
         btnThemeToggle.setOnClickListener {
             val isDarkMode = sharedPreferences.getBoolean("is_dark_mode", true)
             val newDarkMode = !isDarkMode
-            ThemeUtils.toggleTheme(this, findViewById(R.id.main), btnThemeToggle, newDarkMode)
+            if (!ThemeUtils.toggleTheme(this, null, btnThemeToggle, newDarkMode, animate = false)) {
+                Toast.makeText(this, "Please wait 5s before toggling again", Toast.LENGTH_SHORT).show()
+            }
         }
-        
-        ThemeUtils.checkAndPerformRevealAnimation(this, findViewById<ViewGroup>(R.id.main))
     }
 
     private fun setupDependencies() {

@@ -32,9 +32,11 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:padding="0dp"
-        android:text="🌓"
-        android:textColor="@color/accent_green"
-        android:textSize="20sp"
+        app:icon="@drawable/ic_theme_toggle"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconSize="24dp"
+        app:iconTint="@color/accent_green"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -112,7 +114,7 @@
                 android:inputType="textEmailAddress"
                 android:padding="8dp"
                 android:textColor="@color/white"
-                android:textColorHint="#44FFFFFF"
+                android:textColorHint="@color/text_hint"
                 android:textSize="14sp"
                 android:importantForAutofill="no" />
 
@@ -137,7 +139,7 @@
                 android:inputType="textPassword"
                 android:padding="8dp"
                 android:textColor="@color/white"
-                android:textColorHint="#44FFFFFF"
+                android:textColorHint="@color/text_hint"
                 android:textSize="14sp"
                 android:importantForAutofill="no" />
 

@@ -40,7 +40,7 @@
             android:layout_marginTop="2dp"
             android:fontFamily="monospace"
             android:text="Note content preview goes here..."
-            android:textColor="#AAAAAA"
+            android:textColor="@color/text_gray"
             android:textSize="11sp" />
     </LinearLayout>
 

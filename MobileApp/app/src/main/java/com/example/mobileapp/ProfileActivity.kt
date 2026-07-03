@@ -81,7 +81,7 @@ class ProfileActivity : BaseActivity() {
                         tvUserTitle?.text = if (it.title.isNotBlank()) it.title else "Pixel Knight"
                         tvLevel?.text = "LV.${it.level}"
                         tvExpValue?.text = "${it.exp}/${it.level * 100}"
-                        expProgressBar?.progress = it.exp % 100
+                        expProgressBar?.setProgress(it.exp % 100, true)
                         tvBio?.text = if (it.bio.isNotBlank()) it.bio else "Adventurer of productivity realms"
 
                         if (it.avatarUrl.isNotBlank()) {

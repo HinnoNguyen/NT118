@@ -25,8 +25,6 @@ class SettingsActivity : BaseActivity() {
         setupLogout()
         setupDarkModeSwitch()
         setupEditProfile()
-
-        ThemeUtils.checkAndPerformRevealAnimation(this, findViewById<ViewGroup>(R.id.main))
     }
 
     private fun setupEditProfile() {
@@ -49,17 +47,14 @@ class SettingsActivity : BaseActivity() {
 
         switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
             if (sharedPreferences.getBoolean("is_dark_mode", !isChecked) != isChecked) {
-                // Save preference
-                sharedPreferences.edit().putBoolean("is_dark_mode", isChecked).apply()
-                
-                // Update global night mode
-                val currentMode = if (isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
-                AppCompatDelegate.setDefaultNightMode(currentMode)
-                
-                // Recreate activity with no animation for a "not destroy" feel 
-                // but full layout update
-                overridePendingTransition(0, 0)
-                recreate()
+                val root = findViewById<ViewGroup>(R.id.main)
+                if (!ThemeUtils.toggleTheme(this, root, switchDarkMode, isChecked)) {
+                    // Rate limited: revert switch state
+                    switchDarkMode.setOnCheckedChangeListener(null)
+                    switchDarkMode.isChecked = !isChecked
+                    setupDarkModeSwitch() // Re-attach listener
+                    android.widget.Toast.makeText(this, "Please wait 5s before toggling again", android.widget.Toast.LENGTH_SHORT).show()
+                }
             }
         }
         

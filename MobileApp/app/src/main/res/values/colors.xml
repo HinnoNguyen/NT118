@@ -6,14 +6,18 @@
     <color name="accent_green">#FF0E7F3D</color>
     <color name="input_bg">#FFE4E4EC</color>
     <color name="button_bg_disabled">#FFD1D1D6</color>
+    <color name="text_gray">#FF555555</color>
+    <color name="text_hint">#88555555</color>
+    <color name="divider_color">#1A000000</color>
 
     <!-- Rank Colors -->
     <color name="rank_s">#FFE03B3B</color>
-    <color name="rank_a">#FFC49A00</color>
-    <color name="accent_yellow">#FF7B1FA2</color>
+    <color name="rank_a">#FF8B6508</color>
+    <color name="accent_yellow">#FF8B6508</color>
     <color name="rank_b">#FF0E7F3D</color>
     <color name="rank_c">#FF2B72E2</color>
 
-    <!-- Note Colors -->
+    <!-- UI Colors -->
     <color name="note_purple">#FF7222BF</color>
+    <color name="level_color">#FF7B1FA2</color>
 </resources>

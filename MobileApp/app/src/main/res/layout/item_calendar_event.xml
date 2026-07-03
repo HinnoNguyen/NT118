@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
             android:text="Day 1"
-            android:textColor="#AAAAAA"
+            android:textColor="@color/text_gray"
             android:textSize="10sp" />
     </LinearLayout>
 

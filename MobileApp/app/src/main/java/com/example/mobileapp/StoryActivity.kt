@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.ProgressBar
@@ -47,8 +48,6 @@ class StoryActivity : BaseActivity() {
         setupStoryForge()
         setupNavigation()
         observeViewModel()
-
-        com.example.mobileapp.util.ThemeUtils.checkAndPerformRevealAnimation(this, findViewById<ViewGroup>(R.id.main))
     }
 
     private fun setupRecyclerView() {
@@ -77,9 +76,24 @@ class StoryActivity : BaseActivity() {
         btnCreateStory.setOnClickListener {
             if (newStorySection.visibility == View.GONE) {
                 newStorySection.visibility = View.VISIBLE
+                newStorySection.alpha = 0f
+                newStorySection.translationY = -20f
+                newStorySection.animate()
+                    .alpha(1f)
+                    .translationY(0f)
+                    .setDuration(300)
+                    .setInterpolator(AccelerateDecelerateInterpolator())
+                    .start()
                 btnCreateStory.text = "✕"
             } else {
-                newStorySection.visibility = View.GONE
+                newStorySection.animate()
+                    .alpha(0f)
+                    .translationY(-20f)
+                    .setDuration(200)
+                    .withEndAction { 
+                        newStorySection.visibility = View.GONE 
+                    }
+                    .start()
                 btnCreateStory.text = "+ CREATE"
             }
         }

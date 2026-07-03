@@ -125,7 +125,7 @@
                     android:layout_marginTop="16dp"
                     android:fontFamily="monospace"
                     android:text="CHOOSE GENRE"
-                    android:textColor="#AAAAAA"
+                    android:textColor="@color/text_gray"
                     android:textSize="10sp"
                     android:textStyle="bold" />
 
@@ -185,7 +185,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="monospace"
                             android:text="MYSTERY"
-                            android:textColor="#AAAAAA"
+                            android:textColor="@color/text_gray"
                             android:textSize="8sp" />
                     </LinearLayout>
 
@@ -212,7 +212,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="monospace"
                             android:text="COMEDY"
-                            android:textColor="#AAAAAA"
+                            android:textColor="@color/text_gray"
                             android:textSize="8sp" />
                     </LinearLayout>
 
@@ -239,7 +239,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="monospace"
                             android:text="HORROR"
-                            android:textColor="#AAAAAA"
+                            android:textColor="@color/text_gray"
                             android:textSize="8sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -250,7 +250,7 @@
                     android:layout_marginTop="16dp"
                     android:fontFamily="monospace"
                     android:text="ENTER NOTE"
-                    android:textColor="#AAAAAA"
+                    android:textColor="@color/text_gray"
                     android:textSize="10sp"
                     android:textStyle="bold" />
 
@@ -265,7 +265,7 @@
                     android:hint="Write a note to turn into a story..."
                     android:padding="12dp"
                     android:textColor="@color/white"
-                    android:textColorHint="#44FFFFFF"
+                    android:textColorHint="@color/text_hint"
                     android:textSize="12sp"
                     android:importantForAutofill="no"
                     android:inputType="textMultiLine" />
