@@ -44,7 +44,7 @@
 ### 📌 Đề tài: **Narrativize** — Ứng dụng quản lý cá nhân phong cách nhập vai (RPG-themed Productivity App)
 
 #### 📖 Giới thiệu đề tài
-**Narrativize** là một ứng dụng quản lý năng suất cá nhân độc đáo mang phong cách nhập vai (RPG), giúp người dùng biến các nhiệm vụ thường nhật thành các chuyến phiêu lưu và thử thách thú vị. Ứng dụng được xây dựng trên nền tảng Android (Native) bằng ngôn ngữ **Kotlin** và áp dụng kiến trúc **Clean Architecture + MVVM**.
+**Narrativize** là một ứng dụng quản lý năng suất cá nhân độc đáo mang phong cách nhập vai (RPG), giúp người dùng biến các nhiệm vụ thường nhật thành các chuyến phiêu lưu và thử thách thú vị. Ứng dụng được xây dựng trên nền tảng Android (Native) bằng ngôn ngữ **Kotlin** và áp dụng kiến trúc **Clean Architecture + MVVM**. Chi tiết về quá trình xây dựng, thiết kế và kết quả thử nghiệm được trình bày trong [Báo Cáo Đồ Án (Final)](NT118.Q22%20-%20Nh%C3%B3m%2015%20-%20B%C3%A1o%20C%C3%A1o%20%C4%90%E1%BB%93%20%C3%81n%20(Final).docx).
 
 #### 🌟 Các tính năng cốt lõi
 1. **Xác thực người dùng (Firebase Authentication):** Đăng nhập/Đăng ký tài khoản bảo mật, hỗ trợ đăng nhập qua Google.
