@@ -53,13 +53,14 @@
 4. **Đồng hồ Pomodoro:** Hỗ trợ quản lý thời gian tập trung với cơ chế đếm ngược (làm việc/nghỉ ngơi) và gửi thông báo cục bộ khi hoàn thành.
 5. **Lịch sự kiện (Calendar):** Giao diện lịch trực quan theo tháng, quản lý các sự kiện được đồng bộ hóa thời gian thực qua Firestore.
 6. **Hồ sơ cá nhân (Profile):** Quản lý thông tin tài khoản và cập nhật hồ sơ cá nhân.
-7. **Sáng tạo câu chuyện (Story Editor với AI):** Hỗ trợ viết chuyện, gợi ý cốt truyện thông qua tích hợp Trí tuệ nhân tạo (AI Assistance).
+7. **Sáng tạo câu chuyện tích hợp Trí tuệ nhân tạo (Gemini AI Assistant):** Trình soạn thảo câu chuyện (Story Editor) được tích hợp Gemini AI nhằm hỗ trợ gợi ý phát triển cốt truyện, đề xuất ý tưởng viết tiếp (prompts) và tự động tìm kiếm các ghi chú có liên quan để làm tài liệu tham khảo phong phú cho câu chuyện.
 8. **Chia sẻ mạng xã hội (Social Sharing):** Xuất nội dung câu chuyện hoặc ghi chú thành dạng thẻ ảnh nghệ thuật để chia sẻ nhanh lên Facebook và Instagram.
 
 #### 🛠️ Công nghệ sử dụng
 * **Ngôn ngữ:** Kotlin
 * **Nền tảng:** Android (minSdk 26, targetSdk 36)
 * **Cơ sở dữ liệu & Backend:** Firebase Authentication, Cloud Firestore
+* **Trí tuệ nhân tạo (AI):** Google Generative AI SDK (Gemini AI API)
 * **Mẫu thiết kế & Kiến trúc:** Clean Architecture & MVVM (phân lớp Presentation, Domain, Data)
 * **Kiểm thử tự động:** Unit Test (Mockito) và UI Test (Espresso)
 
