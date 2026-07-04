@@ -83,17 +83,19 @@ class TimerActivity : BaseActivity() {
                 }
                 launch {
                     viewModel.isTimerRunning.collect { isRunning ->
-                        btnStartTimer.text = if (isRunning) "❚❚ PAUSE" else "▶ START"
+                        btnStartTimer.text = if (isRunning) getString(R.string.timer_pause) else getString(R.string.timer_start)
                     }
                 }
                 launch {
                     viewModel.timerFinished.collect { finished ->
                         if (finished) {
-                            Toast.makeText(this@TimerActivity, "Focus session complete! Great job!", Toast.LENGTH_LONG).show()
+                            val title = getString(R.string.timer_focus_complete)
+                            val msg = getString(R.string.timer_focus_msg)
+                            Toast.makeText(this@TimerActivity, msg, Toast.LENGTH_LONG).show()
                             com.example.mobileapp.utils.NotificationHelper.showSessionComplete(
                                 this@TimerActivity, 
-                                "Focus session complete!", 
-                                "Great job! Time for a well-deserved break."
+                                title, 
+                                msg
                             )
                             viewModel.clearFinishedFlag()
                         }

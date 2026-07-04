@@ -1,6 +1,16 @@
 <resources>
     <string name="app_name">Narrativize</string>
     <string name="forgot_password">Forgot password? Click here</string>
+    <string name="forgot_title">RESET PASSWORD</string>
+    <string name="forgot_subtitle">- RECOVER YOUR ACCOUNT -</string>
+    <string name="forgot_label_email">ENTER YOUR EMAIL</string>
+    <string name="forgot_hint_email">hero@email.com</string>
+    <string name="forgot_info">A new password will be sent to your email address.</string>
+    <string name="forgot_btn_send">SEND NEW PASSWORD</string>
+    <string name="forgot_btn_back">BACK TO LOGIN</string>
+    <string name="forgot_success_title">SUCCESS!</string>
+    <string name="forgot_success_msg">If this email exists, a reset link has been dispatched to your terminal.</string>
+    <string name="forgot_success_btn">RETURN TO LOGIN</string>
     <string name="sign_in_google">Sign in with Google</string>
     <string name="default_web_client_id" translatable="false">952046477557-98nvs9ibovi94cp0nqo5nemak2d3tf5n.apps.googleusercontent.com</string>
     <string name="login_title">NARRATIVIZE</string>
@@ -8,7 +18,10 @@
     <string name="login_press_start">PRESS START TO BEGIN</string>
     <string name="label_email">Email</string>
     <string name="label_password">Password</string>
+    <string name="label_user">User</string>
     <string name="label_username">Username</string>
+    <string name="label_level">Level</string>
+    <string name="label_exp_value">0/100</string>
     <string name="label_confirm_password">Confirmed password</string>
     <string name="btn_login">LOGIN</string>
     <string name="btn_register">REGISTER</string>
@@ -16,30 +29,28 @@
     <string name="hint_password">••••••••••••</string>
     <string name="hint_username">Name</string>
 
-    <!-- Main Screen Strings -->
-    <string name="label_user">USER</string>
-    <string name="label_level">LV.5</string>
-    <string name="label_exp_value">340/500</string>
-    <string name="label_exp_title">EXP</string>
+    <string name="main_user_stats">▶ USER STATS</string>
+    <string name="main_daily_quests">▶ DAILY QUESTS</string>
+    <string name="main_play_to_earn">Play to earn bonus EXP!</string>
+    <string name="main_play_btn">PLAY ▶</string>
+    <string name="main_quests_done">Quests Done</string>
+    <string name="main_notes_written">Notes Written</string>
+    <string name="main_focus_time">Focus Time</string>
+    <string name="main_streak">Streak</string>
+    <string name="main_quest_complete_tasks">Complete 3 tasks</string>
+    <string name="main_quest_focus">Focus for 30 min</string>
+    <string name="main_quest_write_note">Write a note</string>
+    <string name="main_msg_remaining">You have %d quests to complete today!</string>
+    <string name="main_msg_all_done">All daily quests completed! Great job hero!</string>
+
+    <string name="quests_done_value">0</string>
     <string name="quests_done_title">Quests Done</string>
-    <string name="quests_done_value">12</string>
+    <string name="notes_written_value">0</string>
     <string name="notes_written_title">Notes Written</string>
-    <string name="notes_written_value">8</string>
-    <string name="focus_time_title">Focus Time</string>
-    <string name="focus_time_value">4h</string>
-    <string name="streak_title">Streak</string>
-    <string name="streak_value">3</string>
-    <string name="daily_quests_title">▶ DAILY QUESTS</string>
-    <string name="quest_task_1">Complete 3 tasks</string>
-    <string name="quest_task_1_exp">+10xp</string>
-    <string name="quest_task_2">Focus for 30 min</string>
-    <string name="quest_task_2_exp">+20xp</string>
-    <string name="quest_task_3">Write a note</string>
-    <string name="quest_task_3_exp">+30xp</string>
-    <string name="main_character_message">\"Good morning, User! You have 5 quests to complete today.\"</string>
+    <string name="streak_value">0</string>
 
     <!-- Profile Screen Strings -->
-    <string name="profile_title">▶ PROFILE</string>
+    <string name="profile_header">PROFILE</string>
     <string name="profile_subtitle">~ user status ~</string>
     <string name="profile_user_title">Pixel Knight</string>
     <string name="profile_bio_label">▶ BIO</string>
@@ -63,6 +74,8 @@
     <string name="settings_lang_vn">VN Tiếng Việt</string>
     <string name="settings_lang_en">GB English</string>
     <string name="settings_notifications_label">▶ NOTIFICATIONS</string>
+    <string name="settings_game_sounds">Game Sounds</string>
+    <string name="settings_dark_mode">Dark Mode</string>
     <string name="settings_notif_quests">Quest Reminders</string>
     <string name="settings_notif_timer">Timer Complete</string>
     <string name="settings_notif_login">Daily Login</string>
@@ -74,26 +87,54 @@
     <string name="settings_logout_btn">LOGOUT</string>
 
     <!-- Edit Profile Screen Strings -->
-    <string name="edit_profile_title">▶ EDIT PROFILE</string>
+    <string name="edit_profile_header">EDIT PROFILE</string>
+    <string name="edit_profile_hint_username">Username</string>
+    <string name="edit_profile_hint_title">Title</string>
     <string name="choose_avatar_label">▶ CHOOSE AVATAR</string>
     <string name="btn_save_profile">✔ SAVE CHANGES</string>
 
     <!-- Quest Screen Strings -->
-    <string name="quest_header_label">⚔ QUEST LOG</string>
-    <string name="quest_subtitle">Complete quests to earn EXP!</string>
-    <string name="new_quest_label">NEW QUEST</string>
-    <string name="hint_enter_quest">Enter new quest...</string>
-    <string name="label_rank">RANK</string>
-    <string name="btn_add_quest">ADD</string>
+    <string name="quest_title">QUEST - TO DO LIST</string>
+    <string name="quest_new">NEW QUEST</string>
+    <string name="quest_hint">Enter quest name...</string>
+    <string name="quest_rank_label">RANK</string>
+    <string name="quest_add_btn">ADD QUEST</string>
+    <string name="quest_active">ACTIVE QUESTS</string>
 
     <!-- Bottom Nav Labels -->
     <string name="nav_home">HOME</string>
     <string name="nav_quest">QUEST</string>
     <string name="nav_notes">NOTES</string>
     <string name="nav_story">STORY</string>
+    <string name="nav_time">TIME</string>
     <string name="nav_game">GAME</string>
     <string name="nav_set">SET</string>
 
+    <string name="story_title">STORY MODE</string>
+    <string name="story_subtitle">Turn your notes into adventure stories!</string>
+    <string name="story_btn_create">+ CREATE</string>
+    <string name="story_forge_title">✦ STORY FORGE</string>
+    <string name="story_label_genre">CHOOSE GENRE</string>
+    <string name="story_genre_epic">EPIC</string>
+    <string name="story_genre_mystery">MYSTERY</string>
+    <string name="story_genre_comedy">COMEDY</string>
+    <string name="story_genre_horror">HORROR</string>
+    <string name="story_label_input">ENTER NOTE</string>
+    <string name="story_hint_input">Write a note to turn into a story...</string>
+    <string name="story_btn_generate">✦ STORY-FY!</string>
+
+    <string name="timer_title">TIME MAGIC</string>
+    <string name="timer_tab_timer">TIMER</string>
+    <string name="timer_tab_calendar">CALENDAR</string>
+    <string name="timer_start">▶ START</string>
+    <string name="timer_pause">⏸ PAUSE</string>
+    <string name="timer_reset">↺ RESET</string>
+    <string name="timer_focus_tip">💡 FOCUS TIP</string>
+    <string name="timer_tip_text">\"Each minute of focus = 1 EXP. Stay focused to level up faster!\"</string>
+    <string name="timer_focus_complete">Focus Complete!</string>
+    <string name="timer_focus_msg">Your focus session has ended. Great work, hero!</string>
+
+    <!-- Notes Screen -->
     <!-- Notes Screen -->
     <string name="scroll_keeper_title">SCROLL KEEPER - NOTE</string>
     <string name="btn_new">+ NEW</string>
@@ -101,6 +142,14 @@
     <string name="default_time">12:00</string>
     <string name="error_title_required">Title is required</string>
     <string name="dialog_delete_note">Delete Note</string>
+    <string name="notes_filter_all">ALL</string>
+    <string name="notes_type_note">📄 NOTE</string>
+    <string name="notes_type_reminder">🔔 REMINDER</string>
+    <string name="notes_type_flashcard">🃏 FLASHCARD</string>
+    <string name="notes_label_time">TIME:</string>
+    <string name="notes_hint_title">Title...</string>
+    <string name="notes_hint_content">Content...</string>
+    <string name="notes_save_btn">✦ SAVE SCROLL</string>
     <string name="dialog_delete_confirm">Are you sure?</string>
     <string name="btn_delete">Delete</string>
     <string name="btn_cancel">Cancel</string>

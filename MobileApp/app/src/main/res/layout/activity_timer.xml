@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
-            android:text="TIME MAGIC"
+            android:text="@string/timer_title"
             android:textColor="@color/accent_yellow"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -84,7 +84,7 @@
                     android:fontFamily="monospace"
                     android:gravity="center"
                     android:paddingVertical="8dp"
-                    android:text="TIMER"
+                    android:text="@string/timer_tab_timer"
                     android:textColor="@color/black"
                     android:textSize="12sp"
                     android:textStyle="bold" />
@@ -101,7 +101,7 @@
                     android:fontFamily="monospace"
                     android:gravity="center"
                     android:paddingVertical="8dp"
-                    android:text="CALENDAR"
+                    android:text="@string/timer_tab_calendar"
                     android:textColor="@color/text_gray"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -246,7 +246,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="monospace"
-                    android:text="💡 FOCUS TIP"
+                    android:text="@string/timer_focus_tip"
                     android:textColor="@color/accent_yellow"
                     android:textSize="12sp"
                     android:textStyle="bold" />
@@ -256,7 +256,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:fontFamily="monospace"
-                    android:text="&quot;Each minute of focus = 1 EXP. Stay focused to level up faster!&quot;"
+                    android:text="@string/timer_tip_text"
                     android:textColor="@color/accent_green"
                     android:textSize="12sp" />
             </LinearLayout>

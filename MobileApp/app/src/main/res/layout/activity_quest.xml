@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
             android:gravity="start"
-            android:text="QUEST - TO DO LIST"
+            android:text="@string/quest_title"
             android:textColor="@color/accent_green"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -87,7 +87,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="monospace"
-                    android:text="NEW QUEST"
+                    android:text="@string/quest_new"
                     android:textColor="@color/accent_green"
                     android:textSize="10sp" />
 
@@ -106,7 +106,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/bg_button_unselected"
                         android:fontFamily="monospace"
-                        android:hint="Enter quest name..."
+                        android:hint="@string/quest_hint"
                         android:padding="10dp"
                         android:textColor="@color/white"
                         android:textColorHint="@color/text_hint"
@@ -124,7 +124,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="monospace"
-                            android:text="RANK"
+                            android:text="@string/quest_rank_label"
                             android:textColor="@color/accent_green"
                             android:textSize="8sp" />
                         <TextView
@@ -147,7 +147,7 @@
                     android:layout_height="48dp"
                     android:layout_marginTop="12dp"
                     android:backgroundTint="@color/accent_green"
-                    android:text="ADD QUEST"
+                    android:text="@string/quest_add_btn"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:insetTop="0dp"
@@ -161,7 +161,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="monospace"
-                android:text="ACTIVE QUESTS"
+                android:text="@string/quest_active"
                 android:textColor="@color/accent_green"
                 android:textSize="12sp" />
 

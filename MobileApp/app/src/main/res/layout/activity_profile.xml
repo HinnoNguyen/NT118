@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
             android:gravity="center"
-            android:text="PROFILE"
+            android:text="@string/profile_header"
             android:textColor="@color/accent_green"
             android:textSize="20sp"
             android:textStyle="bold"
