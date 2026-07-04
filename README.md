@@ -41,7 +41,7 @@
 ## ĐỒ ÁN MÔN HỌC
 <a name="doan"></a>
 
-### 📌 Đề tài: **Narrativize** — Ứng dụng quản lý cá nhân (Productivity App)
+### 📌 Đề tài: **Narrativize** - Ứng dụng quản lý cá nhân (Productivity App)
 
 #### 📖 Giới thiệu đề tài
 - **Narrativize** là một ứng dụng quản lý năng suất cá nhân độc đáo mang phong cách nhập vai (RPG), giúp người dùng biến các nhiệm vụ thường nhật thành các chuyến phiêu lưu và thử thách thú vị. Ứng dụng được xây dựng trên nền tảng Android (Native) bằng ngôn ngữ **Kotlin** và áp dụng kiến trúc **Clean Architecture + MVVM**. 
@@ -58,7 +58,7 @@
 8. **Chia sẻ mạng xã hội (Social Sharing):** Xuất nội dung câu chuyện hoặc ghi chú thành dạng thẻ ảnh nghệ thuật để chia sẻ nhanh lên Facebook và Instagram.
 
 #### 🛠️ Công nghệ sử dụng
-* **Ngôn ngữ:** Kotlin
+* **Ngôn ngữ:** Kotlin, Java
 * **Nền tảng:** Android (minSdk 26, targetSdk 36)
 * **Cơ sở dữ liệu & Backend:** Firebase Authentication, Cloud Firestore
 * **Trí tuệ nhân tạo (AI):** Groq API (sử dụng Retrofit)
