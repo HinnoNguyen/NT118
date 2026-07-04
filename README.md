@@ -41,7 +41,7 @@
 ## ĐỒ ÁN MÔN HỌC
 <a name="doan"></a>
 
-### 📌 Đề tài: **Narrativize** — Ứng dụng quản lý cá nhân phong cách nhập vai (RPG-themed Productivity App)
+### 📌 Đề tài: **Narrativize** — Ứng dụng quản lý cá nhân (Productivity App)
 
 #### 📖 Giới thiệu đề tài
 - **Narrativize** là một ứng dụng quản lý năng suất cá nhân độc đáo mang phong cách nhập vai (RPG), giúp người dùng biến các nhiệm vụ thường nhật thành các chuyến phiêu lưu và thử thách thú vị. Ứng dụng được xây dựng trên nền tảng Android (Native) bằng ngôn ngữ **Kotlin** và áp dụng kiến trúc **Clean Architecture + MVVM**. 
