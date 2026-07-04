@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.mobileapp.data.repository.NoteRepositoryImpl
 import com.example.mobileapp.data.repository.NotificationRepositoryImpl
+import com.example.mobileapp.data.repository.PublicStoryRepositoryImpl
 import com.example.mobileapp.data.repository.StoryRepositoryImpl
 import com.example.mobileapp.data.repository.TaskRepositoryImpl
 import com.example.mobileapp.data.repository.UserRepositoryImpl
@@ -12,6 +13,7 @@ import com.example.mobileapp.domain.usecase.GetTasksUseCase
 import com.example.mobileapp.domain.usecase.LoginUseCase
 import com.example.mobileapp.domain.usecase.LoginWithGoogleUseCase
 import com.example.mobileapp.domain.usecase.RegisterUseCase
+import com.example.mobileapp.domain.usecase.SendEmailVerificationUseCase
 import com.example.mobileapp.domain.usecase.ToggleTaskCompletionUseCase
 
 class ViewModelFactory : ViewModelProvider.Factory {
@@ -20,6 +22,7 @@ class ViewModelFactory : ViewModelProvider.Factory {
     private val taskRepository = TaskRepositoryImpl()
     private val noteRepository = NoteRepositoryImpl()
     private val storyRepository = StoryRepositoryImpl()
+    private val publicStoryRepository = PublicStoryRepositoryImpl()
     private val notificationRepository = NotificationRepositoryImpl()
     
     @Suppress("UNCHECKED_CAST")
@@ -58,7 +61,7 @@ class ViewModelFactory : ViewModelProvider.Factory {
                 NotificationsViewModel(notificationRepository, userId) as T
             }
             modelClass.isAssignableFrom(StoryViewModel::class.java) -> {
-                StoryViewModel(storyRepository, userId) as T
+                StoryViewModel(storyRepository, publicStoryRepository, userId) as T
             }
             modelClass.isAssignableFrom(SnakeGameViewModel::class.java) -> {
                 SnakeGameViewModel(userRepository) as T

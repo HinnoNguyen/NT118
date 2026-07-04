@@ -9,6 +9,9 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.snapshots
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
 
 class UserRepositoryImpl : UserRepository {
@@ -181,6 +184,17 @@ class UserRepositoryImpl : UserRepository {
 
     override fun signOut() {
         auth.signOut()
+    }
+
+    override fun getUserProfileFlow(uid: String): Flow<Result<User>> {
+        return usersCollection.document(uid).snapshots().map { snapshot ->
+            val dto = snapshot.toObject(UserDto::class.java)
+            if (dto != null) {
+                Result.success(dto.toDomain())
+            } else {
+                Result.failure(Exception("User not found"))
+            }
+        }
     }
 
     override suspend fun awardExp(uid: String, amount: Int, isTask: Boolean): Result<Unit> {

@@ -7,66 +7,37 @@ import com.example.mobileapp.domain.model.Story
 import com.example.mobileapp.domain.repository.StoryRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.snapshots
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
-import java.util.UUID
 
 class StoryRepositoryImpl : StoryRepository {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private val storiesCollection = firestore.collection("stories")
 
-    override suspend fun createStory(
-        title: String,
-        genre: String,
-        content: String,
-        relatedNoteIds: List<String>
-    ): Result<Story> {
-        val userId = auth.currentUser?.uid ?: return Result.failure(Exception("No logged in user"))
-        if (title.isBlank()) {
-            return Result.failure(Exception("Story title cannot be empty"))
-        }
-        if (content.isBlank()) {
-            return Result.failure(Exception("Story content cannot be empty"))
-        }
-
+    override suspend fun saveStory(story: Story): Result<Unit> {
         return try {
-            val now = System.currentTimeMillis()
-            val story = Story(
-                id = UUID.randomUUID().toString(),
-                userId = userId,
-                title = title.trim(),
-                genre = genre.trim(),
-                content = content.trim(),
-                relatedNoteIds = relatedNoteIds,
-                isPublic = false,
-                sharedAt = 0L,
-                coverImageUrl = "",
-                createdAt = now,
-                updatedAt = now
-            )
-
-            storiesCollection.document(story.id).set(story.toDto()).await()
-            Result.success(story)
+            val finalId = if (story.id.isBlank()) storiesCollection.document().id else story.id
+            val finalStory = if (story.id.isBlank()) story.copy(id = finalId) else story
+            
+            storiesCollection.document(finalId).set(finalStory.toDto()).await()
+            Result.success(Unit)
         } catch (e: Exception) {
-            Result.failure(Exception(e.message ?: "Failed to create story", e))
+            Result.failure(Exception(e.message ?: "Failed to save story", e))
         }
     }
 
-    override suspend fun getStories(): Result<List<Story>> {
-        val userId = auth.currentUser?.uid ?: return Result.failure(Exception("No logged in user"))
-
-        return try {
-            val snapshot = storiesCollection
-                .whereEqualTo("userId", userId)
-                .get()
-                .await()
-            val stories = snapshot.documents
-                .mapNotNull { it.toObject(StoryDto::class.java)?.toDomain() }
-                .sortedByDescending { it.updatedAt }
-            Result.success(stories)
-        } catch (e: Exception) {
-            Result.failure(Exception(e.message ?: "Failed to fetch stories", e))
-        }
+    override fun getStories(userId: String): Flow<List<Story>> {
+        return storiesCollection
+            .whereEqualTo("userId", userId)
+            .snapshots()
+            .map { snapshot ->
+                snapshot.documents.mapNotNull { document ->
+                    document.toObject(StoryDto::class.java)?.toDomain()
+                }.sortedByDescending { it.updatedAt }
+            }
     }
 
     override suspend fun getStory(storyId: String): Result<Story> {
@@ -86,6 +57,9 @@ class StoryRepositoryImpl : StoryRepository {
 
     override suspend fun updateStory(story: Story): Result<Story> {
         val userId = auth.currentUser?.uid ?: return Result.failure(Exception("No logged in user"))
+        if (story.id.isBlank()) {
+            return Result.failure(Exception("Story id cannot be empty"))
+        }
         if (story.userId != userId) {
             return Result.failure(Exception("Cannot update another user's story"))
         }

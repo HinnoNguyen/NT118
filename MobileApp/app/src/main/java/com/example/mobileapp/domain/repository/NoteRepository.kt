@@ -1,17 +1,12 @@
 package com.example.mobileapp.domain.repository
 
 import com.example.mobileapp.domain.model.Note
+import kotlinx.coroutines.flow.Flow
 
 interface NoteRepository {
-    suspend fun createNote(
-        title: String,
-        content: String,
-        type: String = "note",
-        pinned: Boolean = false,
-        reminderTime: Long? = null
-    ): Result<Note>
+    suspend fun addNote(note: Note): Result<Unit>
 
-    suspend fun getNotes(): Result<List<Note>>
+    fun getNotes(userId: String): Flow<List<Note>>
 
     suspend fun getNote(noteId: String): Result<Note>
 

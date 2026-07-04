@@ -7,65 +7,40 @@ import com.example.mobileapp.domain.model.Task
 import com.example.mobileapp.domain.repository.TaskRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.snapshots
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
-import java.util.UUID
 
 class TaskRepositoryImpl : TaskRepository {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private val tasksCollection = firestore.collection("tasks")
 
-    override suspend fun createTask(
-        title: String,
-        description: String,
-        dueAt: Long,
-        priority: String
-    ): Result<Task> {
-        val userId = auth.currentUser?.uid ?: return Result.failure(Exception("No logged in user"))
-        if (title.isBlank()) {
-            return Result.failure(Exception("Task title cannot be empty"))
-        }
-
-        return try {
-            val now = System.currentTimeMillis()
-            val task = Task(
-                id = UUID.randomUUID().toString(),
-                userId = userId,
-                title = title.trim(),
-                description = description.trim(),
-                dueAt = dueAt,
-                completed = false,
-                priority = normalizePriority(priority),
-                createdAt = now,
-                updatedAt = now
-            )
-
-            tasksCollection.document(task.id).set(task.toDto()).await()
-            Result.success(task)
-        } catch (e: Exception) {
-            Result.failure(Exception(e.message ?: "Failed to create task", e))
-        }
+    override fun getTasks(userId: String): Flow<List<Task>> {
+        return tasksCollection
+            .whereEqualTo("userId", userId)
+            .snapshots()
+            .map { snapshot ->
+                snapshot.documents
+                    .mapNotNull { it.toObject(TaskDto::class.java)?.toDomain() }
+                    .sortedWith(
+                        compareBy<Task> { it.completed }
+                            .thenByDescending { priorityWeight(it.priority) }
+                            .thenByDescending { it.updatedAt }
+                    )
+            }
     }
 
-    override suspend fun getTasks(): Result<List<Task>> {
-        val userId = auth.currentUser?.uid ?: return Result.failure(Exception("No logged in user"))
-
+    override suspend fun addTask(task: Task): Result<Unit> {
         return try {
-            val snapshot = tasksCollection
-                .whereEqualTo("userId", userId)
-                .get()
-                .await()
-
-            val tasks = snapshot.documents
-                .mapNotNull { it.toObject(TaskDto::class.java)?.toDomain() }
-                .sortedWith(
-                    compareBy<Task> { it.completed }
-                        .thenByDescending { priorityWeight(it.priority) }
-                        .thenByDescending { it.updatedAt }
-                )
-            Result.success(tasks)
+            val finalId = if (task.id.isBlank()) tasksCollection.document().id else task.id
+            val finalTask = if (task.id.isBlank()) task.copy(id = finalId) else task
+            
+            tasksCollection.document(finalId).set(finalTask.toDto()).await()
+            Result.success(Unit)
         } catch (e: Exception) {
-            Result.failure(Exception(e.message ?: "Failed to fetch tasks", e))
+            Result.failure(Exception(e.message ?: "Failed to add task", e))
         }
     }
 
@@ -84,7 +59,7 @@ class TaskRepositoryImpl : TaskRepository {
         }
     }
 
-    override suspend fun updateTask(task: Task): Result<Task> {
+    override suspend fun updateTask(task: Task): Result<Unit> {
         val userId = auth.currentUser?.uid ?: return Result.failure(Exception("No logged in user"))
         if (task.userId != userId) {
             return Result.failure(Exception("Cannot update another user's task"))
@@ -98,7 +73,7 @@ class TaskRepositoryImpl : TaskRepository {
                 updatedAt = System.currentTimeMillis()
             )
             tasksCollection.document(updatedTask.id).set(updatedTask.toDto()).await()
-            Result.success(updatedTask)
+            Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(Exception(e.message ?: "Failed to update task", e))
         }
@@ -114,6 +89,15 @@ class TaskRepositoryImpl : TaskRepository {
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(Exception(e.message ?: "Failed to delete task", e))
+        }
+    }
+
+    override suspend fun toggleTaskCompletion(taskId: String, completed: Boolean): Result<Unit> {
+        return try {
+            tasksCollection.document(taskId).update("completed", completed, "updatedAt", System.currentTimeMillis()).await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(Exception(e.message ?: "Failed to toggle task completion", e))
         }
     }
 

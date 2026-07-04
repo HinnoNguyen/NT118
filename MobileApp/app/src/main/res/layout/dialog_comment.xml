@@ -8,11 +8,10 @@
     android:padding="20dp">
 
     <TextView
-        android:id="@+id/tvDialogTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="monospace"
-        android:text="STORY LOG"
+        android:text="ADD COMMENT"
         android:textColor="@color/accent_yellow"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -24,31 +23,36 @@
         android:background="@color/accent_green"
         android:layout_marginBottom="16dp" />
 
-    <ScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvComments"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginBottom="20dp"
-        android:maxHeight="400dp">
+        android:layout_marginBottom="16dp"
+        android:minHeight="100dp" />
 
-        <TextView
-            android:id="@+id/tvDialogContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="monospace"
-            android:lineSpacingExtra="4dp"
-            android:text="Your story content goes here..."
-            android:textColor="@color/white"
-            android:textSize="14sp" />
-    </ScrollView>
+    <EditText
+        android:id="@+id/etCommentContent"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/bg_button_unselected"
+        android:fontFamily="monospace"
+        android:gravity="top"
+        android:hint="Type your comment..."
+        android:padding="12dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/text_hint"
+        android:textSize="14sp"
+        android:inputType="textMultiLine"
+        android:importantForAutofill="no" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnShareToCommunity"
+        android:id="@+id/btnSubmitComment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:backgroundTint="@color/accent_yellow"
-        android:text="SHARE TO COMMUNITY"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/accent_green"
+        android:text="SUBMIT"
         android:textColor="@color/black"
         android:textStyle="bold"
         android:fontFamily="monospace"
@@ -57,16 +61,17 @@
         android:insetBottom="0dp"/>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnDialogClose"
+        android:id="@+id/btnCancelComment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/accent_green"
-        android:text="ACKNOWLEDGE"
-        android:textColor="@color/white"
-        android:textStyle="bold"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@android:color/transparent"
+        android:text="CANCEL"
+        android:textColor="@color/text_gray"
         android:fontFamily="monospace"
         app:cornerRadius="0dp"
         android:insetTop="0dp"
-        android:insetBottom="0dp"/>
+        android:insetBottom="0dp"
+        style="@style/Widget.MaterialComponents.Button.TextButton"/>
 
 </LinearLayout>

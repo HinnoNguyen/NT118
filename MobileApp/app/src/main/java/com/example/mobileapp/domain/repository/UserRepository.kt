@@ -1,12 +1,14 @@
 package com.example.mobileapp.domain.repository
 
 import com.example.mobileapp.domain.model.User
+import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
     suspend fun login(email: String, password: String): Result<User>
     suspend fun register(name: String, email: String, password: String): Result<User>
     suspend fun signInWithGoogle(idToken: String): Result<User>
     suspend fun getUserProfile(uid: String): Result<User>
+    fun getUserProfileFlow(uid: String): Flow<kotlin.Result<User>>
     suspend fun sendEmailVerification(): Result<Unit>
     suspend fun reloadCurrentUser(): Result<Unit>
     fun isCurrentUserEmailVerified(): Boolean

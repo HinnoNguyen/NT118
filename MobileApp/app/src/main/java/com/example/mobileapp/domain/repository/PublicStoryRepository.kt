@@ -14,4 +14,12 @@ interface PublicStoryRepository {
     suspend fun getPublicStories(limit: Long = 20): Result<List<PublicStory>>
 
     suspend fun unpublishStory(storyId: String): Result<Unit>
+
+    suspend fun likeStory(storyId: String): Result<Unit>
+
+    suspend fun unlikeStory(storyId: String): Result<Unit>
+
+    suspend fun getComments(storyId: String): Result<List<com.example.mobileapp.domain.model.Comment>>
+
+    suspend fun addComment(storyId: String, commentText: String): Result<Unit>
 }

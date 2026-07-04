@@ -7,63 +7,37 @@ import com.example.mobileapp.domain.model.Note
 import com.example.mobileapp.domain.repository.NoteRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.snapshots
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
-import java.util.UUID
 
 class NoteRepositoryImpl : NoteRepository {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private val notesCollection = firestore.collection("notes")
 
-    override suspend fun createNote(
-        title: String,
-        content: String,
-        type: String,
-        pinned: Boolean,
-        reminderTime: Long?
-    ): Result<Note> {
-        val userId = auth.currentUser?.uid ?: return Result.failure(Exception("No logged in user"))
-        if (title.isBlank()) {
-            return Result.failure(Exception("Title cannot be empty"))
-        }
-
+    override suspend fun addNote(note: Note): Result<Unit> {
         return try {
-            val now = System.currentTimeMillis()
-            val note = Note(
-                id = UUID.randomUUID().toString(),
-                userId = userId,
-                title = title.trim(),
-                content = content.trim(),
-                type = type.ifBlank { "note" },
-                pinned = pinned,
-                reminderTime = reminderTime,
-                createdAt = now,
-                updatedAt = now
-            )
-
-            notesCollection.document(note.id).set(note.toDto()).await()
-            Result.success(note)
+            val finalId = if (note.id.isBlank()) notesCollection.document().id else note.id
+            val finalNote = if (note.id.isBlank()) note.copy(id = finalId) else note
+            
+            notesCollection.document(finalId).set(finalNote.toDto()).await()
+            Result.success(Unit)
         } catch (e: Exception) {
-            Result.failure(Exception(e.message ?: "Failed to create note", e))
+            Result.failure(Exception(e.message ?: "Failed to add note", e))
         }
     }
 
-    override suspend fun getNotes(): Result<List<Note>> {
-        val userId = auth.currentUser?.uid ?: return Result.failure(Exception("No logged in user"))
-
-        return try {
-            val snapshot = notesCollection
-                .whereEqualTo("userId", userId)
-                .get()
-                .await()
-
-            val notes = snapshot.documents.mapNotNull { document ->
-                document.toObject(NoteDto::class.java)?.toDomain()
-            }.sortedByDescending { it.updatedAt }
-            Result.success(notes)
-        } catch (e: Exception) {
-            Result.failure(Exception(e.message ?: "Failed to fetch notes", e))
-        }
+    override fun getNotes(userId: String): Flow<List<Note>> {
+        return notesCollection
+            .whereEqualTo("userId", userId)
+            .snapshots()
+            .map { snapshot ->
+                snapshot.documents.mapNotNull { document ->
+                    document.toObject(NoteDto::class.java)?.toDomain()
+                }.sortedByDescending { it.updatedAt }
+            }
     }
 
     override suspend fun getNote(noteId: String): Result<Note> {

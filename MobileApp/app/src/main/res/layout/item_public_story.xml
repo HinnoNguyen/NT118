@@ -52,13 +52,33 @@
             android:textColor="#AAAAAA"
             android:textSize="10sp" />
 
-        <TextView
-            android:id="@+id/tvPublicStoryStats"
+        <LinearLayout
+            android:id="@+id/layoutStats"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="monospace"
-            android:textColor="@color/white"
-            android:textSize="10sp" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvLikeAction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:padding="4dp"
+                android:text="❤ 0" />
+
+            <TextView
+                android:id="@+id/tvCommentAction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="monospace"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:padding="4dp"
+                android:text="💬 0" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

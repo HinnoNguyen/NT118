@@ -7,6 +7,7 @@ data class PublicStoryDto(
     val authorName: String = "",
     val authorAvatarUrl: String = "",
     val title: String = "",
+    val content: String = "",
     val contentPreview: String = "",
     val coverImageUrl: String = "",
     val likeCount: Int = 0,

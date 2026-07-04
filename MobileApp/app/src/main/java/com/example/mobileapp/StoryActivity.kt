@@ -1,6 +1,7 @@
 package com.example.mobileapp
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -49,7 +50,10 @@ class StoryActivity : BaseActivity() {
     private fun setupRecyclerView() {
         val rvStories = findViewById<RecyclerView>(R.id.rvStories)
         storyAdapter = StoryAdapter(
-            onClick = { story -> showStoryDialog(story.content, story.title) },
+            onClick = { storyItem -> 
+                val story = viewModel.stories.value.find { it.id == storyItem.id }
+                story?.let { showStoryDialog(it) }
+            },
             onDelete = { story -> deleteStory(story) }
         )
         rvStories.layoutManager = LinearLayoutManager(this)
@@ -60,6 +64,7 @@ class StoryActivity : BaseActivity() {
         val btnCreateStory = findViewById<MaterialButton>(R.id.btnCreateStory)
         val newStorySection = findViewById<LinearLayout>(R.id.newStorySection)
         val btnStoryfy = findViewById<MaterialButton>(R.id.btnStoryfy)
+        val etStoryTitleInput = findViewById<EditText>(R.id.etStoryTitleInput)
         val etStoryInput = findViewById<EditText>(R.id.etStoryInput)
         
         val genreEpic = findViewById<LinearLayout>(R.id.genreEpic)
@@ -113,21 +118,33 @@ class StoryActivity : BaseActivity() {
         genreComedy.setOnClickListener { selectGenre(genreComedy, "COMEDY") }
         genreHorror.setOnClickListener { selectGenre(genreHorror, "HORROR") }
 
+        findViewById<MaterialButton>(R.id.btnCommunity).setOnClickListener {
+            navigateToCommunity()
+        }
+
         btnStoryfy.setOnClickListener {
+            val title = etStoryTitleInput.text.toString()
             val input = etStoryInput.text.toString()
             if (input.isNotBlank()) {
-                generateStory(input)
+                generateStory(title, input)
             } else {
                 showAppNotification("Attention", "Please enter some information first")
             }
         }
     }
 
-    private fun generateStory(input: String) {
+    private fun generateStory(title: String, input: String) {
         val pbLoading = findViewById<ProgressBar>(R.id.pbLoading)
         val btnStoryfy = findViewById<MaterialButton>(R.id.btnStoryfy)
+        val etStoryTitleInput = findViewById<EditText>(R.id.etStoryTitleInput)
+        val etStoryInput = findViewById<EditText>(R.id.etStoryInput)
         
-        val prompt = "Write a short $selectedGenre story based on these notes: $input. Keep it under 200 words."
+        val prompt = if (title.isNotBlank()) {
+            "Write a short $selectedGenre story titled '$title' based on these notes: $input. Keep it under 200 words."
+        } else {
+            "Write a short $selectedGenre story based on these notes: $input. Keep it under 200 words."
+        }
+
         val request = GroqRequest(
             messages = listOf(
                 Message(role = "system", content = "You are a creative story writer."),
@@ -144,7 +161,10 @@ class StoryActivity : BaseActivity() {
                 if (response.isSuccessful) {
                     val storyText = response.body()?.choices?.firstOrNull()?.message?.content
                     if (storyText != null) {
-                        addNewStoryToList(storyText, input)
+                        val finalTitle = title.ifBlank { input.take(20) }
+                        addNewStoryToList(storyText, finalTitle)
+                        etStoryTitleInput.text.clear()
+                        etStoryInput.text.clear()
                     }
                 } else {
                     val errorCode = response.code()
@@ -160,10 +180,24 @@ class StoryActivity : BaseActivity() {
         }
     }
 
-    private fun addNewStoryToList(content: String, input: String) {
-        val title = if (input.length > 20) input.substring(0, 17) + "..." else input
-        viewModel.saveStory(title, selectedGenre, content)
-        showStoryDialog(content, title)
+    private fun addNewStoryToList(content: String, title: String) {
+        val storyId = java.util.UUID.randomUUID().toString()
+        val userId = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid ?: ""
+        val newStory = com.example.mobileapp.domain.model.Story(
+            id = storyId,
+            userId = userId,
+            title = title,
+            genre = selectedGenre,
+            content = content,
+            relatedNoteIds = emptyList(),
+            isPublic = false,
+            sharedAt = 0L,
+            coverImageUrl = "",
+            createdAt = System.currentTimeMillis(),
+            updatedAt = System.currentTimeMillis()
+        )
+        viewModel.saveStory(newStory)
+        showStoryDialog(newStory)
     }
 
     private fun deleteStory(story: StoryItem) {
@@ -210,14 +244,22 @@ class StoryActivity : BaseActivity() {
         }
     }
 
-    private fun showStoryDialog(story: String, title: String = "Your Story") {
+    private fun showStoryDialog(story: com.example.mobileapp.domain.model.Story) {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_story_detail)
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
         dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
-        dialog.findViewById<TextView>(R.id.tvDialogTitle).text = title.uppercase()
-        dialog.findViewById<TextView>(R.id.tvDialogContent).text = story
+        dialog.findViewById<TextView>(R.id.tvDialogTitle).text = story.title.uppercase()
+        dialog.findViewById<TextView>(R.id.tvDialogContent).text = story.content
+        
+        dialog.findViewById<MaterialButton>(R.id.btnShareToCommunity).setOnClickListener {
+            val userName = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.displayName ?: "Anonymous Explorer"
+            viewModel.publishStoryToCommunity(story, userName)
+            dialog.dismiss()
+            showAppNotification("Shared!", "Your story is now public in the community feed.")
+        }
+
         dialog.findViewById<MaterialButton>(R.id.btnDialogClose).setOnClickListener { dialog.dismiss() }
 
         dialog.show()
@@ -225,5 +267,9 @@ class StoryActivity : BaseActivity() {
 
     private fun setupNavigation() {
         // Handled by BaseActivity
+    }
+
+    private fun navigateToCommunity() {
+        startActivity(Intent(this, CommunityActivity::class.java))
     }
 }
