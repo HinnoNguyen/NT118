@@ -22,15 +22,20 @@ class ProfileViewModel(
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error.asStateFlow()
 
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
     fun loadProfile() {
         val uid = userRepository.getCurrentUserId() ?: return
         viewModelScope.launch {
+            _isLoading.value = true
             val result = userRepository.getUserProfile(uid)
             result.onSuccess {
                 _userProfile.value = it
             }.onFailure {
                 _error.value = "Failed to load profile"
             }
+            _isLoading.value = false
         }
     }
 

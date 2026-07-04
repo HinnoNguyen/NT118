@@ -109,4 +109,8 @@
     <string name="notifications_title">QUEST NOTIFICATIONS</string>
     <string name="btn_clear">CLEAR</string>
     <string name="btn_dismiss">DISMISS</string>
+    <string name="loading_data">LOADING DATA...</string>
+    <string name="welcome_hero">Welcome Hero!</string>
+    <string name="registration_success">Registration Successful! Welcome, %1$s</string>
+    <string name="btn_loading">LOADING...</string>
 </resources>

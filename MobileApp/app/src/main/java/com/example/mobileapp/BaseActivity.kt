@@ -143,10 +143,32 @@ open class BaseActivity : AppCompatActivity() {
         setupNavigationListeners()
         updateBottomNavSelection()
         setupNotificationListener()
+        setupLoadingOverlay()
         
         // Handle theme reveal animation if it was triggered
         val root = findViewById<ViewGroup>(R.id.main)
         com.example.mobileapp.util.ThemeUtils.checkAndPerformRevealAnimation(this, root)
+    }
+
+    private var loadingOverlay: View? = null
+
+    private fun setupLoadingOverlay() {
+        val root = findViewById<ViewGroup>(R.id.main) ?: return
+        loadingOverlay = layoutInflater.inflate(R.layout.layout_loading_overlay, root, false)
+        root.addView(loadingOverlay)
+    }
+
+    protected fun showLoading(show: Boolean) {
+        val overlay = loadingOverlay ?: return
+        if (show && overlay.visibility == View.GONE) {
+            overlay.visibility = View.VISIBLE
+            overlay.alpha = 0f
+            overlay.animate().alpha(1f).setDuration(200).start()
+        } else if (!show && overlay.visibility == View.VISIBLE) {
+            overlay.animate().alpha(0f).setDuration(200).withEndAction {
+                overlay.visibility = View.GONE
+            }.start()
+        }
     }
 
     private fun setupNotificationListener() {
