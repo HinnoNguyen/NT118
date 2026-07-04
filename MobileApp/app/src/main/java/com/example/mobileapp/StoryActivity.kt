@@ -196,6 +196,9 @@ class StoryActivity : BaseActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
+                    viewModel.isLoading.collect { showLoading(it) }
+                }
+                launch {
                     viewModel.stories.collect { stories ->
                         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                         val items = stories.map {

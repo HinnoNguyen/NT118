@@ -2,6 +2,8 @@ package com.example.mobileapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -99,20 +101,29 @@ class RegisterActivity : AppCompatActivity() {
         when (state) {
             is RegisterViewModel.RegisterState.Loading -> {
                 btnRegister.isEnabled = false
-                btnRegister.text = "LOADING..."
+                btnRegister.text = getString(R.string.btn_loading)
+                findViewById<View>(R.id.main)?.let { root ->
+                    if (root.findViewById<View>(R.id.loadingOverlay) == null) {
+                        val overlay = layoutInflater.inflate(R.layout.layout_loading_overlay, root as ViewGroup, false)
+                        root.addView(overlay)
+                    }
+                    root.findViewById<View>(R.id.loadingOverlay)?.visibility = View.VISIBLE
+                }
             }
             is RegisterViewModel.RegisterState.Success -> {
+                findViewById<View>(R.id.loadingOverlay)?.visibility = View.GONE
                 btnRegister.isEnabled = true
-                btnRegister.text = "REGISTER"
-                Toast.makeText(this, "Registration Successful! Welcome, ${state.user.name}", Toast.LENGTH_SHORT).show()
+                btnRegister.text = getString(R.string.btn_register)
+                Toast.makeText(this, getString(R.string.registration_success, state.user.name), Toast.LENGTH_SHORT).show()
                 BaseActivity.resetNavigationState()
                 startActivity(Intent(this, MainActivity::class.java))
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
                 finish()
             }
             is RegisterViewModel.RegisterState.Error -> {
+                findViewById<View>(R.id.loadingOverlay)?.visibility = View.GONE
                 btnRegister.isEnabled = true
-                btnRegister.text = "REGISTER"
+                btnRegister.text = getString(R.string.btn_register)
                 Toast.makeText(this, state.message, Toast.LENGTH_SHORT).show()
             }
             else -> {}

@@ -27,6 +27,9 @@ class MainViewModel(
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error.asStateFlow()
 
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
     // Derived state for daily quest summary
     val remainingQuests: StateFlow<Int> = combine(
         _userProfile,
@@ -43,6 +46,7 @@ class MainViewModel(
 
     fun loadData() {
         val uid = userRepository.getCurrentUserId() ?: return
+        _isLoading.value = true
         loadUserProfile(uid)
         loadNotesCount(uid)
         loadTodayTasks(uid)
@@ -56,6 +60,8 @@ class MainViewModel(
             }.onFailure {
                 _error.value = "Failed to load profile"
             }
+            // If this is the main state we wait for
+            _isLoading.value = false
         }
     }
 

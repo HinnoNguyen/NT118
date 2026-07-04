@@ -119,7 +119,11 @@ class EditProfileActivity : BaseActivity() {
     private fun observeViewModel() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.userProfile.collect { user ->
+                launch {
+                    viewModel.isLoading.collect { showLoading(it) }
+                }
+                launch {
+                    viewModel.userProfile.collect { user ->
                     user?.let {
                         if (!isProfileLoaded) {
                             etUsername?.setText(it.name)
@@ -145,6 +149,7 @@ class EditProfileActivity : BaseActivity() {
                 }
             }
         }
+    }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {

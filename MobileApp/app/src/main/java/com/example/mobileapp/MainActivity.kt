@@ -84,6 +84,9 @@ class MainActivity : BaseActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
+                    viewModel.isLoading.collect { showLoading(it) }
+                }
+                launch {
                     viewModel.userProfile.collect { user ->
                         user?.let {
                             tvUserName.text = it.name

@@ -108,4 +108,8 @@
     <string name="notifications_title">THÔNG BÁO NHIỆM VỤ</string>
     <string name="btn_clear">XÓA</string>
     <string name="btn_dismiss">ĐÓNG</string>
+    <string name="loading_data">ĐANG TẢI DỮ LIỆU...</string>
+    <string name="welcome_hero">Chào mừng Anh hùng!</string>
+    <string name="registration_success">Đăng ký thành công! Chào mừng, %1$s</string>
+    <string name="btn_loading">ĐANG TẢI...</string>
 </resources>

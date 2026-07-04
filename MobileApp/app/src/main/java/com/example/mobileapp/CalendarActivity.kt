@@ -84,6 +84,9 @@ class CalendarActivity : BaseActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
+                    viewModel.isLoading.collect { showLoading(it) }
+                }
+                launch {
                     viewModel.tasks.collect { tasks ->
                         allTasks = tasks
                         updateCalendar()

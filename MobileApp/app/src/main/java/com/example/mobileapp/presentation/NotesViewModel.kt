@@ -28,6 +28,9 @@ class NotesViewModel(
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error.asStateFlow()
 
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
     init {
         loadNotes()
     }
@@ -35,12 +38,15 @@ class NotesViewModel(
     private fun loadNotes() {
         if (userId.isEmpty()) return
         viewModelScope.launch {
+            _isLoading.value = true
             repository.getNotes(userId)
                 .catch { e ->
                     _error.value = "Firestore Error: ${e.message}"
+                    _isLoading.value = false
                 }
                 .collect {
                     _notes.value = it
+                    _isLoading.value = false
                 }
         }
     }

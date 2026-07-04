@@ -75,7 +75,11 @@ class ProfileActivity : BaseActivity() {
     private fun observeViewModel() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.userProfile.collect { user ->
+                launch {
+                    viewModel.isLoading.collect { showLoading(it) }
+                }
+                launch {
+                    viewModel.userProfile.collect { user ->
                     user?.let {
                         tvUserName?.text = it.name
                         tvUserTitle?.text = if (it.title.isNotBlank()) it.title else "Pixel Knight"
@@ -103,6 +107,7 @@ class ProfileActivity : BaseActivity() {
                 }
             }
         }
+    }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {

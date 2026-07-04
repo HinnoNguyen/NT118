@@ -248,6 +248,9 @@ class NotesActivity : BaseActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
+                    viewModel.isLoading.collect { showLoading(it) }
+                }
+                launch {
                     viewModel.notes.collect { notes ->
                         notesAdapter.submitList(notes)
                     }

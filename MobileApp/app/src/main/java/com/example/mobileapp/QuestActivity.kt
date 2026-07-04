@@ -97,6 +97,9 @@ class QuestActivity : BaseActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
+                    viewModel.isLoading.collect { showLoading(it) }
+                }
+                launch {
                     viewModel.tasks.collect { tasks ->
                         questAdapter.submitList(tasks)
                     }

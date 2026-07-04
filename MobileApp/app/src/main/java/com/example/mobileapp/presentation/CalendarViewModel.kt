@@ -20,6 +20,9 @@ class CalendarViewModel(
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error.asStateFlow()
 
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
     init {
         loadTasks()
     }
@@ -27,12 +30,15 @@ class CalendarViewModel(
     private fun loadTasks() {
         if (userId.isEmpty()) return
         viewModelScope.launch {
+            _isLoading.value = true
             taskRepository.getTasks(userId)
                 .catch { e ->
                     _error.value = "Failed to load tasks: ${e.message}"
+                    _isLoading.value = false
                 }
                 .collect {
                     _tasks.value = it
+                    _isLoading.value = false
                 }
         }
     }

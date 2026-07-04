@@ -2,6 +2,8 @@ package com.example.mobileapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -145,9 +147,17 @@ class LoginActivity : AppCompatActivity() {
         when (state) {
             is LoginViewModel.LoginState.Loading -> {
                 btnLogin.isEnabled = false
-                btnLogin.text = "LOADING..."
+                btnLogin.text = getString(R.string.btn_loading)
+                findViewById<View>(R.id.main)?.let { root ->
+                    if (root.findViewById<View>(R.id.loadingOverlay) == null) {
+                        val overlay = layoutInflater.inflate(R.layout.layout_loading_overlay, root as ViewGroup, false)
+                        root.addView(overlay)
+                    }
+                    root.findViewById<View>(R.id.loadingOverlay)?.visibility = View.VISIBLE
+                }
             }
             is LoginViewModel.LoginState.Success -> {
+                findViewById<View>(R.id.loadingOverlay)?.visibility = View.GONE
                 btnLogin.isEnabled = true
                 btnLogin.text = "LOGIN"
                 Toast.makeText(this, "Welcome Hero!", Toast.LENGTH_SHORT).show()
@@ -157,8 +167,9 @@ class LoginActivity : AppCompatActivity() {
                 finish()
             }
             is LoginViewModel.LoginState.Error -> {
+                findViewById<View>(R.id.loadingOverlay)?.visibility = View.GONE
                 btnLogin.isEnabled = true
-                btnLogin.text = "LOGIN"
+                btnLogin.text = getString(R.string.btn_login)
                 Toast.makeText(this, state.message, Toast.LENGTH_SHORT).show()
             }
             else -> {}
