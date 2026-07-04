@@ -66,5 +66,4 @@
 * **Kiểm thử tự động:** Unit Test (Mockito) và UI Test (Espresso)
 
 #### 🎥 Video Demo
-* [Video Demo chức năng chính (Phần 1)](VideoDemo/Screen_Recording_20260703_183250_Narrativize.mp4)
-* [Video Demo chức năng chính (Phần 2)](VideoDemo/Screen_Recording_20260703_202615_Narrativize.mp4)
+* [Video Demo chức năng chính](VideoDemo.mp4)
