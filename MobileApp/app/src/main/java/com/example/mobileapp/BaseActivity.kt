@@ -27,6 +27,7 @@ import com.example.mobileapp.presentation.TimerViewModel
 import com.example.mobileapp.presentation.ViewModelFactory
 import com.example.mobileapp.util.AnimationUtils.popIn
 import com.example.mobileapp.util.AnimationUtils.setBounceClick
+import com.example.mobileapp.util.LocaleHelper
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
 
@@ -38,6 +39,10 @@ open class BaseActivity : AppCompatActivity() {
         fun resetNavigationState() {
             lastActivityIndex = -1
         }
+    }
+
+    override fun attachBaseContext(newBase: android.content.Context) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase))
     }
 
     private val notificationsViewModel: NotificationsViewModel by viewModels { ViewModelFactory() }
@@ -78,8 +83,8 @@ open class BaseActivity : AppCompatActivity() {
                 timerViewModel.timerFinished.collect { finished ->
                     if (finished) {
                         addNotification(
-                            "Focus Complete!",
-                            "Your focus session has ended. Great work, hero!",
+                            getString(R.string.timer_focus_complete),
+                            getString(R.string.timer_focus_msg),
                             "timer"
                         )
                         timerViewModel.clearFinishedFlag()

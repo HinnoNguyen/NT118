@@ -36,7 +36,7 @@
         android:hint="Enter quest name..."
         android:paddingHorizontal="12dp"
         android:textColor="@color/white"
-        android:textColorHint="#44FFFFFF"
+        android:textColorHint="@color/text_hint"
         android:textSize="14sp"
         android:inputType="textCapSentences" />
 
@@ -64,7 +64,7 @@
             android:gravity="center"
             android:paddingVertical="8dp"
             android:text="⚔️ QUEST"
-            android:textColor="@color/black"
+            android:textColor="@color/bg_dark"
             android:fontFamily="monospace"
             android:textSize="10sp"
             android:textStyle="bold"
@@ -111,7 +111,7 @@
         android:layout_marginTop="24dp"
         android:backgroundTint="@color/accent_green"
         android:text="✦ RECORD TO SCROLL"
-        android:textColor="@color/black"
+        android:textColor="@color/bg_dark"
         android:textStyle="bold"
         app:cornerRadius="0dp"
         android:insetTop="0dp"

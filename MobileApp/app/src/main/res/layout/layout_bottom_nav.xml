@@ -91,7 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
-            android:text="TIME"
+            android:text="@string/nav_time"
             android:textColor="@color/text_gray"
             android:textSize="8sp"
             android:textStyle="bold" />

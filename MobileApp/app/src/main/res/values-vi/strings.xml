@@ -1,13 +1,26 @@
 <resources>
     <string name="app_name">Narrativize</string>
     <string name="forgot_password">Quên mật khẩu? Nhấn vào đây</string>
+    <string name="forgot_title">ĐẶT LẠI MẬT KHẨU</string>
+    <string name="forgot_subtitle">- KHÔI PHỤC TÀI KHOẢN -</string>
+    <string name="forgot_label_email">NHẬP EMAIL CỦA BẠN</string>
+    <string name="forgot_hint_email">hero@email.com</string>
+    <string name="forgot_info">Mật khẩu mới sẽ được gửi về địa chỉ email này.</string>
+    <string name="forgot_btn_send">GỬI MẬT KHẨU MỚI</string>
+    <string name="forgot_btn_back">QUAY LẠI ĐĂNG NHẬP</string>
+    <string name="forgot_success_title">THÀNH CÔNG!</string>
+    <string name="forgot_success_msg">Nếu email này tồn tại, link đặt lại mật khẩu đã được gửi đi.</string>
+    <string name="forgot_success_btn">QUAY LẠI ĐĂNG NHẬP</string>
     <string name="sign_in_google">Đăng nhập với Google</string>
     <string name="login_title">NARRATIVIZE</string>
     <string name="login_subtitle">- RPG NĂNG SUẤT -</string>
     <string name="login_press_start">NHẤN START ĐỂ BẮT ĐẦU</string>
     <string name="label_email">Email</string>
     <string name="label_password">Mật khẩu</string>
+    <string name="label_user">Người dùng</string>
     <string name="label_username">Tên người dùng</string>
+    <string name="label_level">Cấp độ</string>
+    <string name="label_exp_value">0/100</string>
     <string name="label_confirm_password">Xác nhận mật khẩu</string>
     <string name="btn_login">ĐĂNG NHẬP</string>
     <string name="btn_register">ĐĂNG KÝ</string>
@@ -15,30 +28,28 @@
     <string name="hint_password">••••••••••••</string>
     <string name="hint_username">Tên</string>
 
-    <!-- Main Screen Strings -->
-    <string name="label_user">NGƯỜI DÙNG</string>
-    <string name="label_level">LV.5</string>
-    <string name="label_exp_value">340/500</string>
-    <string name="label_exp_title">EXP</string>
-    <string name="quests_done_title">Nhiệm vụ hoàn thành</string>
-    <string name="quests_done_value">12</string>
+    <string name="main_user_stats">▶ THỐNG KÊ</string>
+    <string name="main_daily_quests">▶ NHIỆM VỤ HÀNG NGÀY</string>
+    <string name="main_play_to_earn">Chơi để nhận thêm EXP!</string>
+    <string name="main_play_btn">CHƠI ▶</string>
+    <string name="main_quests_done">Nhiệm vụ xong</string>
+    <string name="main_notes_written">Ghi chú đã viết</string>
+    <string name="main_focus_time">Thời gian tập trung</string>
+    <string name="main_streak">Chuỗi</string>
+    <string name="main_quest_complete_tasks">Hoàn thành 3 việc</string>
+    <string name="main_quest_focus">Tập trung 30 phút</string>
+    <string name="main_quest_write_note">Viết một ghi chú</string>
+    <string name="main_msg_remaining">Bạn còn %d nhiệm vụ cần hoàn thành hôm nay!</string>
+    <string name="main_msg_all_done">Đã xong hết nhiệm vụ! Làm tốt lắm anh hùng!</string>
+
+    <string name="quests_done_value">0</string>
+    <string name="quests_done_title">Nhiệm vụ đã xong</string>
+    <string name="notes_written_value">0</string>
     <string name="notes_written_title">Ghi chú đã viết</string>
-    <string name="notes_written_value">8</string>
-    <string name="focus_time_title">Thời gian tập trung</string>
-    <string name="focus_time_value">4h</string>
-    <string name="streak_title">Chuỗi</string>
-    <string name="streak_value">3</string>
-    <string name="daily_quests_title">▶ NHIỆM VỤ HÀNG NGÀY</string>
-    <string name="quest_task_1">Hoàn thành 3 nhiệm vụ</string>
-    <string name="quest_task_1_exp">+10xp</string>
-    <string name="quest_task_2">Tập trung 30 phút</string>
-    <string name="quest_task_2_exp">+20xp</string>
-    <string name="quest_task_3">Viết một ghi chú</string>
-    <string name="quest_task_3_exp">+30xp</string>
-    <string name="main_character_message">\"Chào buổi sáng! Bạn có 5 nhiệm vụ cần hoàn thành hôm nay.\"</string>
+    <string name="streak_value">0</string>
 
     <!-- Profile Screen Strings -->
-    <string name="profile_title">▶ HỒ SƠ</string>
+    <string name="profile_header">HỒ SƠ</string>
     <string name="profile_subtitle">~ trạng thái người dùng ~</string>
     <string name="profile_user_title">Hiệp sĩ Pixel</string>
     <string name="profile_bio_label">▶ TIỂU SỬ</string>
@@ -62,6 +73,8 @@
     <string name="settings_lang_vn">VN Tiếng Việt</string>
     <string name="settings_lang_en">GB Tiếng Anh</string>
     <string name="settings_notifications_label">▶ THÔNG BÁO</string>
+    <string name="settings_game_sounds">Âm thanh trò chơi</string>
+    <string name="settings_dark_mode">Chế độ tối</string>
     <string name="settings_notif_quests">Nhắc nhở nhiệm vụ</string>
     <string name="settings_notif_timer">Hết giờ tập trung</string>
     <string name="settings_notif_login">Đăng nhập hàng ngày</string>
@@ -73,25 +86,52 @@
     <string name="settings_logout_btn">ĐĂNG XUẤT</string>
 
     <!-- Edit Profile Screen Strings -->
-    <string name="edit_profile_title">▶ CHỈNH SỬA HỒ SƠ</string>
+    <string name="edit_profile_header">CHỈNH SỬA HỒ SƠ</string>
+    <string name="edit_profile_hint_username">Tên người dùng</string>
+    <string name="edit_profile_hint_title">Danh hiệu</string>
     <string name="choose_avatar_label">▶ CHỌN ẢNH ĐẠI DIỆN</string>
     <string name="btn_save_profile">✔ LƯU THAY ĐỔI</string>
 
     <!-- Quest Screen Strings -->
-    <string name="quest_header_label">⚔ NHẬT KÝ NHIỆM VỤ</string>
-    <string name="quest_subtitle">Hoàn thành nhiệm vụ để nhận EXP!</string>
-    <string name="new_quest_label">NHIỆM VỤ MỚI</string>
-    <string name="hint_enter_quest">Nhập nhiệm vụ mới...</string>
-    <string name="label_rank">HẠNG</string>
-    <string name="btn_add_quest">THÊM</string>
+    <string name="quest_title">NHIỆM VỤ - DANH SÁCH VIỆC</string>
+    <string name="quest_new">NHIỆM VỤ MỚI</string>
+    <string name="quest_hint">Nhập tên nhiệm vụ...</string>
+    <string name="quest_rank_label">HẠNG</string>
+    <string name="quest_add_btn">THÊM NHIỆM VỤ</string>
+    <string name="quest_active">NHIỆM VỤ ĐANG LÀM</string>
 
     <!-- Bottom Nav Labels -->
     <string name="nav_home">CHÍNH</string>
     <string name="nav_quest">N.VỤ</string>
     <string name="nav_notes">G.CHÚ</string>
     <string name="nav_story">TRUYỆN</string>
+    <string name="nav_time">GIỜ</string>
     <string name="nav_game">GAME</string>
     <string name="nav_set">C.ĐẶT</string>
+
+    <string name="story_title">CHẾ ĐỘ TRUYỆN</string>
+    <string name="story_subtitle">Biến ghi chú thành câu chuyện phiêu lưu!</string>
+    <string name="story_btn_create">+ TẠO MỚI</string>
+    <string name="story_forge_title">✦ LÒ ĐÚC TRUYỆN</string>
+    <string name="story_label_genre">CHỌN THỂ LOẠI</string>
+    <string name="story_genre_epic">SỬ THI</string>
+    <string name="story_genre_mystery">BÍ ẨN</string>
+    <string name="story_genre_comedy">HÀI HƯỚC</string>
+    <string name="story_genre_horror">KINH DỊ</string>
+    <string name="story_label_input">NHẬP GHI CHÚ</string>
+    <string name="story_hint_input">Viết một ghi chú để biến thành truyện...</string>
+    <string name="story_btn_generate">✦ TẠO TRUYỆN!</string>
+
+    <string name="timer_title">MA THUẬT THỜI GIAN</string>
+    <string name="timer_tab_timer">HẸN GIỜ</string>
+    <string name="timer_tab_calendar">LỊCH</string>
+    <string name="timer_start">▶ BẮT ĐẦU</string>
+    <string name="timer_pause">⏸ TẠM DỪNG</string>
+    <string name="timer_reset">↺ ĐẶT LẠI</string>
+    <string name="timer_focus_tip">💡 MẸO TẬP TRUNG</string>
+    <string name="timer_tip_text">\"Mỗi phút tập trung = 1 EXP. Hãy tập trung để lên cấp nhanh hơn!\"</string>
+    <string name="timer_focus_complete">Tập trung hoàn tất!</string>
+    <string name="timer_focus_msg">Phiên tập trung đã kết thúc. Làm tốt lắm anh hùng!</string>
 
     <!-- Notes Screen -->
     <string name="scroll_keeper_title">NGƯỜI GIỮ CUỘN - GHI CHÚ</string>
@@ -100,6 +140,14 @@
     <string name="default_time">12:00</string>
     <string name="error_title_required">Tiêu đề là bắt buộc</string>
     <string name="dialog_delete_note">Xóa ghi chú</string>
+    <string name="notes_filter_all">TẤT CẢ</string>
+    <string name="notes_type_note">📄 GHI CHÚ</string>
+    <string name="notes_type_reminder">🔔 NHẮC NHỞ</string>
+    <string name="notes_type_flashcard">🃏 THẺ NHỚ</string>
+    <string name="notes_label_time">GIỜ:</string>
+    <string name="notes_hint_title">Tiêu đề...</string>
+    <string name="notes_hint_content">Nội dung...</string>
+    <string name="notes_save_btn">✦ LƯU CUỘN</string>
     <string name="dialog_delete_confirm">Bạn có chắc không?</string>
     <string name="btn_delete">Xóa</string>
     <string name="btn_cancel">Hủy</string>

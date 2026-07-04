@@ -166,7 +166,7 @@ class CalendarActivity : BaseActivity() {
             
             when {
                 isSelected -> setBackgroundColor(ContextCompat.getColor(context, R.color.accent_green))
-                isToday -> setBackgroundColor(Color.parseColor("#333333"))
+                isToday -> setBackgroundColor(ContextCompat.getColor(context, R.color.input_bg))
                 else -> setBackgroundColor(Color.TRANSPARENT)
             }
             
@@ -178,7 +178,11 @@ class CalendarActivity : BaseActivity() {
             typeface = Typeface.MONOSPACE
             textSize = 10f
             gravity = Gravity.CENTER
-            setTextColor(if (isSelected) Color.BLACK else Color.WHITE)
+            val textColor = when {
+                isSelected -> ContextCompat.getColor(context, R.color.bg_dark)
+                else -> ContextCompat.getColor(context, R.color.white)
+            }
+            setTextColor(textColor)
         }
         container.addView(tvDay)
 
@@ -192,7 +196,12 @@ class CalendarActivity : BaseActivity() {
                 }
                 textSize = 8f
                 gravity = Gravity.CENTER
-                setTextColor(if (isSelected) Color.BLACK else ContextCompat.getColor(context, R.color.accent_yellow))
+                val indicatorColor = if (isSelected) {
+                    ContextCompat.getColor(context, R.color.bg_dark)
+                } else {
+                    ContextCompat.getColor(context, R.color.accent_yellow)
+                }
+                setTextColor(indicatorColor)
             }
             container.addView(tvIndicator)
         }
@@ -211,7 +220,7 @@ class CalendarActivity : BaseActivity() {
             val emptyTv = TextView(this).apply {
                 text = "No quests for this day."
                 typeface = Typeface.MONOSPACE
-                setTextColor(Color.GRAY)
+                setTextColor(ContextCompat.getColor(context, R.color.text_gray))
                 textSize = 12f
                 gravity = Gravity.CENTER
                 setPadding(0, 40, 0, 0)
@@ -258,13 +267,13 @@ class CalendarActivity : BaseActivity() {
         fun updateTypeSelection(type: String) {
             selectedType = type
             btnTypeQuest.setBackgroundResource(if (type == "QUEST") R.color.accent_green else R.drawable.bg_button_unselected)
-            btnTypeQuest.setTextColor(if (type == "QUEST") Color.BLACK else Color.parseColor("#AAAAAA"))
+            btnTypeQuest.setTextColor(if (type == "QUEST") ContextCompat.getColor(this, R.color.bg_dark) else ContextCompat.getColor(this, R.color.text_gray))
             
             btnTypeEvent.setBackgroundResource(if (type == "EVENT") R.color.accent_green else R.drawable.bg_button_unselected)
-            btnTypeEvent.setTextColor(if (type == "EVENT") Color.BLACK else Color.parseColor("#AAAAAA"))
+            btnTypeEvent.setTextColor(if (type == "EVENT") ContextCompat.getColor(this, R.color.bg_dark) else ContextCompat.getColor(this, R.color.text_gray))
             
             btnTypeBoss.setBackgroundResource(if (type == "BOSS") R.color.accent_green else R.drawable.bg_button_unselected)
-            btnTypeBoss.setTextColor(if (type == "BOSS") Color.BLACK else Color.parseColor("#AAAAAA"))
+            btnTypeBoss.setTextColor(if (type == "BOSS") ContextCompat.getColor(this, R.color.bg_dark) else ContextCompat.getColor(this, R.color.text_gray))
         }
 
         btnTypeQuest.setOnClickListener { updateTypeSelection("QUEST") }

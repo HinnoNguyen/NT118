@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
-            android:text="SETTINGS"
+            android:text="@string/settings_title"
             android:textColor="@color/accent_yellow"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -97,7 +97,7 @@
                     android:layout_weight="1"
                     android:layout_marginStart="16dp"
                     android:fontFamily="monospace"
-                    android:text="Edit Profile"
+                    android:text="@string/profile_edit_btn"
                     android:textColor="@color/accent_green"
                     android:textSize="14sp" />
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="▶" android:textColor="@color/text_hint" android:textSize="10sp" />
@@ -136,7 +136,7 @@
                         android:layout_weight="1"
                         android:layout_marginStart="16dp"
                         android:fontFamily="monospace"
-                        android:text="Game Sounds"
+                        android:text="@string/settings_game_sounds"
                         android:textColor="@color/accent_green"
                         android:textSize="14sp" />
                     <Switch
@@ -165,7 +165,7 @@
                         android:layout_weight="1"
                         android:layout_marginStart="16dp"
                         android:fontFamily="monospace"
-                        android:text="Dark Mode"
+                        android:text="@string/settings_dark_mode"
                         android:textColor="@color/accent_green"
                         android:textSize="14sp" />
                     <Switch
@@ -181,6 +181,7 @@
 
                 <!-- Language -->
                 <LinearLayout
+                    android:id="@+id/btnLanguage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
@@ -194,10 +195,11 @@
                         android:layout_weight="1"
                         android:layout_marginStart="16dp"
                         android:fontFamily="monospace"
-                        android:text="Language"
+                        android:text="@string/settings_language_label"
                         android:textColor="@color/accent_green"
                         android:textSize="14sp" />
                     <TextView
+                        android:id="@+id/tvCurrentLanguage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="monospace"
@@ -208,14 +210,14 @@
             </LinearLayout>
 
             <!-- Danger Zone -->
-            <com.google.android.material.button.MaterialButton
+                <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnLogout"
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:layout_marginTop="8dp"
                 android:backgroundTint="#2A1A1A"
                 android:fontFamily="monospace"
-                android:text="LOGOUT"
+                android:text="@string/settings_logout_btn"
                 android:textColor="#FF4444"
                 android:textStyle="bold"
                 app:cornerRadius="0dp"

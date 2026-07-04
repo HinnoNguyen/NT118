@@ -111,13 +111,15 @@ class MainActivity : BaseActivity() {
                             
                             // Daily Quest Focus Progress
                             val focusProgress = minOf(it.todayFocusMinutes, 30)
-                            tvDailyQuestFocus.text = "${if (focusProgress >= 30) "■" else "□"} Focus for 30 min ($focusProgress/30)"
+                            val focusLabel = getString(R.string.main_quest_focus)
+                            tvDailyQuestFocus.text = "${if (focusProgress >= 30) "■" else "□"} $focusLabel ($focusProgress/30)"
 
                             // Mini Game Reward Status
                             val isNewDay = !isSameDay(it.lastMiniGameRewardAt, System.currentTimeMillis())
                             val currentRewardCount = if (isNewDay) 0 else it.miniGameRewardCount
                             val remainingRewards = maxOf(0, 3 - currentRewardCount)
-                            tvGameRewardStatus.text = "Play to earn bonus EXP! ($remainingRewards/3)"
+                            val playLabel = getString(R.string.main_play_to_earn)
+                            tvGameRewardStatus.text = "$playLabel ($remainingRewards/3)"
                         }
                     }
                 }
@@ -125,21 +127,23 @@ class MainActivity : BaseActivity() {
                     viewModel.notesCount.collect { count ->
                         tvNotesWritten.text = count.toString()
                         val noteDone = count > 0 
-                        tvDailyQuestNote.text = "${if (noteDone) "■" else "□"} Write a note (${minOf(count, 1)}/1)"
+                        val noteLabel = getString(R.string.main_quest_write_note)
+                        tvDailyQuestNote.text = "${if (noteDone) "■" else "□"} $noteLabel (${minOf(count, 1)}/1)"
                     }
                 }
                 launch {
                     viewModel.todayTasksCompleted.collect { count ->
                         val taskProgress = minOf(count, 3)
-                        tvDailyQuestTasks.text = "${if (taskProgress >= 3) "■" else "□"} Complete 3 tasks ($taskProgress/3)"
+                        val taskLabel = getString(R.string.main_quest_complete_tasks)
+                        tvDailyQuestTasks.text = "${if (taskProgress >= 3) "■" else "□"} $taskLabel ($taskProgress/3)"
                     }
                 }
                 launch {
                     viewModel.remainingQuests.collect { count ->
                         val newMessage = if (count > 0) {
-                            "You have $count quests to complete today!"
+                            getString(R.string.main_msg_remaining, count)
                         } else {
-                            "All daily quests completed! Great job hero!"
+                            getString(R.string.main_msg_all_done)
                         }
                         if (tvMainMessage.text != newMessage) {
                             tvMainMessage.animate().cancel()

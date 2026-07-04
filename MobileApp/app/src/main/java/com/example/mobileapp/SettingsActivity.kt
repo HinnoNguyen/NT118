@@ -6,11 +6,14 @@ import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.CompoundButton
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.mobileapp.util.ThemeUtils
+import com.example.mobileapp.util.LocaleHelper
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 
@@ -25,6 +28,34 @@ class SettingsActivity : BaseActivity() {
         setupLogout()
         setupDarkModeSwitch()
         setupEditProfile()
+        setupLanguageSelection()
+    }
+
+    private fun setupLanguageSelection() {
+        val btnLanguage = findViewById<LinearLayout>(R.id.btnLanguage)
+        val tvCurrentLanguage = findViewById<TextView>(R.id.tvCurrentLanguage)
+        
+        val currentLang = LocaleHelper.getLanguage(this)
+        tvCurrentLanguage.text = if (currentLang == "vi") "Tiếng Việt" else "English"
+
+        btnLanguage.setOnClickListener {
+            val languages = arrayOf("English", "Tiếng Việt")
+            val langCodes = arrayOf("en", "vi")
+            
+            AlertDialog.Builder(this)
+                .setTitle("Select Language")
+                .setItems(languages) { _, which: Int ->
+                    val selectedLang = langCodes[which]
+                    if (selectedLang != currentLang) {
+                        LocaleHelper.setLocale(this, selectedLang)
+                        // Refresh the activity to apply language change
+                        val intent = intent
+                        finish()
+                        startActivity(intent)
+                    }
+                }
+                .show()
+        }
     }
 
     private fun setupEditProfile() {
