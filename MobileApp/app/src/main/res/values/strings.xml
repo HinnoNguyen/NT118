@@ -12,7 +12,8 @@
     <string name="forgot_success_msg">If this email exists, a reset link has been dispatched to your terminal.</string>
     <string name="forgot_success_btn">RETURN TO LOGIN</string>
     <string name="sign_in_google">Sign in with Google</string>
-    <string name="default_web_client_id" translatable="false">952046477557-98nvs9ibovi94cp0nqo5nemak2d3tf5n.apps.googleusercontent.com</string>
+    <!-- Replace with your actual Web Client ID from Firebase Console -> Project Settings -> SDK setup and configuration -> Config -> oauth_client -> client_id (type 3) -->
+    <string name="default_web_client_id" translatable="false">123456789012-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com</string>
     <string name="login_title">NARRATIVIZE</string>
     <string name="login_subtitle">- PRODUCTIVITY RPG -</string>
     <string name="login_press_start">PRESS START TO BEGIN</string>

@@ -26,10 +26,6 @@ import com.example.mobileapp.presentation.StoryViewModel
 import com.example.mobileapp.presentation.ViewModelFactory
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -130,20 +126,7 @@ class StoryActivity : BaseActivity() {
     private fun generateStory(input: String) {
         val pbLoading = findViewById<ProgressBar>(R.id.pbLoading)
         val btnStoryfy = findViewById<MaterialButton>(R.id.btnStoryfy)
-        val etStoryInput = findViewById<EditText>(R.id.etStoryInput)
-
-        val logging = HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
-        val client = OkHttpClient.Builder().addInterceptor(logging).build()
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://api.groq.com/openai/")
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val service = retrofit.create(GroqApiService::class.java)
+        
         val prompt = "Write a short $selectedGenre story based on these notes: $input. Keep it under 200 words."
         val request = GroqRequest(
             messages = listOf(
@@ -157,14 +140,16 @@ class StoryActivity : BaseActivity() {
                 pbLoading.visibility = View.VISIBLE
                 btnStoryfy.isEnabled = false
                 
-                val response = service.generateContent(AiConstants.GROQ_API_KEY, request)
+                val response = com.example.mobileapp.api.RetrofitClient.groqService.generateContent(AiConstants.GROQ_API_KEY, request)
                 if (response.isSuccessful) {
                     val storyText = response.body()?.choices?.firstOrNull()?.message?.content
                     if (storyText != null) {
                         addNewStoryToList(storyText, input)
                     }
                 } else {
-                    showAppNotification("API Error", "Code: ${response.code()}")
+                    val errorCode = response.code()
+                    response.errorBody()?.close() // Fix: Close the error body to avoid resource leak
+                    showAppNotification("API Error", "Code: $errorCode")
                 }
             } catch (e: Exception) {
                 showAppNotification("System Error", e.message ?: "Unknown error")

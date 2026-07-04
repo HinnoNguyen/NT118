@@ -114,9 +114,11 @@ class RegisterActivity : AppCompatActivity() {
                 findViewById<View>(R.id.loadingOverlay)?.visibility = View.GONE
                 btnRegister.isEnabled = true
                 btnRegister.text = getString(R.string.btn_register)
-                Toast.makeText(this, getString(R.string.registration_success, state.user.name), Toast.LENGTH_SHORT).show()
-                BaseActivity.resetNavigationState()
-                startActivity(Intent(this, MainActivity::class.java))
+                Toast.makeText(this, state.message, Toast.LENGTH_LONG).show()
+                val intent = Intent(this, LoginActivity::class.java).apply {
+                    putExtra("prefill_email", state.user.email)
+                }
+                startActivity(intent)
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
                 finish()
             }

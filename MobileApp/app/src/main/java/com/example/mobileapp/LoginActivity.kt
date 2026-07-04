@@ -64,6 +64,10 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setupUI() {
         val etEmail = findViewById<EditText>(R.id.etEmail)
+        val prefillEmail = intent.getStringExtra("prefill_email")
+        if (!prefillEmail.isNullOrBlank()) {
+            etEmail.setText(prefillEmail)
+        }
         val etPassword = findViewById<EditText>(R.id.etPassword)
         val btnLogin = findViewById<Button>(R.id.btnStartGame)
         val btnRegisterTab = findViewById<TextView>(R.id.btnRegisterTab)

@@ -31,7 +31,7 @@ class ViewModelFactory : ViewModelProvider.Factory {
                 LoginViewModel(LoginUseCase(userRepository), LoginWithGoogleUseCase(userRepository)) as T
             }
             modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
-                RegisterViewModel(RegisterUseCase(userRepository)) as T
+                RegisterViewModel(RegisterUseCase(userRepository), SendEmailVerificationUseCase(userRepository)) as T
             }
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
                 MainViewModel(userRepository, taskRepository, noteRepository) as T
