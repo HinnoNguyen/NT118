@@ -41,11 +41,11 @@ class MainActivity : BaseActivity() {
         
         setupUI()
         observeViewModel()
+        viewModel.loadData()
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.loadData()
     }
 
 

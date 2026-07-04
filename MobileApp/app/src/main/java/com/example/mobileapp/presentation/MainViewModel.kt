@@ -46,43 +46,40 @@ class MainViewModel(
 
     fun loadData() {
         val uid = userRepository.getCurrentUserId() ?: return
-        _isLoading.value = true
-        loadUserProfile(uid)
-        loadNotesCount(uid)
-        loadTodayTasks(uid)
+        
+        // Ensure we don't start multiple collectors if loadData is called again
+        // However, ViewModelScope will clean them up on clear.
+        // For MainViewModel, loadData is usually called once.
+        
+        startObserving(uid)
     }
 
-    private fun loadUserProfile(uid: String) {
+    private fun startObserving(uid: String) {
+        // Start observe user profile
         viewModelScope.launch {
-            val result = userRepository.getUserProfile(uid)
-            result.onSuccess {
-                _userProfile.value = it
-            }.onFailure {
-                _error.value = "Failed to load profile"
-            }
-            // If this is the main state we wait for
-            _isLoading.value = false
+            userRepository.getUserProfileFlow(uid)
+                .onStart { _isLoading.value = true }
+                .catch { e -> 
+                    _error.value = "Profile Error: ${e.message}"
+                    _isLoading.value = false
+                }
+                .collect { result ->
+                    result.onSuccess { _userProfile.value = it }
+                    _isLoading.value = false
+                }
         }
-    }
 
-    private fun loadNotesCount(uid: String) {
+        // Start observe notes count
         viewModelScope.launch {
             noteRepository.getNotes(uid)
-                .catch { e ->
-                    _error.value = "Firestore Error: ${e.message}"
-                }
-                .collect { notes ->
-                    _notesCount.value = notes.size
-                }
+                .catch { e -> _error.value = "Notes Error: ${e.message}" }
+                .collect { notes -> _notesCount.value = notes.size }
         }
-    }
 
-    private fun loadTodayTasks(uid: String) {
+        // Start observe today tasks
         viewModelScope.launch {
             taskRepository.getTasks(uid)
-                .catch { e ->
-                    _error.value = "Firestore Error: ${e.message}"
-                }
+                .catch { e -> _error.value = "Tasks Error: ${e.message}" }
                 .collect { tasks ->
                     val startOfDay = getStartOfDay()
                     val todayCompleted = tasks.count { it.completed && it.updatedAt >= startOfDay }

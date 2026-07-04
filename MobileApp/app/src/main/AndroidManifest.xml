@@ -62,6 +62,7 @@
         <activity android:name=".StoryActivity" android:exported="false" android:launchMode="singleTop" />
         <activity android:name=".QuestActivity" android:exported="false" android:launchMode="singleTop" />
         <activity android:name=".TimerActivity" android:exported="false" android:launchMode="singleTop" />
+        <activity android:name=".CommunityActivity" android:exported="false" android:launchMode="singleTop" />
         <activity android:name=".ForgotPasswordActivity" android:theme="@style/Theme.MobileApp.Auth" android:exported="false" android:launchMode="singleTop" />
 
         <receiver android:name=".receiver.ReminderReceiver" android:exported="false" />

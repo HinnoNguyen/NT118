@@ -5,75 +5,115 @@ import com.example.mobileapp.data.mapper.toDomain
 import com.example.mobileapp.data.mapper.toDto
 import com.example.mobileapp.domain.model.Task
 import com.example.mobileapp.domain.repository.TaskRepository
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
-import kotlinx.coroutines.channels.awaitClose
+import com.google.firebase.firestore.snapshots
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
 
-class TaskRepositoryImpl(
+class TaskRepositoryImpl : TaskRepository {
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
-) : TaskRepository {
-
     private val tasksCollection = firestore.collection("tasks")
 
-    override fun getTasks(userId: String): Flow<List<Task>> = callbackFlow {
-        val registration = tasksCollection
+    override fun getTasks(userId: String): Flow<List<Task>> {
+        return tasksCollection
             .whereEqualTo("userId", userId)
-            .addSnapshotListener { snapshot, error ->
-                if (error != null) {
-                    close(error)
-                    return@addSnapshotListener
-                }
-                if (snapshot != null) {
-                    val tasks = snapshot.toObjects(TaskDto::class.java)
-                        .map { it.toDomain() }
-                        .sortedByDescending { it.createdAt }
-                    trySend(tasks)
-                }
+            .snapshots()
+            .map { snapshot ->
+                snapshot.documents
+                    .mapNotNull { it.toObject(TaskDto::class.java)?.toDomain() }
+                    .sortedWith(
+                        compareBy<Task> { it.completed }
+                            .thenByDescending { priorityWeight(it.priority) }
+                            .thenByDescending { it.updatedAt }
+                    )
             }
-        awaitClose { registration.remove() }
     }
 
     override suspend fun addTask(task: Task): Result<Unit> {
         return try {
-            val docRef = tasksCollection.document()
-            val taskWithId = task.copy(id = docRef.id)
-            docRef.set(taskWithId.toDto()).await()
+            val finalId = if (task.id.isBlank()) tasksCollection.document().id else task.id
+            val finalTask = if (task.id.isBlank()) task.copy(id = finalId) else task
+            
+            tasksCollection.document(finalId).set(finalTask.toDto()).await()
             Result.success(Unit)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(Exception(e.message ?: "Failed to add task", e))
+        }
+    }
+
+    override suspend fun getTask(taskId: String): Result<Task> {
+        if (taskId.isBlank()) {
+            return Result.failure(Exception("Task id cannot be empty"))
+        }
+
+        return try {
+            val snapshot = tasksCollection.document(taskId).get().await()
+            val task = snapshot.toObject(TaskDto::class.java)?.toDomain()
+                ?: return Result.failure(Exception("Task not found"))
+            Result.success(task)
+        } catch (e: Exception) {
+            Result.failure(Exception(e.message ?: "Failed to fetch task", e))
         }
     }
 
     override suspend fun updateTask(task: Task): Result<Unit> {
+        val userId = auth.currentUser?.uid ?: return Result.failure(Exception("No logged in user"))
+        if (task.userId != userId) {
+            return Result.failure(Exception("Cannot update another user's task"))
+        }
+
         return try {
-            tasksCollection.document(task.id).set(task.toDto()).await()
+            val updatedTask = task.copy(
+                title = task.title.trim(),
+                description = task.description.trim(),
+                priority = normalizePriority(task.priority),
+                updatedAt = System.currentTimeMillis()
+            )
+            tasksCollection.document(updatedTask.id).set(updatedTask.toDto()).await()
             Result.success(Unit)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(Exception(e.message ?: "Failed to update task", e))
         }
     }
 
     override suspend fun deleteTask(taskId: String): Result<Unit> {
+        if (taskId.isBlank()) {
+            return Result.failure(Exception("Task id cannot be empty"))
+        }
+
         return try {
             tasksCollection.document(taskId).delete().await()
             Result.success(Unit)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(Exception(e.message ?: "Failed to delete task", e))
         }
     }
 
     override suspend fun toggleTaskCompletion(taskId: String, completed: Boolean): Result<Unit> {
         return try {
-            tasksCollection.document(taskId).update(
-                "completed", completed,
-                "updatedAt", System.currentTimeMillis()
-            ).await()
+            tasksCollection.document(taskId).update("completed", completed, "updatedAt", System.currentTimeMillis()).await()
             Result.success(Unit)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(Exception(e.message ?: "Failed to toggle task completion", e))
+        }
+    }
+
+    private fun normalizePriority(priority: String): String {
+        return when (priority.lowercase()) {
+            "high" -> "high"
+            "low" -> "low"
+            else -> "normal"
+        }
+    }
+
+    private fun priorityWeight(priority: String): Int {
+        return when (priority) {
+            "high" -> 3
+            "normal" -> 2
+            else -> 1
         }
     }
 }
