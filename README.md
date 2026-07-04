@@ -66,4 +66,4 @@
 * **Kiểm thử tự động:** Unit Test (Mockito) và UI Test (Espresso)
 
 #### 🎥 Video Demo
-* [Video Demo chức năng chính](VideoDemo.mp4)
+* [Thư mục Video Demo trên Google Drive](https://drive.google.com/drive/folders/10Ki_hXmeHGs8OVcZC0ToQAP3LxiC3fCW?usp=sharing)
