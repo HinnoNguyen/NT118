@@ -35,16 +35,15 @@ class QuestViewModel(
     }
 
     private fun loadTasks() {
-        if (userId.isEmpty()) return
         viewModelScope.launch {
             _isLoading.value = true
-            getTasksUseCase(userId)
-                .catch { e ->
-                    _error.value = "Firestore Error: ${e.message}"
+            getTasksUseCase()
+                .onSuccess { taskList ->
+                    _tasks.value = taskList
                     _isLoading.value = false
                 }
-                .collect { taskList ->
-                    _tasks.value = taskList
+                .onFailure { e ->
+                    _error.value = "Firestore Error: ${e.message}"
                     _isLoading.value = false
                 }
         }
@@ -66,7 +65,9 @@ class QuestViewModel(
                 updatedAt = System.currentTimeMillis()
             )
             val result = addTaskUseCase(newTask)
-            if (result.isFailure) {
+            if (result.isSuccess) {
+                loadTasks()
+            } else {
                 _error.value = "Failed to add quest"
             }
         }
@@ -77,6 +78,7 @@ class QuestViewModel(
             val task = _tasks.value.find { it.id == taskId } ?: return@launch
             val result = toggleTaskCompletionUseCase(taskId, completed)
             if (result.isSuccess) {
+                loadTasks()
                 // Fetch current user profile to ensure we don't drop below 0 EXP
                 userRepository.getUserProfile(userId).onSuccess { user ->
                     val baseExp = when (task.priority) {

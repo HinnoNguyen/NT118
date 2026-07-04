@@ -48,8 +48,8 @@ class MainViewModel(
         val uid = userRepository.getCurrentUserId() ?: return
         _isLoading.value = true
         loadUserProfile(uid)
-        loadNotesCount(uid)
-        loadTodayTasks(uid)
+        loadNotesCount()
+        loadTodayTasks()
     }
 
     private fun loadUserProfile(uid: String) {
@@ -65,28 +65,28 @@ class MainViewModel(
         }
     }
 
-    private fun loadNotesCount(uid: String) {
+    private fun loadNotesCount() {
         viewModelScope.launch {
-            noteRepository.getNotes(uid)
-                .catch { e ->
-                    _error.value = "Firestore Error: ${e.message}"
-                }
-                .collect { notes ->
+            noteRepository.getNotes()
+                .onSuccess { notes ->
                     _notesCount.value = notes.size
+                }
+                .onFailure { e ->
+                    _error.value = "Firestore Error: ${e.message}"
                 }
         }
     }
 
-    private fun loadTodayTasks(uid: String) {
+    private fun loadTodayTasks() {
         viewModelScope.launch {
-            taskRepository.getTasks(uid)
-                .catch { e ->
-                    _error.value = "Firestore Error: ${e.message}"
-                }
-                .collect { tasks ->
+            taskRepository.getTasks()
+                .onSuccess { tasks ->
                     val startOfDay = getStartOfDay()
                     val todayCompleted = tasks.count { it.completed && it.updatedAt >= startOfDay }
                     _todayTasksCompleted.value = todayCompleted
+                }
+                .onFailure { e ->
+                    _error.value = "Firestore Error: ${e.message}"
                 }
         }
     }

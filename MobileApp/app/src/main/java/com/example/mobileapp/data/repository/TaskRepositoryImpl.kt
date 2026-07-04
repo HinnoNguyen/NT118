@@ -5,75 +5,131 @@ import com.example.mobileapp.data.mapper.toDomain
 import com.example.mobileapp.data.mapper.toDto
 import com.example.mobileapp.domain.model.Task
 import com.example.mobileapp.domain.repository.TaskRepository
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
+import java.util.UUID
 
-class TaskRepositoryImpl(
+class TaskRepositoryImpl : TaskRepository {
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
-) : TaskRepository {
-
     private val tasksCollection = firestore.collection("tasks")
 
-    override fun getTasks(userId: String): Flow<List<Task>> = callbackFlow {
-        val registration = tasksCollection
-            .whereEqualTo("userId", userId)
-            .addSnapshotListener { snapshot, error ->
-                if (error != null) {
-                    close(error)
-                    return@addSnapshotListener
-                }
-                if (snapshot != null) {
-                    val tasks = snapshot.toObjects(TaskDto::class.java)
-                        .map { it.toDomain() }
-                        .sortedByDescending { it.createdAt }
-                    trySend(tasks)
-                }
-            }
-        awaitClose { registration.remove() }
-    }
+    override suspend fun createTask(
+        title: String,
+        description: String,
+        dueAt: Long,
+        priority: String
+    ): Result<Task> {
+        val userId = auth.currentUser?.uid ?: return Result.failure(Exception("No logged in user"))
+        if (title.isBlank()) {
+            return Result.failure(Exception("Task title cannot be empty"))
+        }
 
-    override suspend fun addTask(task: Task): Result<Unit> {
         return try {
-            val docRef = tasksCollection.document()
-            val taskWithId = task.copy(id = docRef.id)
-            docRef.set(taskWithId.toDto()).await()
-            Result.success(Unit)
+            val now = System.currentTimeMillis()
+            val task = Task(
+                id = UUID.randomUUID().toString(),
+                userId = userId,
+                title = title.trim(),
+                description = description.trim(),
+                dueAt = dueAt,
+                completed = false,
+                priority = normalizePriority(priority),
+                createdAt = now,
+                updatedAt = now
+            )
+
+            tasksCollection.document(task.id).set(task.toDto()).await()
+            Result.success(task)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(Exception(e.message ?: "Failed to create task", e))
         }
     }
 
-    override suspend fun updateTask(task: Task): Result<Unit> {
+    override suspend fun getTasks(): Result<List<Task>> {
+        val userId = auth.currentUser?.uid ?: return Result.failure(Exception("No logged in user"))
+
         return try {
-            tasksCollection.document(task.id).set(task.toDto()).await()
-            Result.success(Unit)
+            val snapshot = tasksCollection
+                .whereEqualTo("userId", userId)
+                .get()
+                .await()
+
+            val tasks = snapshot.documents
+                .mapNotNull { it.toObject(TaskDto::class.java)?.toDomain() }
+                .sortedWith(
+                    compareBy<Task> { it.completed }
+                        .thenByDescending { priorityWeight(it.priority) }
+                        .thenByDescending { it.updatedAt }
+                )
+            Result.success(tasks)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(Exception(e.message ?: "Failed to fetch tasks", e))
+        }
+    }
+
+    override suspend fun getTask(taskId: String): Result<Task> {
+        if (taskId.isBlank()) {
+            return Result.failure(Exception("Task id cannot be empty"))
+        }
+
+        return try {
+            val snapshot = tasksCollection.document(taskId).get().await()
+            val task = snapshot.toObject(TaskDto::class.java)?.toDomain()
+                ?: return Result.failure(Exception("Task not found"))
+            Result.success(task)
+        } catch (e: Exception) {
+            Result.failure(Exception(e.message ?: "Failed to fetch task", e))
+        }
+    }
+
+    override suspend fun updateTask(task: Task): Result<Task> {
+        val userId = auth.currentUser?.uid ?: return Result.failure(Exception("No logged in user"))
+        if (task.userId != userId) {
+            return Result.failure(Exception("Cannot update another user's task"))
+        }
+
+        return try {
+            val updatedTask = task.copy(
+                title = task.title.trim(),
+                description = task.description.trim(),
+                priority = normalizePriority(task.priority),
+                updatedAt = System.currentTimeMillis()
+            )
+            tasksCollection.document(updatedTask.id).set(updatedTask.toDto()).await()
+            Result.success(updatedTask)
+        } catch (e: Exception) {
+            Result.failure(Exception(e.message ?: "Failed to update task", e))
         }
     }
 
     override suspend fun deleteTask(taskId: String): Result<Unit> {
+        if (taskId.isBlank()) {
+            return Result.failure(Exception("Task id cannot be empty"))
+        }
+
         return try {
             tasksCollection.document(taskId).delete().await()
             Result.success(Unit)
         } catch (e: Exception) {
-            Result.failure(e)
+            Result.failure(Exception(e.message ?: "Failed to delete task", e))
         }
     }
 
-    override suspend fun toggleTaskCompletion(taskId: String, completed: Boolean): Result<Unit> {
-        return try {
-            tasksCollection.document(taskId).update(
-                "completed", completed,
-                "updatedAt", System.currentTimeMillis()
-            ).await()
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
+    private fun normalizePriority(priority: String): String {
+        return when (priority.lowercase()) {
+            "high" -> "high"
+            "low" -> "low"
+            else -> "normal"
+        }
+    }
+
+    private fun priorityWeight(priority: String): Int {
+        return when (priority) {
+            "high" -> 3
+            "normal" -> 2
+            else -> 1
         }
     }
 }

@@ -28,16 +28,15 @@ class CalendarViewModel(
     }
 
     private fun loadTasks() {
-        if (userId.isEmpty()) return
         viewModelScope.launch {
             _isLoading.value = true
-            taskRepository.getTasks(userId)
-                .catch { e ->
-                    _error.value = "Failed to load tasks: ${e.message}"
+            taskRepository.getTasks()
+                .onSuccess { list ->
+                    _tasks.value = list
                     _isLoading.value = false
                 }
-                .collect {
-                    _tasks.value = it
+                .onFailure { e ->
+                    _error.value = "Failed to load tasks: ${e.message}"
                     _isLoading.value = false
                 }
         }
@@ -45,22 +44,18 @@ class CalendarViewModel(
 
     fun addQuest(title: String, type: String, dueAt: Long) {
         viewModelScope.launch {
-            val now = System.currentTimeMillis()
-            val newTask = Task(
-                id = "", // Will be set by repository/firestore
-                userId = userId,
+            taskRepository.createTask(
                 title = title,
                 description = type, // Use description to store type for calendar
                 dueAt = dueAt,
-                completed = false,
-                priority = "MEDIUM",
-                createdAt = now,
-                updatedAt = now
+                priority = "normal"
             )
-            val result = taskRepository.addTask(newTask)
-            result.onFailure { e ->
-                _error.value = "Failed to add quest: ${e.message}"
-            }
+                .onSuccess {
+                    loadTasks()
+                }
+                .onFailure { e ->
+                    _error.value = "Failed to add quest: ${e.message}"
+                }
         }
     }
 

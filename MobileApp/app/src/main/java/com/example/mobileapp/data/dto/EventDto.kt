@@ -1,14 +1,13 @@
 package com.example.mobileapp.data.dto
 
-data class NoteDto(
+data class EventDto(
     val id: String = "",
     val userId: String = "",
     val title: String = "",
-    val content: String = "",
-    val type: String = "note",
-    val pinned: Boolean = false,
-    val reminderTime: Long? = null,
+    val description: String = "",
+    val date: Long = 0L,
+    val time: String = "",
+    val location: String = "",
     val createdAt: Long = 0L,
     val updatedAt: Long = 0L
 )
-

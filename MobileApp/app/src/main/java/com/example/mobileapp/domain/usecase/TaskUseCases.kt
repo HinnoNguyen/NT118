@@ -2,18 +2,23 @@ package com.example.mobileapp.domain.usecase
 
 import com.example.mobileapp.domain.model.Task
 import com.example.mobileapp.domain.repository.TaskRepository
-import kotlinx.coroutines.flow.Flow
 
 class GetTasksUseCase(private val repository: TaskRepository) {
-    operator fun invoke(userId: String): Flow<List<Task>> = repository.getTasks(userId)
+    suspend operator fun invoke(): Result<List<Task>> = repository.getTasks()
 }
 
 class AddTaskUseCase(private val repository: TaskRepository) {
-    suspend operator fun invoke(task: Task): Result<Unit> = repository.addTask(task)
+    suspend operator fun invoke(task: Task): Result<Task> = 
+        repository.createTask(
+            title = task.title,
+            description = task.description,
+            dueAt = task.dueAt,
+            priority = task.priority
+        )
 }
 
 class UpdateTaskUseCase(private val repository: TaskRepository) {
-    suspend operator fun invoke(task: Task): Result<Unit> = repository.updateTask(task)
+    suspend operator fun invoke(task: Task): Result<Task> = repository.updateTask(task)
 }
 
 class DeleteTaskUseCase(private val repository: TaskRepository) {
@@ -21,6 +26,13 @@ class DeleteTaskUseCase(private val repository: TaskRepository) {
 }
 
 class ToggleTaskCompletionUseCase(private val repository: TaskRepository) {
-    suspend operator fun invoke(taskId: String, completed: Boolean): Result<Unit> = 
-        repository.toggleTaskCompletion(taskId, completed)
+    suspend operator fun invoke(taskId: String, completed: Boolean): Result<Unit> {
+        return repository.getTask(taskId).fold(
+            onSuccess = { task ->
+                repository.updateTask(task.copy(completed = completed)).map { Unit }
+            },
+            onFailure = { Result.failure(it) }
+        )
+    }
 }
+

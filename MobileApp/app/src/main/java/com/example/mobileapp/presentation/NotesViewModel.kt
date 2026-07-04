@@ -36,16 +36,15 @@ class NotesViewModel(
     }
 
     private fun loadNotes() {
-        if (userId.isEmpty()) return
         viewModelScope.launch {
             _isLoading.value = true
-            repository.getNotes(userId)
-                .catch { e ->
-                    _error.value = "Firestore Error: ${e.message}"
+            repository.getNotes()
+                .onSuccess { list ->
+                    _notes.value = list
                     _isLoading.value = false
                 }
-                .collect {
-                    _notes.value = it
+                .onFailure { e ->
+                    _error.value = "Firestore Error: ${e.message}"
                     _isLoading.value = false
                 }
         }
@@ -58,29 +57,25 @@ class NotesViewModel(
     fun addNote(title: String, content: String, type: String = "note", reminderTime: Long? = null) {
         if (title.isBlank()) return
         viewModelScope.launch {
-            val now = System.currentTimeMillis()
-            val newNote = Note(
-                id = "",
-                userId = userId,
-                title = title,
-                content = content,
-                type = type,
-                pinned = false,
-                reminderTime = reminderTime,
-                createdAt = now,
-                updatedAt = now
-            )
-            repository.addNote(newNote).onFailure {
-                _error.value = "Failed to save scroll"
-            }
+            repository.createNote(title = title, content = content, type = type, pinned = false, reminderTime = reminderTime)
+                .onSuccess {
+                    loadNotes()
+                }
+                .onFailure {
+                    _error.value = "Failed to save scroll"
+                }
         }
     }
     
     fun deleteNote(noteId: String) {
         viewModelScope.launch {
-            repository.deleteNote(noteId).onFailure {
-                _error.value = "Failed to burn scroll"
-            }
+            repository.deleteNote(noteId)
+                .onSuccess {
+                    loadNotes()
+                }
+                .onFailure {
+                    _error.value = "Failed to burn scroll"
+                }
         }
     }
     
@@ -88,3 +83,4 @@ class NotesViewModel(
         _error.value = null
     }
 }
+

@@ -30,16 +30,15 @@ class StoryViewModel(
     }
 
     private fun loadStories() {
-        if (userId.isEmpty()) return
         viewModelScope.launch {
             _isLoading.value = true
-            storyRepository.getStories(userId)
-                .catch { e ->
-                    _error.value = "Firestore Error: ${e.message}"
+            storyRepository.getStories()
+                .onSuccess { storyList ->
+                    _stories.value = storyList
                     _isLoading.value = false
                 }
-                .collect { storyList ->
-                    _stories.value = storyList
+                .onFailure { e ->
+                    _error.value = "Firestore Error: ${e.message}"
                     _isLoading.value = false
                 }
         }
@@ -47,29 +46,25 @@ class StoryViewModel(
 
     fun saveStory(title: String, genre: String, content: String) {
         viewModelScope.launch {
-            val story = Story(
-                id = UUID.randomUUID().toString(),
-                userId = userId,
-                title = title,
-                genre = genre,
-                content = content,
-                relatedNoteIds = emptyList(),
-                createdAt = System.currentTimeMillis(),
-                updatedAt = System.currentTimeMillis()
-            )
-            val result = storyRepository.saveStory(story)
-            if (result.isFailure) {
-                _error.value = "Failed to save story"
-            }
+            storyRepository.createStory(title = title, genre = genre, content = content)
+                .onSuccess {
+                    loadStories()
+                }
+                .onFailure {
+                    _error.value = "Failed to save story"
+                }
         }
     }
 
     fun deleteStory(storyId: String) {
         viewModelScope.launch {
-            val result = storyRepository.deleteStory(storyId)
-            if (result.isFailure) {
-                _error.value = "Failed to delete story"
-            }
+            storyRepository.deleteStory(storyId)
+                .onSuccess {
+                    loadStories()
+                }
+                .onFailure {
+                    _error.value = "Failed to delete story"
+                }
         }
     }
 
